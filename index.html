@@ -343,10 +343,15 @@
   let progressCache = {}; // problemId -> {attemptsUsed, solved}
 
   // ---------------- Data layer ----------------
+  // Note: these use only a where() filter (no orderBy in the Firestore
+  // query itself) and sort client-side instead. Combining where() with
+  // orderBy() on a different field requires a manually-created Firestore
+  // "composite index" -- sorting here avoids needing to set that up.
   async function loadMyProblems(){
     try {
-      const snap = await getDocs(query(problemsCol, where("studentUid", "==", currentUser.uid), orderBy("createdAt", "asc")));
+      const snap = await getDocs(query(problemsCol, where("studentUid", "==", currentUser.uid)));
       problems = snap.docs.map(function(d){ return Object.assign({ id: d.id }, d.data()); });
+      problems.sort(function(a, b){ return (a.createdAt || 0) - (b.createdAt || 0); });
     } catch (e) {
       showStatus("error", "Couldn't load your problems from the cloud. Try refreshing.");
     }
@@ -363,8 +368,9 @@
 
   async function loadMyAttempts(){
     try {
-      const snap = await getDocs(query(attemptsCol, where("studentUid", "==", currentUser.uid), orderBy("timestamp", "desc")));
+      const snap = await getDocs(query(attemptsCol, where("studentUid", "==", currentUser.uid)));
       attempts = snap.docs.map(function(d){ return Object.assign({ id: d.id }, d.data()); });
+      attempts.sort(function(a, b){ return (b.timestamp || 0) - (a.timestamp || 0); });
     } catch (e) {
       showStatus("error", "Couldn't load your results from the cloud.");
     }
