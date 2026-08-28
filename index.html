@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>GRMS MATHCOUNTS — Practice Checker</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Work+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#121b14; --board:#1b2a1f; --chalk:#f3efe3; --chalk-dim:#9fb0a0;
+    --gold:#f2b84b; --coral:#e8735c; --rule: rgba(243,239,227,0.14);
+  }
+  *{ box-sizing:border-box; }
+  body{
+    background:var(--ink); color:var(--chalk); font-family:'Work Sans', sans-serif;
+    margin:0; padding:24px;
+  }
+  .app{
+    max-width:680px; margin:0 auto; border:1px solid var(--rule); border-radius:14px; overflow:hidden;
+  }
+  .topbar{
+    display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;
+    padding:18px 24px; border-bottom:1px solid var(--rule); background:rgba(18,27,20,0.9);
+  }
+  .brand{ font-family:'Fraunces', serif; font-weight:600; font-size:1.1rem; display:flex; align-items:center; gap:8px; }
+  .brand .mark{ color:var(--gold); }
+  .tabs{ display:flex; gap:6px; flex-wrap:wrap; align-items:center; }
+  .tab-btn{
+    display:flex; align-items:center; gap:6px; background:transparent; color:var(--chalk-dim);
+    border:1px solid var(--rule); border-radius:999px; padding:8px 14px; font-size:0.85rem;
+    font-weight:600; cursor:pointer; font-family:'Work Sans', sans-serif;
+  }
+  .tab-btn.active{ background:var(--gold); color:var(--ink); border-color:var(--gold); }
+  .whoami{ font-family:'JetBrains Mono', monospace; font-size:0.75rem; color:var(--chalk-dim); margin-right:4px; }
+  main{ padding:28px 24px 32px; }
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace; font-size:0.72rem; letter-spacing:0.12em;
+    text-transform:uppercase; color:var(--gold); display:block; margin-bottom:8px;
+  }
+  h2{ font-family:'Fraunces', serif; font-size:1.5rem; font-weight:600; margin:0; }
+  label{ font-size:0.85rem; color:var(--chalk-dim); margin-bottom:6px; display:block; }
+  input[type="text"], input[type="password"], textarea, select{
+    width:100%; background:var(--board); border:1px solid var(--rule); border-radius:8px;
+    padding:12px 14px; color:var(--chalk); font-size:0.95rem; font-family:'Work Sans', sans-serif;
+    outline:none; box-sizing:border-box;
+  }
+  textarea{ resize:vertical; min-height:80px; }
+  .btn{
+    display:inline-flex; align-items:center; gap:8px; font-weight:600; font-size:0.9rem;
+    padding:12px 18px; border-radius:8px; border:1px solid var(--gold); background:var(--gold);
+    color:var(--ink); cursor:pointer; font-family:'Work Sans', sans-serif;
+  }
+  .btn:disabled{ opacity:0.5; cursor:not-allowed; }
+  .btn-ghost{
+    display:inline-flex; align-items:center; gap:8px; font-weight:600; font-size:0.9rem;
+    padding:12px 18px; border-radius:8px; border:1px solid var(--rule); background:transparent;
+    color:var(--chalk); cursor:pointer; font-family:'Work Sans', sans-serif;
+  }
+  .btn-ghost:disabled{ opacity:0.35; cursor:not-allowed; }
+  .btn-small{ padding:8px 12px; font-size:0.8rem; }
+  .card{
+    background:var(--board); border:1px solid var(--rule); border-radius:12px;
+    padding:16px 18px; margin-bottom:12px;
+  }
+  .error-text{ color:var(--coral); font-size:0.82rem; margin-top:6px; }
+  .dim{ color:var(--chalk-dim); }
+  .mono-small{ font-family:'JetBrains Mono', monospace; font-size:0.72rem; color:var(--chalk-dim); }
+  .row-between{ display:flex; justify-content:space-between; align-items:flex-start; gap:12px; }
+  .stat-grid{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-top:20px; }
+  .stat-num{ font-size:1.6rem; font-weight:600; font-family:'Fraunces', serif; }
+  .icon-btn{ background:none; border:none; color:var(--chalk-dim); cursor:pointer; flex:none; }
+  .hidden{ display:none !important; }
+  .feedback-card.correct{ border-color:var(--gold); background:rgba(242,184,75,0.08); }
+  .feedback-card.incorrect{ border-color:var(--coral); background:rgba(232,115,92,0.08); }
+  .feedback-card.locked{ border-color:var(--chalk-dim); background:rgba(243,239,227,0.05); }
+  .feedback-title{ display:flex; align-items:center; gap:8px; font-weight:600; }
+  .feedback-title.correct{ color:var(--gold); }
+  .feedback-title.incorrect{ color:var(--coral); }
+  .nav-row{ display:flex; justify-content:space-between; margin-top:20px; }
+  .auth-wrap{ padding:40px 20px; max-width:340px; margin:0 auto; }
+  .auth-tabs{ display:flex; gap:6px; justify-content:center; margin-bottom:24px; }
+  .status-banner{ padding:10px 14px; border-radius:8px; font-size:0.82rem; margin-bottom:16px; }
+  .status-banner.error{ background:rgba(232,115,92,0.1); color:var(--coral); border:1px solid var(--coral); }
+  .status-banner.loading{ background:rgba(243,239,227,0.06); color:var(--chalk-dim); border:1px solid var(--rule); }
+  .leader-row{ display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--rule); font-size:0.9rem; }
+  .leader-row:last-child{ border-bottom:none; }
+  .checkbox-row{ display:flex; align-items:center; gap:8px; font-size:0.85rem; color:var(--chalk-dim); margin-top:10px; }
+  .checkbox-row input{ width:auto; }
+  .badge{ font-family:'JetBrains Mono', monospace; font-size:0.72rem; color:var(--chalk-dim); }
+  @media (max-width:480px){
+    .stat-grid{ grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <div class="topbar">
+    <div class="brand"><span class="mark">&#9651;</span>GRMS MATHCOUNTS</div>
+    <div class="tabs" id="topbar-tabs"></div>
+  </div>
+
+  <main>
+    <div id="global-status"></div>
+
+    <!-- AUTH GATE -->
+    <section id="tab-auth">
+      <div class="auth-wrap">
+        <div class="auth-tabs">
+          <button class="tab-btn active" id="auth-mode-login" data-mode="login">Log in</button>
+          <button class="tab-btn" id="auth-mode-signup" data-mode="signup">Create account</button>
+        </div>
+
+        <div id="auth-login">
+          <span class="eyebrow">Welcome back</span>
+          <h2 style="margin-bottom:20px;">Log in</h2>
+          <label for="login-username">Username</label>
+          <input type="text" id="login-username" placeholder="Username" autocomplete="username" />
+          <div style="margin-top:14px;">
+            <label for="login-password">Password</label>
+            <input type="password" id="login-password" placeholder="Password" autocomplete="current-password" />
+          </div>
+          <div id="login-error" class="error-text hidden"></div>
+          <div style="margin-top:18px;">
+            <button class="btn" id="login-btn" style="width:100%; justify-content:center;">Log in</button>
+          </div>
+        </div>
+
+        <div id="auth-signup" class="hidden">
+          <span class="eyebrow">New here?</span>
+          <h2 style="margin-bottom:20px;">Create account</h2>
+          <label for="signup-username">Choose a username</label>
+          <input type="text" id="signup-username" placeholder="Username" autocomplete="username" />
+          <div style="margin-top:14px;">
+            <label for="signup-password">Choose a password</label>
+            <input type="password" id="signup-password" placeholder="Password (6+ characters)" autocomplete="new-password" />
+          </div>
+          <div class="checkbox-row">
+            <input type="checkbox" id="signup-is-coach" />
+            <label for="signup-is-coach" style="margin:0;">I'm a coach</label>
+          </div>
+          <div id="signup-coach-passcode-wrap" class="hidden" style="margin-top:14px;">
+            <label for="signup-coach-passcode">Coach passcode</label>
+            <input type="password" id="signup-coach-passcode" placeholder="Coach passcode" />
+          </div>
+          <div id="signup-error" class="error-text hidden"></div>
+          <div style="margin-top:18px;">
+            <button class="btn" id="signup-btn" style="width:100%; justify-content:center;">Create account</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ADD TAB (coach only) -->
+    <section id="tab-add" class="hidden">
+      <span class="eyebrow">Assign a problem</span>
+      <h2>Add a problem</h2>
+      <div style="margin-top:20px;">
+        <label for="add-student-select">Student</label>
+        <select id="add-student-select"></select>
+      </div>
+      <div style="margin-top:14px;">
+        <label for="q-text">Question</label>
+        <textarea id="q-text" placeholder="e.g. What is the sum of the first 20 positive integers?"></textarea>
+      </div>
+      <div style="margin-top:14px;">
+        <label for="q-answer">Correct answer</label>
+        <input type="text" id="q-answer" placeholder="e.g. 210" />
+      </div>
+      <div style="margin-top:14px;">
+        <label for="q-explain">Explanation (optional, shown once the student solves it)</label>
+        <textarea id="q-explain" placeholder="Shown to the student after they answer correctly."></textarea>
+      </div>
+      <div id="form-error" class="error-text hidden"></div>
+      <div style="margin-top:16px;">
+        <button class="btn" id="add-problem-btn">+ Add problem</button>
+      </div>
+      <div style="margin-top:36px; padding-top:24px; border-top:1px solid var(--rule);">
+        <span class="eyebrow" id="problem-count-label">Assigned problems</span>
+        <div id="problem-list"></div>
+      </div>
+    </section>
+
+    <!-- QUIZ TAB (student only) -->
+    <section id="tab-quiz" class="hidden">
+      <span class="eyebrow">Practice</span>
+      <h2>Your problems</h2>
+      <div id="quiz-empty" class="dim" style="margin-top:16px;">No problems assigned yet — check back once your coach has added some.</div>
+      <div id="quiz-body" class="hidden" style="margin-top:20px;">
+        <div class="row-between" style="margin-bottom:10px;">
+          <div class="mono-small" id="quiz-progress"></div>
+          <div class="badge" id="quiz-attempts-badge"></div>
+        </div>
+        <div class="card">
+          <div id="quiz-question" style="font-size:1.02rem; line-height:1.6;"></div>
+        </div>
+        <div id="quiz-input-wrap" style="margin-top:16px;">
+          <label for="quiz-input">Your answer</label>
+          <input type="text" id="quiz-input" placeholder="Type your answer" />
+          <div id="quiz-input-error" class="error-text hidden"></div>
+        </div>
+        <div id="quiz-check-wrap" style="margin-top:14px;">
+          <button class="btn" id="check-answer-btn">Check answer</button>
+        </div>
+        <div id="quiz-feedback" class="card hidden" style="margin-top:16px;"></div>
+        <div class="nav-row">
+          <button class="btn-ghost" id="prev-btn">&larr; Previous</button>
+          <button class="btn-ghost" id="next-btn">Next &rarr;</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- MY RESULTS TAB (student only) -->
+    <section id="tab-results" class="hidden">
+      <span class="eyebrow">Your progress</span>
+      <h2>My results</h2>
+      <div class="stat-grid">
+        <div class="card">
+          <div class="mono-small">Solved</div>
+          <div class="stat-num" id="stat-attempts">0</div>
+        </div>
+        <div class="card">
+          <div class="mono-small">Total attempts</div>
+          <div class="stat-num" id="stat-correct" style="color:var(--gold);">0</div>
+        </div>
+        <div class="card">
+          <div class="mono-small">Assigned</div>
+          <div class="stat-num" id="stat-accuracy">0</div>
+        </div>
+      </div>
+      <div id="history-list" style="margin-top:28px;"></div>
+    </section>
+
+    <!-- DASHBOARD TAB (coach only) -->
+    <section id="tab-dashboard" class="hidden">
+      <span class="eyebrow">All students</span>
+      <h2>Dashboard</h2>
+      <div id="dash-leaderboard" style="margin-top:20px;"></div>
+      <div style="margin-top:28px; padding-top:20px; border-top:1px solid var(--rule);">
+        <span class="eyebrow">Recent attempts</span>
+        <div id="dash-recent" style="margin-top:12px;"></div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script type="module">
+  // ---------------------------------------------------------------
+  // FIREBASE SETUP
+  // ---------------------------------------------------------------
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
+  import {
+    getFirestore, collection, addDoc, getDocs, getDoc, setDoc, doc,
+    query, where, orderBy, deleteDoc
+  } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAt-w6Mh8uBmNK1WoEtipEcSKQCnXaDf6E",
+    authDomain: "matrixmathclub-123.firebaseapp.com",
+    projectId: "matrixmathclub-123",
+    storageBucket: "matrixmathclub-123.firebasestorage.app",
+    messagingSenderId: "989952610935",
+    appId: "1:989952610935:web:4e4456e2f61afae3d6ec72"
+  };
+
+  // Accounts (username + hashed password) are stored directly in
+  // Firestore rather than using a separate auth system. Passwords are
+  // hashed (SHA-256) before they're ever sent to the database, so the
+  // database itself never holds anyone's actual password -- but note
+  // this app has no server, so Firestore's security rules can't verify
+  // *who* is asking (that normally requires a real auth system) --
+  // meaning the database has to stay open to reads/writes from anyone
+  // with your config, same as this project's very first version.
+  // Reasonable for a school practice tool with no sensitive data; not
+  // something to reuse for anything that actually needs to stay private.
+
+  // Required (in addition to matching the "I'm a coach" checkbox) to
+  // register as a coach. This is a basic deterrent, not real security --
+  // change it before publishing. Compared as plain text at signup time
+  // only and never stored.
+  const COACH_SIGNUP_PASSCODE = "mathcounts2026";
+
+  const MAX_ATTEMPTS = 5;
+  const SESSION_KEY = "grms-quiz:session-uid";
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const usersCol = collection(db, "users");
+  const problemsCol = collection(db, "problems");
+  const attemptsCol = collection(db, "attempts");
+  const progressCol = collection(db, "progress");
+
+  async function sha256Hex(text){
+    const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
+    return Array.from(new Uint8Array(buf)).map(function(b){ return b.toString(16).padStart(2, "0"); }).join("");
+  }
+
+  function showStatus(kind, message){
+    const el = document.getElementById("global-status");
+    if (!message){ el.innerHTML = ""; return; }
+    el.innerHTML = '<div class="status-banner ' + kind + '">' + message + '</div>';
+  }
+  function normalizeAnswer(raw){
+    return String(raw == null ? "" : raw).trim().toLowerCase().replace(/\s+/g, " ");
+  }
+  function tryParseNumber(raw){
+    const s = String(raw == null ? "" : raw).trim();
+    if (s === "") return null;
+    const fracMatch = s.match(/^-?\d+(\.\d+)?\s*\/\s*-?\d+(\.\d+)?$/);
+    if (fracMatch){
+      const parts = s.split("/");
+      const num = parseFloat(parts[0]);
+      const den = parseFloat(parts[1]);
+      if (!isNaN(num) && !isNaN(den) && den !== 0) return num / den;
+      return null;
+    }
+    const n = Number(s.replace(/,/g, ""));
+    return isNaN(n) ? null : n;
+  }
+  function checkAnswer(userRaw, correctRaw){
+    const userNorm = normalizeAnswer(userRaw);
+    const correctNorm = normalizeAnswer(correctRaw);
+    if (userNorm === "") return false;
+    if (userNorm === correctNorm) return true;
+    const userNum = tryParseNumber(userRaw);
+    const correctNum = tryParseNumber(correctRaw);
+    if (userNum !== null && correctNum !== null){
+      return Math.abs(userNum - correctNum) < 1e-9;
+    }
+    return false;
+  }
+  function escapeHtml(str){
+    const div = document.createElement("div");
+    div.textContent = str;
+    return div.innerHTML;
+  }
+  let currentUser = null;   // { uid } -- uid is the Firestore users/ doc id
+  let currentProfile = null; // { username, role } from Firestore
+  let problems = [];
+  let attempts = [];
+  let students = [];
+  let current = 0;
+  let progressCache = {}; // problemId -> {attemptsUsed, solved}
+
+  // ---------------- Data layer ----------------
+  async function loadMyProblems(){
+    try {
+      const snap = await getDocs(query(problemsCol, where("studentUid", "==", currentUser.uid), orderBy("createdAt", "asc")));
+      problems = snap.docs.map(function(d){ return Object.assign({ id: d.id }, d.data()); });
+    } catch (e) {
+      showStatus("error", "Couldn't load your problems from the cloud. Try refreshing.");
+    }
+  }
+
+  async function loadAllProblemsForCoach(){
+    try {
+      const snap = await getDocs(query(problemsCol, orderBy("createdAt", "asc")));
+      problems = snap.docs.map(function(d){ return Object.assign({ id: d.id }, d.data()); });
+    } catch (e) {
+      showStatus("error", "Couldn't load problems from the cloud.");
+    }
+  }
+
+  async function loadMyAttempts(){
+    try {
+      const snap = await getDocs(query(attemptsCol, where("studentUid", "==", currentUser.uid), orderBy("timestamp", "desc")));
+      attempts = snap.docs.map(function(d){ return Object.assign({ id: d.id }, d.data()); });
+    } catch (e) {
+      showStatus("error", "Couldn't load your results from the cloud.");
+    }
+  }
+
+  async function loadAllAttemptsForCoach(){
+    try {
+      const snap = await getDocs(query(attemptsCol, orderBy("timestamp", "desc")));
+      attempts = snap.docs.map(function(d){ return Object.assign({ id: d.id }, d.data()); });
+    } catch (e) {
+      showStatus("error", "Couldn't load attempts from the cloud.");
+    }
+  }
+
+  async function loadStudents(){
+    try {
+      const snap = await getDocs(query(usersCol, where("role", "==", "student")));
+      students = snap.docs.map(function(d){ return Object.assign({ uid: d.id }, d.data()); });
+    } catch (e) {
+      showStatus("error", "Couldn't load student list.");
+    }
+  }
+
+  async function getProgress(problemId){
+    if (progressCache[problemId]) return progressCache[problemId];
+    try {
+      const ref = doc(db, "progress", currentUser.uid + "_" + problemId);
+      const snap = await getDoc(ref);
+      const data = snap && snap.exists && snap.exists() ? snap.data() : null;
+      const result = data || { attemptsUsed: 0, solved: false };
+      progressCache[problemId] = result;
+      return result;
+    } catch (e) {
+      return { attemptsUsed: 0, solved: false };
+    }
+  }
+
+  async function saveProgress(problemId, data){
+    progressCache[problemId] = data;
+    try {
+      const ref = doc(db, "progress", currentUser.uid + "_" + problemId);
+      await setDoc(ref, Object.assign({ studentUid: currentUser.uid, problemId: problemId, updatedAt: Date.now() }, data));
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  async function addProblem(problem){
+    try {
+      await addDoc(problemsCol, Object.assign({ createdAt: Date.now() }, problem));
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+  async function removeProblem(id){
+    try {
+      await deleteDoc(doc(db, "problems", id));
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+  async function logAttempt(attempt){
+    try {
+      await addDoc(attemptsCol, attempt);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  // ---------------- Auth mode toggle (login/signup) ----------------
+  document.getElementById("auth-mode-login").addEventListener("click", function(){
+    setAuthMode("login");
+  });
+  document.getElementById("auth-mode-signup").addEventListener("click", function(){
+    setAuthMode("signup");
+  });
+  function setAuthMode(mode){
+    document.getElementById("auth-mode-login").classList.toggle("active", mode === "login");
+    document.getElementById("auth-mode-signup").classList.toggle("active", mode === "signup");
+    document.getElementById("auth-login").classList.toggle("hidden", mode !== "login");
+    document.getElementById("auth-signup").classList.toggle("hidden", mode !== "signup");
+  }
+  document.getElementById("signup-is-coach").addEventListener("change", function(e){
+    document.getElementById("signup-coach-passcode-wrap").classList.toggle("hidden", !e.target.checked);
+  });
+
+  // ---------------- Login ----------------
+  document.getElementById("login-btn").addEventListener("click", async function(){
+    const username = document.getElementById("login-username").value.trim();
+    const password = document.getElementById("login-password").value;
+    const err = document.getElementById("login-error");
+    err.classList.add("hidden");
+    if (username === "" || password === ""){
+      err.textContent = "Enter both a username and password.";
+      err.classList.remove("hidden");
+      return;
+    }
+    try {
+      const passwordHash = await sha256Hex(password);
+      const snap = await getDocs(query(usersCol, where("usernameLower", "==", username.toLowerCase())));
+      const match = snap.docs.find(function(d){ return d.data().passwordHash === passwordHash; });
+      if (!match){
+        err.textContent = "Incorrect username or password.";
+        err.classList.remove("hidden");
+        return;
+      }
+      await startSession(match.id, match.data());
+    } catch (e) {
+      err.textContent = "Couldn't log in right now. Try again.";
+      err.classList.remove("hidden");
+    }
+  });
+
+  // ---------------- Signup ----------------
+  document.getElementById("signup-btn").addEventListener("click", async function(){
+    const username = document.getElementById("signup-username").value.trim();
+    const password = document.getElementById("signup-password").value;
+    const isCoach = document.getElementById("signup-is-coach").checked;
+    const coachPasscode = document.getElementById("signup-coach-passcode").value;
+    const err = document.getElementById("signup-error");
+    err.classList.add("hidden");
+
+    if (username.length < 2){
+      err.textContent = "Username must be at least 2 characters.";
+      err.classList.remove("hidden");
+      return;
+    }
+    if (!/^[a-zA-Z0-9_.-]+$/.test(username)){
+      err.textContent = "Username can only contain letters, numbers, and _ . -";
+      err.classList.remove("hidden");
+      return;
+    }
+    if (password.length < 6){
+      err.textContent = "Password must be at least 6 characters.";
+      err.classList.remove("hidden");
+      return;
+    }
+    if (isCoach && coachPasscode !== COACH_SIGNUP_PASSCODE){
+      err.textContent = "Incorrect coach passcode.";
+      err.classList.remove("hidden");
+      return;
+    }
+
+    try {
+      const existing = await getDocs(query(usersCol, where("usernameLower", "==", username.toLowerCase())));
+      if (!existing.empty){
+        err.textContent = "That username is already taken.";
+        err.classList.remove("hidden");
+        return;
+      }
+      const passwordHash = await sha256Hex(password);
+      const profile = {
+        username: username,
+        usernameLower: username.toLowerCase(),
+        passwordHash: passwordHash,
+        role: isCoach ? "coach" : "student",
+        createdAt: Date.now()
+      };
+      const newDocRef = doc(usersCol);
+      await setDoc(newDocRef, profile);
+      await startSession(newDocRef.id, profile);
+    } catch (e) {
+      err.textContent = "Couldn't create your account. Try again.";
+      err.classList.remove("hidden");
+    }
+  });
+
+  // ---------------- Session (login persistence) ----------------
+  async function startSession(uid, profile){
+    localStorage.setItem(SESSION_KEY, uid);
+    await onLogin(uid, profile);
+  }
+
+  function logout(){
+    localStorage.removeItem(SESSION_KEY);
+    currentUser = null;
+    currentProfile = null;
+    buildTopbarTabs();
+    showSection("auth");
+  }
+
+  // ---------------- Tab rendering per role ----------------
+  const sections = {
+    auth: document.getElementById("tab-auth"),
+    add: document.getElementById("tab-add"),
+    quiz: document.getElementById("tab-quiz"),
+    results: document.getElementById("tab-results"),
+    dashboard: document.getElementById("tab-dashboard")
+  };
+
+  function showSection(key){
+    Object.keys(sections).forEach(function(k){
+      sections[k].classList.toggle("hidden", k !== key);
+    });
+    document.querySelectorAll("#topbar-tabs .tab-btn").forEach(function(b){
+      b.classList.toggle("active", b.dataset.tab === key);
+    });
+    if (key === "quiz") renderQuiz();
+    if (key === "results") renderMyResults();
+    if (key === "add") renderProblemList();
+    if (key === "dashboard") renderDashboard();
+  }
+
+  function buildTopbarTabs(){
+    const wrap = document.getElementById("topbar-tabs");
+    wrap.innerHTML = "";
+    if (!currentProfile){ return; }
+    const nameSpan = document.createElement("span");
+    nameSpan.className = "whoami";
+    nameSpan.textContent = currentProfile.username + " (" + currentProfile.role + ")";
+    wrap.appendChild(nameSpan);
+
+    const tabsForRole = currentProfile.role === "coach" ? [["add","Add"],["dashboard","Dashboard"]] : [["quiz","Quiz"],["results","My results"]];
+    tabsForRole.forEach(function(pair){
+      const btn = document.createElement("button");
+      btn.className = "tab-btn";
+      btn.dataset.tab = pair[0];
+      btn.textContent = pair[1];
+      btn.addEventListener("click", function(){ showSection(pair[0]); });
+      wrap.appendChild(btn);
+    });
+
+    const logoutBtn = document.createElement("button");
+    logoutBtn.className = "btn-ghost btn-small";
+    logoutBtn.textContent = "Log out";
+    logoutBtn.addEventListener("click", logout);
+    wrap.appendChild(logoutBtn);
+  }
+
+  // ---------------- Add tab (coach) ----------------
+  const qText = document.getElementById("q-text");
+  const qAnswer = document.getElementById("q-answer");
+  const qExplain = document.getElementById("q-explain");
+  const formError = document.getElementById("form-error");
+  const studentSelect = document.getElementById("add-student-select");
+
+  function populateStudentSelect(){
+    studentSelect.innerHTML = "";
+    if (students.length === 0){
+      const opt = document.createElement("option");
+      opt.textContent = "No students registered yet";
+      opt.value = "";
+      studentSelect.appendChild(opt);
+      return;
+    }
+    students.forEach(function(s){
+      const opt = document.createElement("option");
+      opt.value = s.uid;
+      opt.textContent = s.username;
+      studentSelect.appendChild(opt);
+    });
+  }
+
+  document.getElementById("add-problem-btn").addEventListener("click", async function(){
+    const studentUid = studentSelect.value;
+    const student = students.find(function(s){ return s.uid === studentUid; });
+    if (!student){
+      formError.textContent = "Choose a student first.";
+      formError.classList.remove("hidden");
+      return;
+    }
+    if (qText.value.trim() === "" || qAnswer.value.trim() === ""){
+      formError.textContent = "Enter both a question and an answer first.";
+      formError.classList.remove("hidden");
+      return;
+    }
+    formError.classList.add("hidden");
+    const ok = await addProblem({
+      studentUid: studentUid,
+      studentUsername: student.username,
+      question: qText.value.trim(),
+      answer: qAnswer.value.trim(),
+      explanation: qExplain.value.trim()
+    });
+    if (!ok){
+      formError.textContent = "Couldn't save to the cloud. Try again.";
+      formError.classList.remove("hidden");
+      return;
+    }
+    qText.value = "";
+    qAnswer.value = "";
+    qExplain.value = "";
+    await loadAllProblemsForCoach();
+    renderProblemList();
+  });
+
+  function renderProblemList(){
+    const label = document.getElementById("problem-count-label");
+    label.textContent = problems.length + (problems.length === 1 ? " problem assigned" : " problems assigned");
+    const list = document.getElementById("problem-list");
+    if (problems.length === 0){
+      list.innerHTML = '<p class="dim">Nothing assigned yet.</p>';
+      return;
+    }
+    list.innerHTML = problems.map(function(p, i){
+      return '<div class="card"><div class="row-between">' +
+        '<div><div class="mono-small" style="margin-bottom:6px;">#' + (i+1) + ' &middot; for ' + escapeHtml(p.studentUsername) + ' &middot; answer: ' + escapeHtml(p.answer) + '</div>' +
+        '<div style="font-size:0.92rem;">' + escapeHtml(p.question) + '</div></div>' +
+        '<button class="icon-btn" data-delete-id="' + p.id + '" aria-label="Delete problem">&#10005;</button>' +
+        '</div></div>';
+    }).join("");
+    list.querySelectorAll("[data-delete-id]").forEach(function(btn){
+      btn.addEventListener("click", async function(){
+        await removeProblem(btn.dataset.deleteId);
+        await loadAllProblemsForCoach();
+        renderProblemList();
+      });
+    });
+  }
+
+  // ---------------- Quiz tab (student) ----------------
+  const quizInput = document.getElementById("quiz-input");
+  const quizInputError = document.getElementById("quiz-input-error");
+  const checkBtn = document.getElementById("check-answer-btn");
+  const feedbackBox = document.getElementById("quiz-feedback");
+  const prevBtn = document.getElementById("prev-btn");
+  const nextBtn = document.getElementById("next-btn");
+
+  async function renderQuiz(){
+    const empty = document.getElementById("quiz-empty");
+    const body = document.getElementById("quiz-body");
+    if (problems.length === 0){
+      empty.classList.remove("hidden");
+      body.classList.add("hidden");
+      return;
+    }
+    empty.classList.add("hidden");
+    body.classList.remove("hidden");
+    if (current >= problems.length) current = 0;
+    const prob = problems[current];
+    document.getElementById("quiz-progress").textContent = "Problem " + (current + 1) + " of " + problems.length;
+    document.getElementById("quiz-question").textContent = prob.question;
+    quizInput.value = "";
+    quizInputError.classList.add("hidden");
+    prevBtn.disabled = current === 0;
+    nextBtn.disabled = current === problems.length - 1;
+
+    const progress = await getProgress(prob.id);
+    const attemptsLeft = MAX_ATTEMPTS - progress.attemptsUsed;
+    const badge = document.getElementById("quiz-attempts-badge");
+
+    if (progress.solved){
+      badge.textContent = "Solved";
+      document.getElementById("quiz-input-wrap").classList.add("hidden");
+      document.getElementById("quiz-check-wrap").classList.add("hidden");
+      feedbackBox.classList.remove("hidden");
+      feedbackBox.className = "card feedback-card correct";
+      let html = '<div class="feedback-title correct">&#10003; Solved</div>';
+      if (prob.explanation){
+        html += '<div style="margin-top:8px; font-size:0.88rem; color:var(--chalk-dim);">' + escapeHtml(prob.explanation) + '</div>';
+      }
+      feedbackBox.innerHTML = html;
+    } else if (attemptsLeft <= 0){
+      badge.textContent = "0 attempts left";
+      document.getElementById("quiz-input-wrap").classList.add("hidden");
+      document.getElementById("quiz-check-wrap").classList.add("hidden");
+      feedbackBox.classList.remove("hidden");
+      feedbackBox.className = "card feedback-card locked";
+      feedbackBox.innerHTML = '<div class="feedback-title">Out of attempts</div>' +
+        '<div style="margin-top:8px; font-size:0.88rem; color:var(--chalk-dim);">You\'ve used all ' + MAX_ATTEMPTS + ' attempts on this one. Ask your coach for help.</div>';
+    } else {
+      badge.textContent = attemptsLeft + " attempt" + (attemptsLeft === 1 ? "" : "s") + " left";
+      document.getElementById("quiz-input-wrap").classList.remove("hidden");
+      document.getElementById("quiz-check-wrap").classList.remove("hidden");
+      quizInput.disabled = false;
+      feedbackBox.classList.add("hidden");
+    }
+  }
+
+  async function submitAnswer(){
+    const prob = problems[current];
+    if (quizInput.value.trim() === ""){
+      quizInputError.textContent = "Enter an answer first.";
+      quizInputError.classList.remove("hidden");
+      return;
+    }
+    quizInputError.classList.add("hidden");
+
+    const progress = await getProgress(prob.id);
+    if (progress.solved || progress.attemptsUsed >= MAX_ATTEMPTS){
+      renderQuiz();
+      return;
+    }
+
+    const correct = checkAnswer(quizInput.value, prob.answer);
+    const newAttemptsUsed = progress.attemptsUsed + 1;
+    const attemptsLeft = MAX_ATTEMPTS - newAttemptsUsed;
+
+    await saveProgress(prob.id, { attemptsUsed: newAttemptsUsed, solved: correct || progress.solved });
+
+    const attemptRecord = {
+      studentUid: currentUser.uid,
+      studentUsername: currentProfile.username,
+      problemId: prob.id,
+      question: prob.question,
+      userAnswer: quizInput.value.trim(),
+      correct: correct,
+      attemptNumber: newAttemptsUsed,
+      timestamp: Date.now()
+    };
+    await logAttempt(attemptRecord);
+    attempts.unshift(attemptRecord);
+
+    quizInput.disabled = true;
+    feedbackBox.classList.remove("hidden");
+
+    if (correct){
+      feedbackBox.className = "card feedback-card correct";
+      let html = '<div class="feedback-title correct">&#10003; Correct</div>';
+      if (prob.explanation){
+        html += '<div style="margin-top:8px; font-size:0.88rem; color:var(--chalk-dim);">' + escapeHtml(prob.explanation) + '</div>';
+      }
+      feedbackBox.innerHTML = html;
+      document.getElementById("quiz-check-wrap").classList.add("hidden");
+      document.getElementById("quiz-attempts-badge").textContent = "Solved";
+    } else if (attemptsLeft <= 0){
+      feedbackBox.className = "card feedback-card locked";
+      feedbackBox.innerHTML = '<div class="feedback-title">Out of attempts</div>' +
+        '<div style="margin-top:8px; font-size:0.88rem; color:var(--chalk-dim);">That was your last attempt. Ask your coach for help with this one.</div>';
+      document.getElementById("quiz-check-wrap").classList.add("hidden");
+      document.getElementById("quiz-attempts-badge").textContent = "0 attempts left";
+    } else {
+      feedbackBox.className = "card feedback-card incorrect";
+      feedbackBox.innerHTML = '<div class="feedback-title incorrect">&#10005; Not quite</div>' +
+        '<div style="margin-top:8px; font-size:0.88rem; color:var(--chalk-dim);">' + attemptsLeft + ' attempt' + (attemptsLeft === 1 ? "" : "s") + ' left. Try again.</div>';
+      document.getElementById("quiz-attempts-badge").textContent = attemptsLeft + " attempt" + (attemptsLeft === 1 ? "" : "s") + " left";
+      quizInput.disabled = false;
+      quizInput.value = "";
+      quizInput.focus();
+    }
+  }
+
+  checkBtn.addEventListener("click", submitAnswer);
+  quizInput.addEventListener("keydown", function(e){ if (e.key === "Enter") submitAnswer(); });
+  quizInput.addEventListener("input", function(){ quizInputError.classList.add("hidden"); });
+  prevBtn.addEventListener("click", function(){ if (current > 0){ current -= 1; renderQuiz(); } });
+  nextBtn.addEventListener("click", function(){ if (current < problems.length - 1){ current += 1; renderQuiz(); } });
+
+  // ---------------- My results tab (student) ----------------
+  async function renderMyResults(){
+    const solvedCount = problems.length === 0 ? 0 : (await Promise.all(problems.map(function(p){ return getProgress(p.id); }))).filter(function(pr){ return pr.solved; }).length;
+    document.getElementById("stat-attempts").textContent = solvedCount;
+    document.getElementById("stat-correct").textContent = attempts.length;
+    document.getElementById("stat-accuracy").textContent = problems.length;
+
+    const list = document.getElementById("history-list");
+    if (attempts.length === 0){
+      list.innerHTML = '<p class="dim">No attempts yet — take the quiz to see your history here.</p>';
+      return;
+    }
+    list.innerHTML = attempts.map(function(h){
+      const mark = h.correct ? '<span style="color:var(--gold);">&#10003;</span>' : '<span style="color:var(--coral);">&#10005;</span>';
+      return '<div class="card"><div class="row-between">' +
+        '<div style="font-size:0.9rem;">' + escapeHtml(h.question) + '</div>' + mark +
+        '</div><div style="margin-top:8px; font-size:0.82rem; color:var(--chalk-dim);">' +
+        'Your answer: <span style="color:var(--chalk);">' + escapeHtml(h.userAnswer) + '</span> &middot; attempt ' + h.attemptNumber + ' of ' + MAX_ATTEMPTS +
+        '</div><div class="mono-small" style="margin-top:4px;">' + new Date(h.timestamp).toLocaleString() + '</div></div>';
+    }).join("");
+  }
+
+  // ---------------- Dashboard tab (coach) ----------------
+  function renderDashboard(){
+    const byStudent = {};
+    attempts.forEach(function(a){
+      const key = a.studentUsername || "(unknown)";
+      if (!byStudent[key]) byStudent[key] = { total: 0, correct: 0 };
+      byStudent[key].total += 1;
+      if (a.correct) byStudent[key].correct += 1;
+    });
+    const rows = Object.keys(byStudent).sort();
+    const leader = document.getElementById("dash-leaderboard");
+    if (rows.length === 0){
+      leader.innerHTML = '<p class="dim">No attempts recorded yet.</p>';
+    } else {
+      leader.innerHTML = rows.map(function(name){
+        const s = byStudent[name];
+        const acc = Math.round((s.correct / s.total) * 100);
+        return '<div class="leader-row"><span>' + escapeHtml(name) + '</span>' +
+          '<span class="mono-small">' + s.correct + '/' + s.total + ' &middot; ' + acc + '%</span></div>';
+      }).join("");
+    }
+    const recent = document.getElementById("dash-recent");
+    if (attempts.length === 0){
+      recent.innerHTML = '<p class="dim">Nothing to show yet.</p>';
+    } else {
+      recent.innerHTML = attempts.slice(0, 30).map(function(h){
+        const mark = h.correct ? '<span style="color:var(--gold);">&#10003;</span>' : '<span style="color:var(--coral);">&#10005;</span>';
+        return '<div class="card"><div class="row-between">' +
+          '<div style="font-size:0.88rem;"><strong>' + escapeHtml(h.studentUsername || "(unknown)") + '</strong> &middot; ' + escapeHtml(h.question) + ' &middot; attempt ' + h.attemptNumber + '</div>' + mark +
+          '</div><div class="mono-small" style="margin-top:4px;">' + new Date(h.timestamp).toLocaleString() + '</div></div>';
+      }).join("");
+    }
+  }
+
+  // ---------------- Session driver ----------------
+  async function onLogin(uid, profile){
+    showStatus(null, null);
+    current = 0;
+    progressCache = {};
+    currentUser = { uid: uid };
+    currentProfile = profile;
+    buildTopbarTabs();
+    if (currentProfile.role === "coach"){
+      await loadStudents();
+      populateStudentSelect();
+      await loadAllProblemsForCoach();
+      await loadAllAttemptsForCoach();
+      showSection("add");
+    } else {
+      await loadMyProblems();
+      await loadMyAttempts();
+      showSection("quiz");
+    }
+  }
+
+  (async function initSession(){
+    const savedUid = localStorage.getItem(SESSION_KEY);
+    if (!savedUid){
+      showSection("auth");
+      return;
+    }
+    showStatus("loading", "Loading your account…");
+    try {
+      const snap = await getDoc(doc(db, "users", savedUid));
+      const data = snap && snap.exists && snap.exists() ? snap.data() : null;
+      showStatus(null, null);
+      if (!data){
+        localStorage.removeItem(SESSION_KEY);
+        showSection("auth");
+        return;
+      }
+      await onLogin(savedUid, data);
+    } catch (e) {
+      showStatus(null, null);
+      showSection("auth");
+    }
+  })();
+</script>
+
+</body>
+</html>
