@@ -276,9 +276,20 @@
 
   // Required (in addition to matching the "I'm a coach" checkbox) to
   // register as a coach. This is a basic deterrent, not real security --
-  // change it before publishing. Compared as plain text at signup time
-  // only and never stored.
-  const COACH_SIGNUP_PASSCODE = "mathcounts2026";
+  // change it before publishing. Stored here as a SHA-256 hash rather
+  // than plain text so it isn't readable if someone views the page
+  // source.
+  //
+  // To generate a hash for a new passcode: open any browser's dev
+  // console on this page and run (replacing "mynewpasscode"):
+  //
+  //   crypto.subtle.digest("SHA-256", new TextEncoder().encode("mynewpasscode"))
+  //     .then(buf => console.log(Array.from(new Uint8Array(buf))
+  //       .map(b => b.toString(16).padStart(2, "0")).join("")));
+  //
+  // Then paste the printed string in below. The default hash here is
+  // for the passcode "mathcounts2026" -- change it.
+  const COACH_SIGNUP_PASSCODE_HASH = "a4118f9ffdd07001ae062042837dffea4ac0b2b5f6d5a7e8d1f83172d06835d5";
 
   const MAX_ATTEMPTS = 5;
   const SESSION_KEY = "grms-quiz:session-uid";
@@ -512,10 +523,13 @@
       err.classList.remove("hidden");
       return;
     }
-    if (isCoach && coachPasscode !== COACH_SIGNUP_PASSCODE){
-      err.textContent = "Incorrect coach passcode.";
-      err.classList.remove("hidden");
-      return;
+    if (isCoach){
+      const coachPasscodeHash = await sha256Hex(coachPasscode);
+      if (coachPasscodeHash !== COACH_SIGNUP_PASSCODE_HASH){
+        err.textContent = "Incorrect coach passcode.";
+        err.classList.remove("hidden");
+        return;
+      }
     }
 
     try {
