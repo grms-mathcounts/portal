@@ -3,100 +3,142 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>GRMS MATHCOUNTS — Practice Checker</title>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Work+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<title>Matrix Math Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --ink:#121b14; --board:#1b2a1f; --chalk:#f3efe3; --chalk-dim:#9fb0a0;
-    --gold:#f2b84b; --coral:#e8735c; --rule: rgba(243,239,227,0.14);
+    --bg:#060a07; --bg-panel:#0a130d; --bg-raised:#0e1a12;
+    --green:#00ff6a; --green-2:#4dffa0; --green-dim:#0f5c33;
+    --border:#143621; --text:#d9f5e2; --text-dim:#7fa892; --text-mute:#587964;
+    --danger:#ff5d5d;
+    --font-display:'Space Grotesk', system-ui, sans-serif;
+    --font-mono:'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
   }
   *{ box-sizing:border-box; }
   body{
-    background:var(--ink); color:var(--chalk); font-family:'Work Sans', sans-serif;
+    background:var(--bg); color:var(--text); font-family:var(--font-display); font-size:16px;
     margin:0; padding:24px;
   }
   .app{
-    max-width:680px; margin:0 auto; border:1px solid var(--rule); border-radius:14px; overflow:hidden;
+    max-width:680px; margin:0 auto; border:1px solid var(--border); border-radius:12px; overflow:hidden;
+    background:var(--bg-panel);
   }
   .topbar{
     display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;
-    padding:18px 24px; border-bottom:1px solid var(--rule); background:rgba(18,27,20,0.9);
+    padding:18px 24px; border-bottom:1px solid var(--border); background:rgba(6,10,7,0.9);
+    backdrop-filter:blur(10px);
   }
-  .brand{ font-family:'Fraunces', serif; font-weight:600; font-size:1.1rem; display:flex; align-items:center; gap:8px; }
-  .brand .mark{ color:var(--gold); }
+  .brand{ font-family:var(--font-mono); font-weight:600; font-size:0.95rem; display:flex; align-items:center; gap:10px; color:var(--text); }
+  .brand .mark{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:24px; height:24px; border:1px solid var(--green-dim); border-radius:5px;
+    background:linear-gradient(180deg, rgba(0,255,106,0.14), transparent);
+    color:var(--green); font-size:0.85rem; font-weight:600;
+  }
   .tabs{ display:flex; gap:6px; flex-wrap:wrap; align-items:center; }
   .tab-btn{
-    display:flex; align-items:center; gap:6px; background:transparent; color:var(--chalk-dim);
-    border:1px solid var(--rule); border-radius:999px; padding:8px 14px; font-size:0.85rem;
-    font-weight:600; cursor:pointer; font-family:'Work Sans', sans-serif;
+    display:flex; align-items:center; gap:6px; background:transparent; color:var(--text-dim);
+    border:1px solid var(--border); border-radius:999px; padding:8px 14px; font-size:0.85rem;
+    font-weight:600; cursor:pointer; font-family:var(--font-mono);
+    transition:background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
   }
-  .tab-btn.active{ background:var(--gold); color:var(--ink); border-color:var(--gold); }
-  .whoami{ font-family:'JetBrains Mono', monospace; font-size:0.75rem; color:var(--chalk-dim); margin-right:4px; }
+  .tab-btn.active{ background:var(--green); color:#04150a; border-color:var(--green); }
+  .whoami{ font-family:var(--font-mono); font-size:0.75rem; color:var(--text-dim); margin-right:4px; }
   main{ padding:28px 24px 32px; }
   .eyebrow{
-    font-family:'JetBrains Mono', monospace; font-size:0.72rem; letter-spacing:0.12em;
-    text-transform:uppercase; color:var(--gold); display:block; margin-bottom:8px;
+    font-family:var(--font-mono); font-size:0.72rem; letter-spacing:0.12em;
+    text-transform:uppercase; color:var(--green-2); display:block; margin-bottom:8px;
   }
-  h2{ font-family:'Fraunces', serif; font-size:1.5rem; font-weight:600; margin:0; }
-  label{ font-size:0.85rem; color:var(--chalk-dim); margin-bottom:6px; display:block; }
-  input[type="text"], input[type="password"], textarea, select{
-    width:100%; background:var(--board); border:1px solid var(--rule); border-radius:8px;
-    padding:12px 14px; color:var(--chalk); font-size:0.95rem; font-family:'Work Sans', sans-serif;
-    outline:none; box-sizing:border-box;
+  h2{ font-family:var(--font-display); font-size:1.5rem; font-weight:600; margin:0; color:var(--text); }
+  h3{ font-family:var(--font-display); font-size:1.05rem; font-weight:600; margin:0; color:var(--text); }
+  label{ font-size:0.85rem; color:var(--text-dim); margin-bottom:6px; display:block; }
+  input[type="text"], input[type="password"], input[type="email"], textarea, select{
+    width:100%; background:var(--bg-raised); border:1px solid var(--border); border-radius:6px;
+    padding:12px 14px; color:var(--text); font-size:0.95rem; font-family:var(--font-display);
+    outline:none; box-sizing:border-box; transition:border-color 0.15s ease;
   }
+  input:focus, textarea:focus, select:focus{ border-color:var(--green); }
   textarea{ resize:vertical; min-height:80px; }
   .btn{
-    display:inline-flex; align-items:center; gap:8px; font-weight:600; font-size:0.9rem;
-    padding:12px 18px; border-radius:8px; border:1px solid var(--gold); background:var(--gold);
-    color:var(--ink); cursor:pointer; font-family:'Work Sans', sans-serif;
+    display:inline-flex; align-items:center; justify-content:center; gap:8px; font-weight:600; font-size:0.9rem;
+    padding:12px 18px; border-radius:6px; border:1px solid var(--green); background:var(--green);
+    color:#04150a; cursor:pointer; font-family:var(--font-mono); text-decoration:none;
+    transition:transform 0.15s ease, background 0.15s ease, box-shadow 0.2s ease;
   }
   .btn:disabled{ opacity:0.5; cursor:not-allowed; }
   .btn-ghost{
-    display:inline-flex; align-items:center; gap:8px; font-weight:600; font-size:0.9rem;
-    padding:12px 18px; border-radius:8px; border:1px solid var(--rule); background:transparent;
-    color:var(--chalk); cursor:pointer; font-family:'Work Sans', sans-serif;
+    display:inline-flex; align-items:center; justify-content:center; gap:8px; font-weight:600; font-size:0.9rem;
+    padding:12px 18px; border-radius:6px; border:1px solid var(--border); background:transparent;
+    color:var(--text); cursor:pointer; font-family:var(--font-mono); text-decoration:none;
+    transition:border-color 0.15s ease, color 0.15s ease;
   }
   .btn-ghost:disabled{ opacity:0.35; cursor:not-allowed; }
   .btn-small{ padding:8px 12px; font-size:0.8rem; }
   .card{
-    background:var(--board); border:1px solid var(--rule); border-radius:12px;
+    background:var(--bg-raised); border:1px solid var(--border); border-radius:10px;
     padding:16px 18px; margin-bottom:12px;
   }
-  .error-text{ color:var(--coral); font-size:0.82rem; margin-top:6px; }
-  .dim{ color:var(--chalk-dim); }
-  .mono-small{ font-family:'JetBrains Mono', monospace; font-size:0.72rem; color:var(--chalk-dim); }
+  .error-text{ color:var(--danger); font-size:0.82rem; margin-top:6px; }
+  .ok-text{ color:var(--green); font-size:0.82rem; margin-top:6px; }
+  .dim{ color:var(--text-dim); }
+  .mono-small{ font-family:var(--font-mono); font-size:0.72rem; color:var(--text-dim); }
   .row-between{ display:flex; justify-content:space-between; align-items:flex-start; gap:12px; }
   .stat-grid{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-top:20px; }
-  .stat-num{ font-size:1.6rem; font-weight:600; font-family:'Fraunces', serif; }
-  .icon-btn{ background:none; border:none; color:var(--chalk-dim); cursor:pointer; flex:none; }
+  .stat-num{ font-size:1.6rem; font-weight:600; font-family:var(--font-mono); color:var(--text); }
+  .icon-btn{ background:none; border:none; color:var(--text-dim); cursor:pointer; flex:none; font-size:1rem; }
   .hidden{ display:none !important; }
-  .feedback-card.correct{ border-color:var(--gold); background:rgba(242,184,75,0.08); }
-  .feedback-card.incorrect{ border-color:var(--coral); background:rgba(232,115,92,0.08); }
-  .feedback-card.locked{ border-color:var(--chalk-dim); background:rgba(243,239,227,0.05); }
+  .feedback-card.correct{ border-color:var(--green); background:rgba(0,255,106,0.08); }
+  .feedback-card.incorrect{ border-color:var(--danger); background:rgba(255,93,93,0.08); }
+  .feedback-card.locked{ border-color:var(--text-mute); background:rgba(217,245,226,0.04); }
   .feedback-title{ display:flex; align-items:center; gap:8px; font-weight:600; }
-  .feedback-title.correct{ color:var(--gold); }
-  .feedback-title.incorrect{ color:var(--coral); }
-  .nav-row{ display:flex; justify-content:space-between; margin-top:20px; }
+  .feedback-title.correct{ color:var(--green); }
+  .feedback-title.incorrect{ color:var(--danger); }
+  .nav-row{ display:flex; justify-content:space-between; gap:12px; margin-top:20px; }
   .auth-wrap{ padding:40px 20px; max-width:340px; margin:0 auto; }
   .auth-tabs{ display:flex; gap:6px; justify-content:center; margin-bottom:24px; }
   .status-banner{ padding:10px 14px; border-radius:8px; font-size:0.82rem; margin-bottom:16px; }
-  .status-banner.error{ background:rgba(232,115,92,0.1); color:var(--coral); border:1px solid var(--coral); }
-  .status-banner.loading{ background:rgba(243,239,227,0.06); color:var(--chalk-dim); border:1px solid var(--rule); }
-  .leader-row{ display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--rule); font-size:0.9rem; }
+  .status-banner.error{ background:rgba(255,93,93,0.1); color:var(--danger); border:1px solid var(--danger); }
+  .status-banner.loading{ background:rgba(0,255,106,0.05); color:var(--text-dim); border:1px solid var(--border); }
+  .status-banner.success{ background:rgba(0,255,106,0.08); color:var(--green); border:1px solid var(--green-dim); }
+  .leader-row{ display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--border); font-size:0.9rem; }
   .leader-row:last-child{ border-bottom:none; }
-  .checkbox-row{ display:flex; align-items:center; gap:8px; font-size:0.85rem; color:var(--chalk-dim); margin-top:10px; }
-  .checkbox-row input{ width:auto; }
-  .badge{ font-family:'JetBrains Mono', monospace; font-size:0.72rem; color:var(--chalk-dim); }
+  .checkbox-row{ display:flex; align-items:center; gap:8px; font-size:0.85rem; color:var(--text-dim); margin-top:10px; }
+  .checkbox-row input{ width:auto; accent-color:var(--green); }
+  .badge{ font-family:var(--font-mono); font-size:0.72rem; color:var(--text-dim); }
+  .pill{
+    display:inline-block; font-family:var(--font-mono); font-size:0.68rem; padding:3px 9px;
+    border-radius:999px; border:1px solid var(--border); color:var(--text-dim);
+  }
+  .pill.done{ border-color:var(--green-dim); color:var(--green); }
+  .pill.draft{ border-color:var(--text-mute); color:var(--text-dim); }
+  .mode-toggle{ display:flex; gap:6px; margin-bottom:22px; }
+  .divider{ margin-top:28px; padding-top:22px; border-top:1px solid var(--border); }
+  .q-block{ background:var(--bg-raised); border:1px solid var(--border); border-radius:10px; padding:16px 18px; margin-bottom:12px; }
+  .q-block-head{ display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+  .field-gap{ margin-top:14px; }
+  @media (hover:hover) and (pointer:fine){
+    .btn:hover:not(:disabled){ background:var(--green-2); box-shadow:0 8px 24px -8px rgba(0,255,106,0.5); }
+    .btn-ghost:hover:not(:disabled){ border-color:var(--green); color:var(--green-2); }
+    .tab-btn:not(.active):hover{ border-color:var(--green-dim); color:var(--text); }
+    .icon-btn:hover{ color:var(--danger); }
+  }
   @media (max-width:480px){
+    body{ padding:12px; }
     .stat-grid{ grid-template-columns:1fr; }
+    main{ padding:22px 16px 26px; }
+    .topbar{ padding:16px; }
+    .nav-row{ flex-direction:column; }
   }
 </style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 </head>
 <body>
 
 <div class="app">
   <div class="topbar">
-    <div class="brand"><span class="mark">&#9651;</span>GRMS MATHCOUNTS</div>
+    <div class="brand"><span class="mark">M</span>Matrix Math Portal</div>
     <div class="tabs" id="topbar-tabs"></div>
   </div>
 
@@ -116,13 +158,16 @@
           <h2 style="margin-bottom:20px;">Log in</h2>
           <label for="login-username">Username</label>
           <input type="text" id="login-username" placeholder="Username" autocomplete="username" />
-          <div style="margin-top:14px;">
+          <div class="field-gap">
             <label for="login-password">Password</label>
             <input type="password" id="login-password" placeholder="Password" autocomplete="current-password" />
           </div>
           <div id="login-error" class="error-text hidden"></div>
           <div style="margin-top:18px;">
-            <button class="btn" id="login-btn" style="width:100%; justify-content:center;">Log in</button>
+            <button class="btn" id="login-btn" style="width:100%;">Log in</button>
+          </div>
+          <div style="margin-top:14px; text-align:center;">
+            <a class="btn-ghost" href="https://matrixmathclub.square.site/" target="_blank" rel="noopener">Visit main website</a>
           </div>
         </div>
 
@@ -131,82 +176,151 @@
           <h2 style="margin-bottom:20px;">Create account</h2>
           <label for="signup-username">Choose a username</label>
           <input type="text" id="signup-username" placeholder="Username" autocomplete="username" />
-          <div style="margin-top:14px;">
+          <div class="field-gap">
+            <label for="signup-email">Email (optional)</label>
+            <input type="email" id="signup-email" placeholder="you@example.com" autocomplete="email" />
+          </div>
+          <div class="field-gap">
             <label for="signup-password">Choose a password</label>
             <input type="password" id="signup-password" placeholder="Password (6+ characters)" autocomplete="new-password" />
+          </div>
+          <div class="field-gap">
+            <label for="signup-password-confirm">Confirm password</label>
+            <input type="password" id="signup-password-confirm" placeholder="Re-type your password" autocomplete="new-password" />
           </div>
           <div class="checkbox-row">
             <input type="checkbox" id="signup-is-coach" />
             <label for="signup-is-coach" style="margin:0;">I'm a coach</label>
           </div>
-          <div id="signup-coach-passcode-wrap" class="hidden" style="margin-top:14px;">
+          <div id="signup-coach-passcode-wrap" class="hidden field-gap">
             <label for="signup-coach-passcode">Coach passcode</label>
             <input type="password" id="signup-coach-passcode" placeholder="Coach passcode" />
           </div>
           <div id="signup-error" class="error-text hidden"></div>
           <div style="margin-top:18px;">
-            <button class="btn" id="signup-btn" style="width:100%; justify-content:center;">Create account</button>
+            <button class="btn" id="signup-btn" style="width:100%;">Create account</button>
+          </div>
+          <div style="margin-top:14px; text-align:center;">
+            <a class="btn-ghost" href="https://matrixmathclub.square.site/" target="_blank" rel="noopener">Visit main website</a>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ADD TAB (coach only) -->
+    <!-- ASSIGN TAB (coach only): problems OR quizzes -->
     <section id="tab-add" class="hidden">
-      <span class="eyebrow">Assign a problem</span>
-      <h2>Add a problem</h2>
-      <div style="margin-top:20px;">
+      <span class="eyebrow">Assign work</span>
+      <h2 style="margin-bottom:20px;">Send to a student</h2>
+
+      <div class="mode-toggle">
+        <button class="tab-btn active" id="assign-mode-problem">Single problem</button>
+        <button class="tab-btn" id="assign-mode-quiz">Quiz</button>
+      </div>
+
+      <div>
         <label for="add-student-select">Student</label>
         <select id="add-student-select"></select>
       </div>
-      <div style="margin-top:14px;">
-        <label for="q-text">Question</label>
-        <textarea id="q-text" placeholder="e.g. What is the sum of the first 20 positive integers?"></textarea>
+
+      <!-- Problem builder -->
+      <div id="assign-problem-pane">
+        <div class="field-gap">
+          <label for="q-text">Question</label>
+          <textarea id="q-text" placeholder="e.g. What is the sum of the first 20 positive integers?"></textarea>
+        </div>
+        <div class="field-gap">
+          <label for="q-answer">Correct answer</label>
+          <input type="text" id="q-answer" placeholder="e.g. 210" />
+        </div>
+        <div class="field-gap">
+          <label for="q-explain">Explanation (optional, shown once the student solves it)</label>
+          <textarea id="q-explain" placeholder="Shown to the student after they answer correctly."></textarea>
+        </div>
+        <div id="form-error" class="error-text hidden"></div>
+        <div style="margin-top:16px;">
+          <button class="btn" id="add-problem-btn">+ Add problem</button>
+        </div>
+
+        <div class="divider">
+          <span class="eyebrow" id="problem-count-label">Assigned problems</span>
+          <div id="problem-list"></div>
+        </div>
       </div>
-      <div style="margin-top:14px;">
-        <label for="q-answer">Correct answer</label>
-        <input type="text" id="q-answer" placeholder="e.g. 210" />
-      </div>
-      <div style="margin-top:14px;">
-        <label for="q-explain">Explanation (optional, shown once the student solves it)</label>
-        <textarea id="q-explain" placeholder="Shown to the student after they answer correctly."></textarea>
-      </div>
-      <div id="form-error" class="error-text hidden"></div>
-      <div style="margin-top:16px;">
-        <button class="btn" id="add-problem-btn">+ Add problem</button>
-      </div>
-      <div style="margin-top:36px; padding-top:24px; border-top:1px solid var(--rule);">
-        <span class="eyebrow" id="problem-count-label">Assigned problems</span>
-        <div id="problem-list"></div>
+
+      <!-- Quiz builder -->
+      <div id="assign-quiz-pane" class="hidden">
+        <div class="field-gap">
+          <label for="quiz-title">Quiz title</label>
+          <input type="text" id="quiz-title" placeholder="e.g. Week 3 — Number Theory" />
+        </div>
+
+        <div class="divider">
+          <span class="eyebrow">Questions</span>
+          <div id="quiz-builder-list"></div>
+          <button class="btn-ghost btn-small" id="quiz-add-question-btn" style="margin-top:6px;">+ Add another question</button>
+        </div>
+
+        <div id="quiz-form-error" class="error-text hidden"></div>
+        <div style="margin-top:16px;">
+          <button class="btn" id="send-quiz-btn">Send quiz to student</button>
+        </div>
+
+        <div class="divider">
+          <span class="eyebrow" id="quiz-count-label">Sent quizzes</span>
+          <div id="coach-quiz-list"></div>
+        </div>
       </div>
     </section>
 
-    <!-- QUIZ TAB (student only) -->
-    <section id="tab-quiz" class="hidden">
+    <!-- PROBLEMS TAB (student only) — was "Quiz" -->
+    <section id="tab-problems" class="hidden">
       <span class="eyebrow">Practice</span>
       <h2>Your problems</h2>
-      <div id="quiz-empty" class="dim" style="margin-top:16px;">No problems assigned yet — check back once your coach has added some.</div>
-      <div id="quiz-body" class="hidden" style="margin-top:20px;">
+      <div id="problems-empty" class="dim" style="margin-top:16px;">No problems assigned yet — check back once your coach has added some.</div>
+      <div id="problems-body" class="hidden" style="margin-top:20px;">
         <div class="row-between" style="margin-bottom:10px;">
-          <div class="mono-small" id="quiz-progress"></div>
-          <div class="badge" id="quiz-attempts-badge"></div>
+          <div class="mono-small" id="problems-progress"></div>
+          <div class="badge" id="problems-attempts-badge"></div>
         </div>
         <div class="card">
-          <div id="quiz-question" style="font-size:1.02rem; line-height:1.6;"></div>
+          <div id="problems-question" style="font-size:1.02rem; line-height:1.6;"></div>
         </div>
-        <div id="quiz-input-wrap" style="margin-top:16px;">
-          <label for="quiz-input">Your answer</label>
-          <input type="text" id="quiz-input" placeholder="Type your answer" />
-          <div id="quiz-input-error" class="error-text hidden"></div>
+        <div id="problems-input-wrap" style="margin-top:16px;">
+          <label for="problems-input">Your answer</label>
+          <input type="text" id="problems-input" placeholder="Type your answer" />
+          <div id="problems-input-error" class="error-text hidden"></div>
         </div>
-        <div id="quiz-check-wrap" style="margin-top:14px;">
+        <div id="problems-check-wrap" style="margin-top:14px;">
           <button class="btn" id="check-answer-btn">Check answer</button>
         </div>
-        <div id="quiz-feedback" class="card hidden" style="margin-top:16px;"></div>
+        <div id="problems-feedback" class="card hidden" style="margin-top:16px;"></div>
         <div class="nav-row">
           <button class="btn-ghost" id="prev-btn">&larr; Previous</button>
           <button class="btn-ghost" id="next-btn">Next &rarr;</button>
         </div>
+      </div>
+    </section>
+
+    <!-- QUIZZES TAB (student only) — new: answer all, submit together -->
+    <section id="tab-quizzes" class="hidden">
+      <!-- list view -->
+      <div id="quiz-list-view">
+        <span class="eyebrow">Quizzes</span>
+        <h2>Your quizzes</h2>
+        <div id="quiz-list" style="margin-top:20px;"></div>
+      </div>
+
+      <!-- take / results view -->
+      <div id="quiz-take-view" class="hidden">
+        <button class="btn-ghost btn-small" id="quiz-back-btn">&larr; All quizzes</button>
+        <div style="margin-top:16px;">
+          <span class="eyebrow" id="quiz-take-eyebrow">Quiz</span>
+          <h2 id="quiz-take-title"></h2>
+        </div>
+        <div id="quiz-take-meta" class="mono-small" style="margin-top:8px;"></div>
+        <div id="quiz-take-body" style="margin-top:20px;"></div>
+        <div id="quiz-take-error" class="error-text hidden"></div>
+        <div id="quiz-take-actions" class="nav-row"></div>
       </div>
     </section>
 
@@ -216,19 +330,26 @@
       <h2>My results</h2>
       <div class="stat-grid">
         <div class="card">
-          <div class="mono-small">Solved</div>
-          <div class="stat-num" id="stat-attempts">0</div>
+          <div class="mono-small">Problems solved</div>
+          <div class="stat-num" id="stat-solved">0</div>
         </div>
         <div class="card">
           <div class="mono-small">Total attempts</div>
-          <div class="stat-num" id="stat-correct" style="color:var(--gold);">0</div>
+          <div class="stat-num" id="stat-attempts" style="color:var(--green);">0</div>
         </div>
         <div class="card">
-          <div class="mono-small">Assigned</div>
-          <div class="stat-num" id="stat-accuracy">0</div>
+          <div class="mono-small">Quizzes submitted</div>
+          <div class="stat-num" id="stat-quizzes">0</div>
         </div>
       </div>
-      <div id="history-list" style="margin-top:28px;"></div>
+      <div class="divider">
+        <span class="eyebrow">Quiz scores</span>
+        <div id="results-quiz-list" style="margin-top:12px;"></div>
+      </div>
+      <div class="divider">
+        <span class="eyebrow">Problem attempt history</span>
+        <div id="history-list" style="margin-top:12px;"></div>
+      </div>
     </section>
 
     <!-- DASHBOARD TAB (coach only) -->
@@ -236,9 +357,56 @@
       <span class="eyebrow">All students</span>
       <h2>Dashboard</h2>
       <div id="dash-leaderboard" style="margin-top:20px;"></div>
-      <div style="margin-top:28px; padding-top:20px; border-top:1px solid var(--rule);">
-        <span class="eyebrow">Recent attempts</span>
+      <div class="divider">
+        <span class="eyebrow">Quiz submissions</span>
+        <div id="dash-quiz-subs" style="margin-top:12px;"></div>
+      </div>
+      <div class="divider">
+        <span class="eyebrow">Recent problem attempts</span>
         <div id="dash-recent" style="margin-top:12px;"></div>
+      </div>
+    </section>
+
+    <!-- PROFILE TAB (both roles) -->
+    <section id="tab-profile" class="hidden">
+      <span class="eyebrow">Account</span>
+      <h2>Profile</h2>
+      <div class="mono-small" id="profile-meta" style="margin-top:8px;"></div>
+
+      <div class="divider">
+        <span class="eyebrow">Details</span>
+        <div class="field-gap">
+          <label for="profile-username">Username</label>
+          <input type="text" id="profile-username" placeholder="Username" autocomplete="username" />
+        </div>
+        <div class="field-gap">
+          <label for="profile-email">Email</label>
+          <input type="email" id="profile-email" placeholder="you@example.com" autocomplete="email" />
+        </div>
+        <div id="profile-details-msg" class="hidden"></div>
+        <div style="margin-top:16px;">
+          <button class="btn" id="profile-save-btn">Save changes</button>
+        </div>
+      </div>
+
+      <div class="divider">
+        <span class="eyebrow">Change password</span>
+        <div class="field-gap">
+          <label for="profile-current-password">Current password</label>
+          <input type="password" id="profile-current-password" placeholder="Current password" autocomplete="current-password" />
+        </div>
+        <div class="field-gap">
+          <label for="profile-new-password">New password</label>
+          <input type="password" id="profile-new-password" placeholder="New password (6+ characters)" autocomplete="new-password" />
+        </div>
+        <div class="field-gap">
+          <label for="profile-confirm-password">Confirm new password</label>
+          <input type="password" id="profile-confirm-password" placeholder="Re-type new password" autocomplete="new-password" />
+        </div>
+        <div id="profile-password-msg" class="hidden"></div>
+        <div style="margin-top:16px;">
+          <button class="btn" id="profile-password-btn">Update password</button>
+        </div>
       </div>
     </section>
   </main>
@@ -250,7 +418,7 @@
   // ---------------------------------------------------------------
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
   import {
-    getFirestore, collection, addDoc, getDocs, getDoc, setDoc, doc,
+    getFirestore, collection, addDoc, getDocs, getDoc, setDoc, doc, updateDoc,
     query, where, orderBy, deleteDoc
   } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
 
@@ -278,17 +446,7 @@
   // register as a coach. This is a basic deterrent, not real security --
   // change it before publishing. Stored here as a SHA-256 hash rather
   // than plain text so it isn't readable if someone views the page
-  // source.
-  //
-  // To generate a hash for a new passcode: open any browser's dev
-  // console on this page and run (replacing "mynewpasscode"):
-  //
-  //   crypto.subtle.digest("SHA-256", new TextEncoder().encode("mynewpasscode"))
-  //     .then(buf => console.log(Array.from(new Uint8Array(buf))
-  //       .map(b => b.toString(16).padStart(2, "0")).join("")));
-  //
-  // Then paste the printed string in below. The default hash here is
-  // for the passcode "mathcounts2026" -- change it.
+  // source. Default hash is for "mathcounts2026" -- change it.
   const COACH_SIGNUP_PASSCODE_HASH = "a4118f9ffdd07001ae062042837dffea4ac0b2b5f6d5a7e8d1f83172d06835d5";
 
   const MAX_ATTEMPTS = 5;
@@ -299,7 +457,8 @@
   const usersCol = collection(db, "users");
   const problemsCol = collection(db, "problems");
   const attemptsCol = collection(db, "attempts");
-  const progressCol = collection(db, "progress");
+  const quizzesCol = collection(db, "quizzes");
+  const submissionsCol = collection(db, "quizSubmissions");
 
   async function sha256Hex(text){
     const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
@@ -311,6 +470,13 @@
     if (!message){ el.innerHTML = ""; return; }
     el.innerHTML = '<div class="status-banner ' + kind + '">' + message + '</div>';
   }
+  function setMsg(el, kind, text){
+    el.className = kind === "error" ? "error-text" : "ok-text";
+    el.textContent = text;
+    el.classList.remove("hidden");
+  }
+  function clearMsg(el){ el.classList.add("hidden"); el.textContent = ""; }
+
   function normalizeAnswer(raw){
     return String(raw == null ? "" : raw).trim().toLowerCase().replace(/\s+/g, " ");
   }
@@ -345,19 +511,42 @@
     div.textContent = str;
     return div.innerHTML;
   }
-  let currentUser = null;   // { uid } -- uid is the Firestore users/ doc id
-  let currentProfile = null; // { username, role } from Firestore
+  function textToHtml(str){
+    return escapeHtml(str == null ? "" : str).replace(/\n/g, "<br>");
+  }
+  function renderMathIn(el){
+    if (window.renderMathInElement){
+      window.renderMathInElement(el, {
+        delimiters: [
+          { left: "$$", right: "$$", display: true },
+          { left: "\\[", right: "\\]", display: true },
+          { left: "$", right: "$", display: false },
+          { left: "\\(", right: "\\)", display: false }
+        ],
+        throwOnError: false
+      });
+    }
+  }
+  function isValidEmail(v){
+    if (v === "") return true; // optional
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+  }
+
+  let currentUser = null;    // { uid }
+  let currentProfile = null; // { username, email, role }
   let problems = [];
   let attempts = [];
   let students = [];
+  let quizzes = [];          // student: their quizzes / coach: all quizzes
+  let submissions = {};      // quizId -> submission (student) ; coach: array in allSubmissions
+  let allSubmissions = [];
   let current = 0;
-  let progressCache = {}; // problemId -> {attemptsUsed, solved}
+  let progressCache = {};
+  let builderQuestions = [{ question: "", answer: "", explanation: "" }];
+  let activeQuizId = null;
+  let draftAnswers = {};
 
   // ---------------- Data layer ----------------
-  // Note: these use only a where() filter (no orderBy in the Firestore
-  // query itself) and sort client-side instead. Combining where() with
-  // orderBy() on a different field requires a manually-created Firestore
-  // "composite index" -- sorting here avoids needing to set that up.
   async function loadMyProblems(){
     try {
       const snap = await getDocs(query(problemsCol, where("studentUid", "==", currentUser.uid)));
@@ -367,7 +556,6 @@
       showStatus("error", "Couldn't load your problems from the cloud. Try refreshing.");
     }
   }
-
   async function loadAllProblemsForCoach(){
     try {
       const snap = await getDocs(query(problemsCol, orderBy("createdAt", "asc")));
@@ -376,7 +564,6 @@
       showStatus("error", "Couldn't load problems from the cloud.");
     }
   }
-
   async function loadMyAttempts(){
     try {
       const snap = await getDocs(query(attemptsCol, where("studentUid", "==", currentUser.uid)));
@@ -386,7 +573,6 @@
       showStatus("error", "Couldn't load your results from the cloud.");
     }
   }
-
   async function loadAllAttemptsForCoach(){
     try {
       const snap = await getDocs(query(attemptsCol, orderBy("timestamp", "desc")));
@@ -395,16 +581,41 @@
       showStatus("error", "Couldn't load attempts from the cloud.");
     }
   }
-
   async function loadStudents(){
     try {
       const snap = await getDocs(query(usersCol, where("role", "==", "student")));
       students = snap.docs.map(function(d){ return Object.assign({ uid: d.id }, d.data()); });
+      students.sort(function(a,b){ return String(a.username).localeCompare(String(b.username)); });
     } catch (e) {
       showStatus("error", "Couldn't load student list.");
     }
   }
-
+  async function loadMyQuizzes(){
+    try {
+      const snap = await getDocs(query(quizzesCol, where("studentUid", "==", currentUser.uid)));
+      quizzes = snap.docs.map(function(d){ return Object.assign({ id: d.id }, d.data()); });
+      quizzes.sort(function(a, b){ return (b.createdAt || 0) - (a.createdAt || 0); });
+      const subSnap = await getDocs(query(submissionsCol, where("studentUid", "==", currentUser.uid)));
+      submissions = {};
+      subSnap.docs.forEach(function(d){
+        const data = d.data();
+        submissions[data.quizId] = Object.assign({ id: d.id }, data);
+      });
+    } catch (e) {
+      showStatus("error", "Couldn't load your quizzes from the cloud.");
+    }
+  }
+  async function loadAllQuizzesForCoach(){
+    try {
+      const snap = await getDocs(query(quizzesCol, orderBy("createdAt", "desc")));
+      quizzes = snap.docs.map(function(d){ return Object.assign({ id: d.id }, d.data()); });
+      const subSnap = await getDocs(submissionsCol);
+      allSubmissions = subSnap.docs.map(function(d){ return Object.assign({ id: d.id }, d.data()); });
+      allSubmissions.sort(function(a, b){ return (b.submittedAt || 0) - (a.submittedAt || 0); });
+    } catch (e) {
+      showStatus("error", "Couldn't load quizzes from the cloud.");
+    }
+  }
   async function getProgress(problemId){
     if (progressCache[problemId]) return progressCache[problemId];
     try {
@@ -418,50 +629,52 @@
       return { attemptsUsed: 0, solved: false };
     }
   }
-
   async function saveProgress(problemId, data){
     progressCache[problemId] = data;
     try {
       const ref = doc(db, "progress", currentUser.uid + "_" + problemId);
       await setDoc(ref, Object.assign({ studentUid: currentUser.uid, problemId: problemId, updatedAt: Date.now() }, data));
       return true;
-    } catch (e) {
-      return false;
-    }
+    } catch (e) { return false; }
   }
-
   async function addProblem(problem){
-    try {
-      await addDoc(problemsCol, Object.assign({ createdAt: Date.now() }, problem));
-      return true;
-    } catch (e) {
-      return false;
-    }
+    try { await addDoc(problemsCol, Object.assign({ createdAt: Date.now() }, problem)); return true; }
+    catch (e) { return false; }
   }
   async function removeProblem(id){
-    try {
-      await deleteDoc(doc(db, "problems", id));
-      return true;
-    } catch (e) {
-      return false;
-    }
+    try { await deleteDoc(doc(db, "problems", id)); return true; }
+    catch (e) { return false; }
   }
   async function logAttempt(attempt){
+    try { await addDoc(attemptsCol, attempt); return true; }
+    catch (e) { return false; }
+  }
+  async function addQuiz(quiz){
+    try { await addDoc(quizzesCol, Object.assign({ createdAt: Date.now() }, quiz)); return true; }
+    catch (e) { return false; }
+  }
+  async function removeQuiz(id){
+    try { await deleteDoc(doc(db, "quizzes", id)); return true; }
+    catch (e) { return false; }
+  }
+  async function saveSubmission(quizId, data){
     try {
-      await addDoc(attemptsCol, attempt);
+      const ref = doc(db, "quizSubmissions", currentUser.uid + "_" + quizId);
+      const payload = Object.assign({
+        studentUid: currentUser.uid,
+        studentUsername: currentProfile.username,
+        quizId: quizId,
+        updatedAt: Date.now()
+      }, data);
+      await setDoc(ref, payload);
+      submissions[quizId] = Object.assign({ id: currentUser.uid + "_" + quizId }, payload);
       return true;
-    } catch (e) {
-      return false;
-    }
+    } catch (e) { return false; }
   }
 
-  // ---------------- Auth mode toggle (login/signup) ----------------
-  document.getElementById("auth-mode-login").addEventListener("click", function(){
-    setAuthMode("login");
-  });
-  document.getElementById("auth-mode-signup").addEventListener("click", function(){
-    setAuthMode("signup");
-  });
+  // ---------------- Auth mode toggle ----------------
+  document.getElementById("auth-mode-login").addEventListener("click", function(){ setAuthMode("login"); });
+  document.getElementById("auth-mode-signup").addEventListener("click", function(){ setAuthMode("signup"); });
   function setAuthMode(mode){
     document.getElementById("auth-mode-login").classList.toggle("active", mode === "login");
     document.getElementById("auth-mode-signup").classList.toggle("active", mode === "signup");
@@ -499,50 +712,38 @@
     }
   });
 
-  // ---------------- Signup ----------------
+  // ---------------- Signup (with confirm password) ----------------
   document.getElementById("signup-btn").addEventListener("click", async function(){
     const username = document.getElementById("signup-username").value.trim();
+    const email = document.getElementById("signup-email").value.trim();
     const password = document.getElementById("signup-password").value;
+    const confirmPassword = document.getElementById("signup-password-confirm").value;
     const isCoach = document.getElementById("signup-is-coach").checked;
     const coachPasscode = document.getElementById("signup-coach-passcode").value;
     const err = document.getElementById("signup-error");
     err.classList.add("hidden");
 
-    if (username.length < 2){
-      err.textContent = "Username must be at least 2 characters.";
-      err.classList.remove("hidden");
-      return;
-    }
-    if (!/^[a-zA-Z0-9_.-]+$/.test(username)){
-      err.textContent = "Username can only contain letters, numbers, and _ . -";
-      err.classList.remove("hidden");
-      return;
-    }
-    if (password.length < 6){
-      err.textContent = "Password must be at least 6 characters.";
-      err.classList.remove("hidden");
-      return;
-    }
+    function fail(msg){ err.textContent = msg; err.classList.remove("hidden"); }
+
+    if (username.length < 2) return fail("Username must be at least 2 characters.");
+    if (!/^[a-zA-Z0-9_.-]+$/.test(username)) return fail("Username can only contain letters, numbers, and _ . -");
+    if (!isValidEmail(email)) return fail("That email address doesn't look right.");
+    if (password.length < 6) return fail("Password must be at least 6 characters.");
+    if (confirmPassword === "") return fail("Please confirm your password.");
+    if (password !== confirmPassword) return fail("Those passwords don't match.");
     if (isCoach){
       const coachPasscodeHash = await sha256Hex(coachPasscode);
-      if (coachPasscodeHash !== COACH_SIGNUP_PASSCODE_HASH){
-        err.textContent = "Incorrect coach passcode.";
-        err.classList.remove("hidden");
-        return;
-      }
+      if (coachPasscodeHash !== COACH_SIGNUP_PASSCODE_HASH) return fail("Incorrect coach passcode.");
     }
 
     try {
       const existing = await getDocs(query(usersCol, where("usernameLower", "==", username.toLowerCase())));
-      if (!existing.empty){
-        err.textContent = "That username is already taken.";
-        err.classList.remove("hidden");
-        return;
-      }
+      if (!existing.empty) return fail("That username is already taken.");
       const passwordHash = await sha256Hex(password);
       const profile = {
         username: username,
         usernameLower: username.toLowerCase(),
+        email: email,
         passwordHash: passwordHash,
         role: isCoach ? "coach" : "student",
         createdAt: Date.now()
@@ -551,17 +752,15 @@
       await setDoc(newDocRef, profile);
       await startSession(newDocRef.id, profile);
     } catch (e) {
-      err.textContent = "Couldn't create your account. Try again.";
-      err.classList.remove("hidden");
+      fail("Couldn't create your account. Try again.");
     }
   });
 
-  // ---------------- Session (login persistence) ----------------
+  // ---------------- Session ----------------
   async function startSession(uid, profile){
     localStorage.setItem(SESSION_KEY, uid);
     await onLogin(uid, profile);
   }
-
   function logout(){
     localStorage.removeItem(SESSION_KEY);
     currentUser = null;
@@ -570,13 +769,15 @@
     showSection("auth");
   }
 
-  // ---------------- Tab rendering per role ----------------
+  // ---------------- Tabs ----------------
   const sections = {
     auth: document.getElementById("tab-auth"),
     add: document.getElementById("tab-add"),
-    quiz: document.getElementById("tab-quiz"),
+    problems: document.getElementById("tab-problems"),
+    quizzes: document.getElementById("tab-quizzes"),
     results: document.getElementById("tab-results"),
-    dashboard: document.getElementById("tab-dashboard")
+    dashboard: document.getElementById("tab-dashboard"),
+    profile: document.getElementById("tab-profile")
   };
 
   function showSection(key){
@@ -586,22 +787,28 @@
     document.querySelectorAll("#topbar-tabs .tab-btn").forEach(function(b){
       b.classList.toggle("active", b.dataset.tab === key);
     });
-    if (key === "quiz") renderQuiz();
+    if (key === "problems") renderProblems();
+    if (key === "quizzes") renderQuizList();
     if (key === "results") renderMyResults();
-    if (key === "add") renderProblemList();
+    if (key === "add") { renderProblemList(); renderCoachQuizList(); }
     if (key === "dashboard") renderDashboard();
+    if (key === "profile") renderProfile();
   }
 
   function buildTopbarTabs(){
     const wrap = document.getElementById("topbar-tabs");
     wrap.innerHTML = "";
-    if (!currentProfile){ return; }
+    if (!currentProfile) return;
+
     const nameSpan = document.createElement("span");
     nameSpan.className = "whoami";
     nameSpan.textContent = currentProfile.username + " (" + currentProfile.role + ")";
     wrap.appendChild(nameSpan);
 
-    const tabsForRole = currentProfile.role === "coach" ? [["add","Add"],["dashboard","Dashboard"]] : [["quiz","Quiz"],["results","My results"]];
+    const tabsForRole = currentProfile.role === "coach"
+      ? [["add","Assign"],["dashboard","Dashboard"],["profile","Profile"]]
+      : [["problems","Problems"],["quizzes","Quizzes"],["results","My results"],["profile","Profile"]];
+
     tabsForRole.forEach(function(pair){
       const btn = document.createElement("button");
       btn.className = "tab-btn";
@@ -618,7 +825,20 @@
     wrap.appendChild(logoutBtn);
   }
 
-  // ---------------- Add tab (coach) ----------------
+  // ---------------- Assign tab: mode toggle ----------------
+  const assignModeProblem = document.getElementById("assign-mode-problem");
+  const assignModeQuiz = document.getElementById("assign-mode-quiz");
+  assignModeProblem.addEventListener("click", function(){ setAssignMode("problem"); });
+  assignModeQuiz.addEventListener("click", function(){ setAssignMode("quiz"); });
+  function setAssignMode(mode){
+    assignModeProblem.classList.toggle("active", mode === "problem");
+    assignModeQuiz.classList.toggle("active", mode === "quiz");
+    document.getElementById("assign-problem-pane").classList.toggle("hidden", mode !== "problem");
+    document.getElementById("assign-quiz-pane").classList.toggle("hidden", mode !== "quiz");
+    if (mode === "quiz") renderQuizBuilder();
+  }
+
+  // ---------------- Assign: single problem ----------------
   const qText = document.getElementById("q-text");
   const qAnswer = document.getElementById("q-answer");
   const qExplain = document.getElementById("q-explain");
@@ -668,9 +888,7 @@
       formError.classList.remove("hidden");
       return;
     }
-    qText.value = "";
-    qAnswer.value = "";
-    qExplain.value = "";
+    qText.value = ""; qAnswer.value = ""; qExplain.value = "";
     await loadAllProblemsForCoach();
     renderProblemList();
   });
@@ -686,10 +904,11 @@
     list.innerHTML = problems.map(function(p, i){
       return '<div class="card"><div class="row-between">' +
         '<div><div class="mono-small" style="margin-bottom:6px;">#' + (i+1) + ' &middot; for ' + escapeHtml(p.studentUsername) + ' &middot; answer: ' + escapeHtml(p.answer) + '</div>' +
-        '<div style="font-size:0.92rem;">' + escapeHtml(p.question) + '</div></div>' +
+        '<div style="font-size:0.92rem;">' + textToHtml(p.question) + '</div></div>' +
         '<button class="icon-btn" data-delete-id="' + p.id + '" aria-label="Delete problem">&#10005;</button>' +
         '</div></div>';
     }).join("");
+    renderMathIn(list);
     list.querySelectorAll("[data-delete-id]").forEach(function(btn){
       btn.addEventListener("click", async function(){
         await removeProblem(btn.dataset.deleteId);
@@ -699,17 +918,130 @@
     });
   }
 
-  // ---------------- Quiz tab (student) ----------------
-  const quizInput = document.getElementById("quiz-input");
-  const quizInputError = document.getElementById("quiz-input-error");
+  // ---------------- Assign: quiz builder ----------------
+  function renderQuizBuilder(){
+    const wrap = document.getElementById("quiz-builder-list");
+    wrap.innerHTML = builderQuestions.map(function(q, i){
+      return '<div class="q-block">' +
+        '<div class="q-block-head">' +
+          '<span class="mono-small">Question ' + (i+1) + '</span>' +
+          (builderQuestions.length > 1 ? '<button class="icon-btn" data-remove-q="' + i + '" aria-label="Remove question">&#10005;</button>' : '') +
+        '</div>' +
+        '<label>Question</label>' +
+        '<textarea data-q-field="question" data-q-index="' + i + '" placeholder="Question text">' + escapeHtml(q.question) + '</textarea>' +
+        '<div class="field-gap"><label>Correct answer</label>' +
+        '<input type="text" data-q-field="answer" data-q-index="' + i + '" value="' + escapeHtml(q.answer) + '" placeholder="Correct answer" /></div>' +
+        '<div class="field-gap"><label>Explanation (optional)</label>' +
+        '<textarea data-q-field="explanation" data-q-index="' + i + '" placeholder="Shown with results after they submit">' + escapeHtml(q.explanation) + '</textarea></div>' +
+      '</div>';
+    }).join("");
+
+    wrap.querySelectorAll("[data-q-field]").forEach(function(input){
+      input.addEventListener("input", function(){
+        const idx = parseInt(input.dataset.qIndex, 10);
+        builderQuestions[idx][input.dataset.qField] = input.value;
+      });
+    });
+    wrap.querySelectorAll("[data-remove-q]").forEach(function(btn){
+      btn.addEventListener("click", function(){
+        builderQuestions.splice(parseInt(btn.dataset.removeQ, 10), 1);
+        renderQuizBuilder();
+      });
+    });
+  }
+
+  document.getElementById("quiz-add-question-btn").addEventListener("click", function(){
+    builderQuestions.push({ question: "", answer: "", explanation: "" });
+    renderQuizBuilder();
+  });
+
+  document.getElementById("send-quiz-btn").addEventListener("click", async function(){
+    const err = document.getElementById("quiz-form-error");
+    err.classList.add("hidden");
+    function fail(msg){ err.textContent = msg; err.classList.remove("hidden"); }
+
+    const studentUid = studentSelect.value;
+    const student = students.find(function(s){ return s.uid === studentUid; });
+    if (!student) return fail("Choose a student first.");
+
+    const title = document.getElementById("quiz-title").value.trim();
+    if (title === "") return fail("Give the quiz a title.");
+
+    const cleaned = builderQuestions
+      .map(function(q){
+        return {
+          question: String(q.question || "").trim(),
+          answer: String(q.answer || "").trim(),
+          explanation: String(q.explanation || "").trim()
+        };
+      })
+      .filter(function(q){ return q.question !== "" || q.answer !== ""; });
+
+    if (cleaned.length === 0) return fail("Add at least one question.");
+    const incomplete = cleaned.findIndex(function(q){ return q.question === "" || q.answer === ""; });
+    if (incomplete !== -1) return fail("Question " + (incomplete + 1) + " needs both a question and an answer.");
+
+    const ok = await addQuiz({
+      title: title,
+      studentUid: studentUid,
+      studentUsername: student.username,
+      questions: cleaned
+    });
+    if (!ok) return fail("Couldn't send the quiz. Try again.");
+
+    document.getElementById("quiz-title").value = "";
+    builderQuestions = [{ question: "", answer: "", explanation: "" }];
+    renderQuizBuilder();
+    await loadAllQuizzesForCoach();
+    renderCoachQuizList();
+    showStatus("success", "Quiz sent to " + escapeHtml(student.username) + ".");
+    setTimeout(function(){ showStatus(null, null); }, 4000);
+  });
+
+  function renderCoachQuizList(){
+    const label = document.getElementById("quiz-count-label");
+    label.textContent = quizzes.length + (quizzes.length === 1 ? " quiz sent" : " quizzes sent");
+    const list = document.getElementById("coach-quiz-list");
+    if (quizzes.length === 0){
+      list.innerHTML = '<p class="dim">No quizzes sent yet.</p>';
+      return;
+    }
+    list.innerHTML = quizzes.map(function(qz){
+      const sub = allSubmissions.find(function(s){ return s.quizId === qz.id; });
+      let statusPill = '<span class="pill">Not started</span>';
+      if (sub && sub.submitted){
+        statusPill = '<span class="pill done">Submitted &middot; ' + sub.score + '/' + sub.total + '</span>';
+      } else if (sub){
+        statusPill = '<span class="pill draft">Draft saved</span>';
+      }
+      return '<div class="card"><div class="row-between">' +
+        '<div><div class="mono-small" style="margin-bottom:6px;">for ' + escapeHtml(qz.studentUsername) + ' &middot; ' +
+        qz.questions.length + (qz.questions.length === 1 ? ' question' : ' questions') + '</div>' +
+        '<div style="font-size:0.95rem; font-weight:600; margin-bottom:8px;">' + escapeHtml(qz.title) + '</div>' +
+        statusPill + '</div>' +
+        '<button class="icon-btn" data-delete-quiz="' + qz.id + '" aria-label="Delete quiz">&#10005;</button>' +
+        '</div></div>';
+    }).join("");
+    list.querySelectorAll("[data-delete-quiz]").forEach(function(btn){
+      btn.addEventListener("click", async function(){
+        await removeQuiz(btn.dataset.deleteQuiz);
+        await loadAllQuizzesForCoach();
+        renderCoachQuizList();
+      });
+    });
+  }
+
+  // ---------------- Problems tab (student) ----------------
+  const problemsInput = document.getElementById("problems-input");
+  const problemsInputError = document.getElementById("problems-input-error");
   const checkBtn = document.getElementById("check-answer-btn");
-  const feedbackBox = document.getElementById("quiz-feedback");
+  const feedbackBox = document.getElementById("problems-feedback");
   const prevBtn = document.getElementById("prev-btn");
   const nextBtn = document.getElementById("next-btn");
 
-  async function renderQuiz(){
-    const empty = document.getElementById("quiz-empty");
-    const body = document.getElementById("quiz-body");
+  async function renderProblems(){
+    const empty = document.getElementById("problems-empty");
+    const body = document.getElementById("problems-body");
     if (problems.length === 0){
       empty.classList.remove("hidden");
       body.classList.add("hidden");
@@ -719,61 +1051,61 @@
     body.classList.remove("hidden");
     if (current >= problems.length) current = 0;
     const prob = problems[current];
-    document.getElementById("quiz-progress").textContent = "Problem " + (current + 1) + " of " + problems.length;
-    document.getElementById("quiz-question").textContent = prob.question;
-    quizInput.value = "";
-    quizInputError.classList.add("hidden");
+    document.getElementById("problems-progress").textContent = "Problem " + (current + 1) + " of " + problems.length;
+    const questionEl = document.getElementById("problems-question");
+    questionEl.innerHTML = textToHtml(prob.question);
+    renderMathIn(questionEl);
+    problemsInput.value = "";
+    problemsInputError.classList.add("hidden");
     prevBtn.disabled = current === 0;
     nextBtn.disabled = current === problems.length - 1;
 
     const progress = await getProgress(prob.id);
     const attemptsLeft = MAX_ATTEMPTS - progress.attemptsUsed;
-    const badge = document.getElementById("quiz-attempts-badge");
+    const badge = document.getElementById("problems-attempts-badge");
 
     if (progress.solved){
       badge.textContent = "Solved";
-      document.getElementById("quiz-input-wrap").classList.add("hidden");
-      document.getElementById("quiz-check-wrap").classList.add("hidden");
+      document.getElementById("problems-input-wrap").classList.add("hidden");
+      document.getElementById("problems-check-wrap").classList.add("hidden");
       feedbackBox.classList.remove("hidden");
       feedbackBox.className = "card feedback-card correct";
       let html = '<div class="feedback-title correct">&#10003; Solved</div>';
       if (prob.explanation){
-        html += '<div style="margin-top:8px; font-size:0.88rem; color:var(--chalk-dim);">' + escapeHtml(prob.explanation) + '</div>';
+        html += '<div style="margin-top:8px; font-size:0.88rem; color:var(--text-dim);">' + textToHtml(prob.explanation) + '</div>';
       }
       feedbackBox.innerHTML = html;
+      renderMathIn(feedbackBox);
     } else if (attemptsLeft <= 0){
       badge.textContent = "0 attempts left";
-      document.getElementById("quiz-input-wrap").classList.add("hidden");
-      document.getElementById("quiz-check-wrap").classList.add("hidden");
+      document.getElementById("problems-input-wrap").classList.add("hidden");
+      document.getElementById("problems-check-wrap").classList.add("hidden");
       feedbackBox.classList.remove("hidden");
       feedbackBox.className = "card feedback-card locked";
       feedbackBox.innerHTML = '<div class="feedback-title">Out of attempts</div>' +
-        '<div style="margin-top:8px; font-size:0.88rem; color:var(--chalk-dim);">You\'ve used all ' + MAX_ATTEMPTS + ' attempts on this one. Ask your coach for help.</div>';
+        '<div style="margin-top:8px; font-size:0.88rem; color:var(--text-dim);">You\'ve used all ' + MAX_ATTEMPTS + ' attempts on this one. Ask your coach for help.</div>';
     } else {
       badge.textContent = attemptsLeft + " attempt" + (attemptsLeft === 1 ? "" : "s") + " left";
-      document.getElementById("quiz-input-wrap").classList.remove("hidden");
-      document.getElementById("quiz-check-wrap").classList.remove("hidden");
-      quizInput.disabled = false;
+      document.getElementById("problems-input-wrap").classList.remove("hidden");
+      document.getElementById("problems-check-wrap").classList.remove("hidden");
+      problemsInput.disabled = false;
       feedbackBox.classList.add("hidden");
     }
   }
 
   async function submitAnswer(){
     const prob = problems[current];
-    if (quizInput.value.trim() === ""){
-      quizInputError.textContent = "Enter an answer first.";
-      quizInputError.classList.remove("hidden");
+    if (problemsInput.value.trim() === ""){
+      problemsInputError.textContent = "Enter an answer first.";
+      problemsInputError.classList.remove("hidden");
       return;
     }
-    quizInputError.classList.add("hidden");
+    problemsInputError.classList.add("hidden");
 
     const progress = await getProgress(prob.id);
-    if (progress.solved || progress.attemptsUsed >= MAX_ATTEMPTS){
-      renderQuiz();
-      return;
-    }
+    if (progress.solved || progress.attemptsUsed >= MAX_ATTEMPTS){ renderProblems(); return; }
 
-    const correct = checkAnswer(quizInput.value, prob.answer);
+    const correct = checkAnswer(problemsInput.value, prob.answer);
     const newAttemptsUsed = progress.attemptsUsed + 1;
     const attemptsLeft = MAX_ATTEMPTS - newAttemptsUsed;
 
@@ -784,7 +1116,7 @@
       studentUsername: currentProfile.username,
       problemId: prob.id,
       question: prob.question,
-      userAnswer: quizInput.value.trim(),
+      userAnswer: problemsInput.value.trim(),
       correct: correct,
       attemptNumber: newAttemptsUsed,
       timestamp: Date.now()
@@ -792,64 +1124,237 @@
     await logAttempt(attemptRecord);
     attempts.unshift(attemptRecord);
 
-    quizInput.disabled = true;
+    problemsInput.disabled = true;
     feedbackBox.classList.remove("hidden");
 
     if (correct){
       feedbackBox.className = "card feedback-card correct";
       let html = '<div class="feedback-title correct">&#10003; Correct</div>';
       if (prob.explanation){
-        html += '<div style="margin-top:8px; font-size:0.88rem; color:var(--chalk-dim);">' + escapeHtml(prob.explanation) + '</div>';
+        html += '<div style="margin-top:8px; font-size:0.88rem; color:var(--text-dim);">' + textToHtml(prob.explanation) + '</div>';
       }
       feedbackBox.innerHTML = html;
-      document.getElementById("quiz-check-wrap").classList.add("hidden");
-      document.getElementById("quiz-attempts-badge").textContent = "Solved";
+      renderMathIn(feedbackBox);
+      document.getElementById("problems-check-wrap").classList.add("hidden");
+      document.getElementById("problems-attempts-badge").textContent = "Solved";
     } else if (attemptsLeft <= 0){
       feedbackBox.className = "card feedback-card locked";
       feedbackBox.innerHTML = '<div class="feedback-title">Out of attempts</div>' +
-        '<div style="margin-top:8px; font-size:0.88rem; color:var(--chalk-dim);">That was your last attempt. Ask your coach for help with this one.</div>';
-      document.getElementById("quiz-check-wrap").classList.add("hidden");
-      document.getElementById("quiz-attempts-badge").textContent = "0 attempts left";
+        '<div style="margin-top:8px; font-size:0.88rem; color:var(--text-dim);">That was your last attempt. Ask your coach for help with this one.</div>';
+      document.getElementById("problems-check-wrap").classList.add("hidden");
+      document.getElementById("problems-attempts-badge").textContent = "0 attempts left";
     } else {
       feedbackBox.className = "card feedback-card incorrect";
       feedbackBox.innerHTML = '<div class="feedback-title incorrect">&#10005; Not quite</div>' +
-        '<div style="margin-top:8px; font-size:0.88rem; color:var(--chalk-dim);">' + attemptsLeft + ' attempt' + (attemptsLeft === 1 ? "" : "s") + ' left. Try again.</div>';
-      document.getElementById("quiz-attempts-badge").textContent = attemptsLeft + " attempt" + (attemptsLeft === 1 ? "" : "s") + " left";
-      quizInput.disabled = false;
-      quizInput.value = "";
-      quizInput.focus();
+        '<div style="margin-top:8px; font-size:0.88rem; color:var(--text-dim);">' + attemptsLeft + ' attempt' + (attemptsLeft === 1 ? "" : "s") + ' left. Try again.</div>';
+      document.getElementById("problems-attempts-badge").textContent = attemptsLeft + " attempt" + (attemptsLeft === 1 ? "" : "s") + " left";
+      problemsInput.disabled = false;
+      problemsInput.value = "";
+      problemsInput.focus();
     }
   }
 
   checkBtn.addEventListener("click", submitAnswer);
-  quizInput.addEventListener("keydown", function(e){ if (e.key === "Enter") submitAnswer(); });
-  quizInput.addEventListener("input", function(){ quizInputError.classList.add("hidden"); });
-  prevBtn.addEventListener("click", function(){ if (current > 0){ current -= 1; renderQuiz(); } });
-  nextBtn.addEventListener("click", function(){ if (current < problems.length - 1){ current += 1; renderQuiz(); } });
+  problemsInput.addEventListener("keydown", function(e){ if (e.key === "Enter") submitAnswer(); });
+  problemsInput.addEventListener("input", function(){ problemsInputError.classList.add("hidden"); });
+  prevBtn.addEventListener("click", function(){ if (current > 0){ current -= 1; renderProblems(); } });
+  nextBtn.addEventListener("click", function(){ if (current < problems.length - 1){ current += 1; renderProblems(); } });
 
-  // ---------------- My results tab (student) ----------------
+  // ---------------- Quizzes tab (student) ----------------
+  document.getElementById("quiz-back-btn").addEventListener("click", function(){
+    activeQuizId = null;
+    document.getElementById("quiz-take-view").classList.add("hidden");
+    document.getElementById("quiz-list-view").classList.remove("hidden");
+    renderQuizList();
+  });
+
+  function renderQuizList(){
+    document.getElementById("quiz-take-view").classList.add("hidden");
+    document.getElementById("quiz-list-view").classList.remove("hidden");
+    const list = document.getElementById("quiz-list");
+    if (quizzes.length === 0){
+      list.innerHTML = '<p class="dim">No quizzes assigned yet — your coach will send them here.</p>';
+      return;
+    }
+    list.innerHTML = quizzes.map(function(qz){
+      const sub = submissions[qz.id];
+      let pill = '<span class="pill">Not started</span>';
+      let action = "Start quiz";
+      if (sub && sub.submitted){
+        pill = '<span class="pill done">Submitted &middot; ' + sub.score + '/' + sub.total + '</span>';
+        action = "View results";
+      } else if (sub){
+        pill = '<span class="pill draft">Draft saved</span>';
+        action = "Continue";
+      }
+      return '<div class="card">' +
+        '<div class="mono-small" style="margin-bottom:6px;">' + qz.questions.length +
+        (qz.questions.length === 1 ? ' question' : ' questions') +
+        ' &middot; sent ' + new Date(qz.createdAt).toLocaleDateString() + '</div>' +
+        '<div style="font-size:1rem; font-weight:600; margin-bottom:10px;">' + escapeHtml(qz.title) + '</div>' +
+        '<div class="row-between" style="align-items:center;">' + pill +
+        '<button class="btn btn-small" data-open-quiz="' + qz.id + '">' + action + '</button>' +
+        '</div></div>';
+    }).join("");
+    list.querySelectorAll("[data-open-quiz]").forEach(function(btn){
+      btn.addEventListener("click", function(){ openQuiz(btn.dataset.openQuiz); });
+    });
+  }
+
+  function openQuiz(quizId){
+    activeQuizId = quizId;
+    const qz = quizzes.find(function(q){ return q.id === quizId; });
+    if (!qz) return;
+    const sub = submissions[quizId];
+    draftAnswers = (sub && sub.answers) ? Object.assign({}, sub.answers) : {};
+    document.getElementById("quiz-list-view").classList.add("hidden");
+    document.getElementById("quiz-take-view").classList.remove("hidden");
+    document.getElementById("quiz-take-title").textContent = qz.title;
+    if (sub && sub.submitted) renderQuizResults(qz, sub);
+    else renderQuizForm(qz);
+  }
+
+  function renderQuizForm(qz){
+    document.getElementById("quiz-take-eyebrow").textContent = "Answer all questions";
+    document.getElementById("quiz-take-meta").textContent =
+      qz.questions.length + (qz.questions.length === 1 ? " question" : " questions") +
+      " · your answers are saved only when you press Save, and graded when you submit";
+    const body = document.getElementById("quiz-take-body");
+    body.innerHTML = qz.questions.map(function(q, i){
+      const val = draftAnswers[i] != null ? draftAnswers[i] : "";
+      return '<div class="q-block">' +
+        '<div class="mono-small" style="margin-bottom:8px;">Question ' + (i+1) + '</div>' +
+        '<div style="font-size:1rem; line-height:1.6; margin-bottom:12px;">' + textToHtml(q.question) + '</div>' +
+        '<label>Your answer</label>' +
+        '<input type="text" data-answer-index="' + i + '" value="' + escapeHtml(val) + '" placeholder="Type your answer" />' +
+      '</div>';
+    }).join("");
+    renderMathIn(body);
+    body.querySelectorAll("[data-answer-index]").forEach(function(input){
+      input.addEventListener("input", function(){
+        draftAnswers[input.dataset.answerIndex] = input.value;
+      });
+    });
+
+    const actions = document.getElementById("quiz-take-actions");
+    actions.innerHTML =
+      '<button class="btn-ghost" id="quiz-save-btn">Save answers</button>' +
+      '<button class="btn" id="quiz-submit-btn">Submit quiz</button>';
+
+    document.getElementById("quiz-save-btn").addEventListener("click", async function(){
+      const err = document.getElementById("quiz-take-error");
+      err.classList.add("hidden");
+      const ok = await saveSubmission(qz.id, { answers: draftAnswers, submitted: false });
+      if (!ok){ setMsg(err, "error", "Couldn't save your answers. Try again."); return; }
+      showStatus("success", "Answers saved. You can come back and finish later.");
+      setTimeout(function(){ showStatus(null, null); }, 3500);
+    });
+
+    document.getElementById("quiz-submit-btn").addEventListener("click", async function(){
+      const err = document.getElementById("quiz-take-error");
+      err.classList.add("hidden");
+      const unanswered = qz.questions.filter(function(q, i){
+        return !draftAnswers[i] || String(draftAnswers[i]).trim() === "";
+      }).length;
+      const warning = unanswered > 0
+        ? "You have " + unanswered + " unanswered question" + (unanswered === 1 ? "" : "s") + ". Submit anyway? You can't change your answers after this."
+        : "Submit your quiz? You can't change your answers after this.";
+      if (!confirm(warning)) return;
+
+      const results = qz.questions.map(function(q, i){
+        const given = draftAnswers[i] != null ? String(draftAnswers[i]).trim() : "";
+        return { userAnswer: given, correct: checkAnswer(given, q.answer) };
+      });
+      const score = results.filter(function(r){ return r.correct; }).length;
+
+      const ok = await saveSubmission(qz.id, {
+        answers: draftAnswers,
+        results: results,
+        score: score,
+        total: qz.questions.length,
+        submitted: true,
+        submittedAt: Date.now()
+      });
+      if (!ok){ setMsg(err, "error", "Couldn't submit your quiz. Try again."); return; }
+      renderQuizResults(qz, submissions[qz.id]);
+    });
+  }
+
+  function renderQuizResults(qz, sub){
+    document.getElementById("quiz-take-eyebrow").textContent = "Results";
+    const pct = sub.total ? Math.round((sub.score / sub.total) * 100) : 0;
+    document.getElementById("quiz-take-meta").textContent =
+      "Scored " + sub.score + " of " + sub.total + " (" + pct + "%) · submitted " +
+      new Date(sub.submittedAt).toLocaleString();
+
+    const body = document.getElementById("quiz-take-body");
+    body.innerHTML = qz.questions.map(function(q, i){
+      const r = (sub.results && sub.results[i]) ? sub.results[i] : { userAnswer: "", correct: false };
+      const cls = r.correct ? "correct" : "incorrect";
+      const mark = r.correct ? "&#10003; Correct" : "&#10005; Incorrect";
+      let html = '<div class="card feedback-card ' + cls + '">' +
+        '<div class="row-between" style="align-items:center; margin-bottom:10px;">' +
+        '<span class="mono-small">Question ' + (i+1) + '</span>' +
+        '<span class="feedback-title ' + cls + '" style="font-size:0.85rem;">' + mark + '</span></div>' +
+        '<div style="font-size:0.98rem; line-height:1.6; margin-bottom:10px;">' + textToHtml(q.question) + '</div>' +
+        '<div style="font-size:0.85rem; color:var(--text-dim);">Your answer: <span style="color:var(--text);">' +
+        (r.userAnswer === "" ? "<em>blank</em>" : escapeHtml(r.userAnswer)) + '</span></div>';
+      if (!r.correct){
+        html += '<div style="font-size:0.85rem; color:var(--text-dim); margin-top:4px;">Correct answer: <span style="color:var(--green);">' + escapeHtml(q.answer) + '</span></div>';
+      }
+      if (q.explanation){
+        html += '<div style="margin-top:10px; font-size:0.86rem; color:var(--text-dim);">' + textToHtml(q.explanation) + '</div>';
+      }
+      return html + '</div>';
+    }).join("");
+    renderMathIn(body);
+    document.getElementById("quiz-take-actions").innerHTML = "";
+  }
+
+  // ---------------- My results (student) ----------------
   async function renderMyResults(){
-    const solvedCount = problems.length === 0 ? 0 : (await Promise.all(problems.map(function(p){ return getProgress(p.id); }))).filter(function(pr){ return pr.solved; }).length;
-    document.getElementById("stat-attempts").textContent = solvedCount;
-    document.getElementById("stat-correct").textContent = attempts.length;
-    document.getElementById("stat-accuracy").textContent = problems.length;
+    const solvedCount = problems.length === 0 ? 0 :
+      (await Promise.all(problems.map(function(p){ return getProgress(p.id); })))
+        .filter(function(pr){ return pr.solved; }).length;
+    document.getElementById("stat-solved").textContent = solvedCount;
+    document.getElementById("stat-attempts").textContent = attempts.length;
+
+    const submitted = Object.keys(submissions)
+      .map(function(k){ return submissions[k]; })
+      .filter(function(s){ return s.submitted; });
+    document.getElementById("stat-quizzes").textContent = submitted.length;
+
+    const quizList = document.getElementById("results-quiz-list");
+    if (submitted.length === 0){
+      quizList.innerHTML = '<p class="dim">No quizzes submitted yet.</p>';
+    } else {
+      quizList.innerHTML = submitted
+        .sort(function(a,b){ return (b.submittedAt||0) - (a.submittedAt||0); })
+        .map(function(s){
+          const qz = quizzes.find(function(q){ return q.id === s.quizId; });
+          const pct = s.total ? Math.round((s.score / s.total) * 100) : 0;
+          return '<div class="leader-row"><span>' + escapeHtml(qz ? qz.title : "(quiz removed)") + '</span>' +
+            '<span class="mono-small">' + s.score + '/' + s.total + ' &middot; ' + pct + '%</span></div>';
+        }).join("");
+    }
 
     const list = document.getElementById("history-list");
     if (attempts.length === 0){
-      list.innerHTML = '<p class="dim">No attempts yet — take the quiz to see your history here.</p>';
+      list.innerHTML = '<p class="dim">No attempts yet — work through your problems to see history here.</p>';
       return;
     }
     list.innerHTML = attempts.map(function(h){
-      const mark = h.correct ? '<span style="color:var(--gold);">&#10003;</span>' : '<span style="color:var(--coral);">&#10005;</span>';
+      const mark = h.correct ? '<span style="color:var(--green);">&#10003;</span>' : '<span style="color:var(--danger);">&#10005;</span>';
       return '<div class="card"><div class="row-between">' +
-        '<div style="font-size:0.9rem;">' + escapeHtml(h.question) + '</div>' + mark +
-        '</div><div style="margin-top:8px; font-size:0.82rem; color:var(--chalk-dim);">' +
-        'Your answer: <span style="color:var(--chalk);">' + escapeHtml(h.userAnswer) + '</span> &middot; attempt ' + h.attemptNumber + ' of ' + MAX_ATTEMPTS +
+        '<div style="font-size:0.9rem;">' + textToHtml(h.question) + '</div>' + mark +
+        '</div><div style="margin-top:8px; font-size:0.82rem; color:var(--text-dim);">' +
+        'Your answer: <span style="color:var(--text);">' + escapeHtml(h.userAnswer) + '</span> &middot; attempt ' + h.attemptNumber + ' of ' + MAX_ATTEMPTS +
         '</div><div class="mono-small" style="margin-top:4px;">' + new Date(h.timestamp).toLocaleString() + '</div></div>';
     }).join("");
+    renderMathIn(list);
   }
 
-  // ---------------- Dashboard tab (coach) ----------------
+  // ---------------- Dashboard (coach) ----------------
   function renderDashboard(){
     const byStudent = {};
     attempts.forEach(function(a){
@@ -870,24 +1375,119 @@
           '<span class="mono-small">' + s.correct + '/' + s.total + ' &middot; ' + acc + '%</span></div>';
       }).join("");
     }
+
+    const subsEl = document.getElementById("dash-quiz-subs");
+    const submitted = allSubmissions.filter(function(s){ return s.submitted; });
+    if (submitted.length === 0){
+      subsEl.innerHTML = '<p class="dim">No quizzes submitted yet.</p>';
+    } else {
+      subsEl.innerHTML = submitted.map(function(s){
+        const qz = quizzes.find(function(q){ return q.id === s.quizId; });
+        const pct = s.total ? Math.round((s.score / s.total) * 100) : 0;
+        return '<div class="card"><div class="row-between">' +
+          '<div><div style="font-size:0.92rem; font-weight:600;">' + escapeHtml(qz ? qz.title : "(quiz removed)") + '</div>' +
+          '<div class="mono-small" style="margin-top:4px;">' + escapeHtml(s.studentUsername || "(unknown)") + '</div></div>' +
+          '<span class="pill done">' + s.score + '/' + s.total + ' &middot; ' + pct + '%</span></div>' +
+          '<div class="mono-small" style="margin-top:8px;">' + new Date(s.submittedAt).toLocaleString() + '</div></div>';
+      }).join("");
+    }
+
     const recent = document.getElementById("dash-recent");
     if (attempts.length === 0){
       recent.innerHTML = '<p class="dim">Nothing to show yet.</p>';
     } else {
       recent.innerHTML = attempts.slice(0, 30).map(function(h){
-        const mark = h.correct ? '<span style="color:var(--gold);">&#10003;</span>' : '<span style="color:var(--coral);">&#10005;</span>';
+        const mark = h.correct ? '<span style="color:var(--green);">&#10003;</span>' : '<span style="color:var(--danger);">&#10005;</span>';
         return '<div class="card"><div class="row-between">' +
-          '<div style="font-size:0.88rem;"><strong>' + escapeHtml(h.studentUsername || "(unknown)") + '</strong> &middot; ' + escapeHtml(h.question) + ' &middot; attempt ' + h.attemptNumber + '</div>' + mark +
+          '<div style="font-size:0.88rem;"><strong>' + escapeHtml(h.studentUsername || "(unknown)") + '</strong> &middot; ' + textToHtml(h.question) + ' &middot; attempt ' + h.attemptNumber + '</div>' + mark +
           '</div><div class="mono-small" style="margin-top:4px;">' + new Date(h.timestamp).toLocaleString() + '</div></div>';
       }).join("");
+      renderMathIn(recent);
     }
   }
+
+  // ---------------- Profile (both roles) ----------------
+  function renderProfile(){
+    document.getElementById("profile-meta").textContent =
+      "Signed in as " + currentProfile.username + " (" + currentProfile.role + ")" +
+      (currentProfile.createdAt ? " · joined " + new Date(currentProfile.createdAt).toLocaleDateString() : "");
+    document.getElementById("profile-username").value = currentProfile.username || "";
+    document.getElementById("profile-email").value = currentProfile.email || "";
+    document.getElementById("profile-current-password").value = "";
+    document.getElementById("profile-new-password").value = "";
+    document.getElementById("profile-confirm-password").value = "";
+    clearMsg(document.getElementById("profile-details-msg"));
+    clearMsg(document.getElementById("profile-password-msg"));
+  }
+
+  document.getElementById("profile-save-btn").addEventListener("click", async function(){
+    const msg = document.getElementById("profile-details-msg");
+    const newUsername = document.getElementById("profile-username").value.trim();
+    const newEmail = document.getElementById("profile-email").value.trim();
+    clearMsg(msg);
+
+    if (newUsername.length < 2) return setMsg(msg, "error", "Username must be at least 2 characters.");
+    if (!/^[a-zA-Z0-9_.-]+$/.test(newUsername)) return setMsg(msg, "error", "Username can only contain letters, numbers, and _ . -");
+    if (!isValidEmail(newEmail)) return setMsg(msg, "error", "That email address doesn't look right.");
+
+    const usernameChanged = newUsername.toLowerCase() !== String(currentProfile.username).toLowerCase();
+    try {
+      if (usernameChanged){
+        const existing = await getDocs(query(usersCol, where("usernameLower", "==", newUsername.toLowerCase())));
+        const taken = existing.docs.some(function(d){ return d.id !== currentUser.uid; });
+        if (taken) return setMsg(msg, "error", "That username is already taken.");
+      }
+      await updateDoc(doc(db, "users", currentUser.uid), {
+        username: newUsername,
+        usernameLower: newUsername.toLowerCase(),
+        email: newEmail
+      });
+      currentProfile.username = newUsername;
+      currentProfile.email = newEmail;
+      buildTopbarTabs();
+      document.querySelectorAll("#topbar-tabs .tab-btn").forEach(function(b){
+        b.classList.toggle("active", b.dataset.tab === "profile");
+      });
+      setMsg(msg, "ok", "Profile updated." + (usernameChanged ? " Note: work assigned to you before the change still shows your old name." : ""));
+    } catch (e) {
+      setMsg(msg, "error", "Couldn't save your changes. Try again.");
+    }
+  });
+
+  document.getElementById("profile-password-btn").addEventListener("click", async function(){
+    const msg = document.getElementById("profile-password-msg");
+    const currentPw = document.getElementById("profile-current-password").value;
+    const newPw = document.getElementById("profile-new-password").value;
+    const confirmPw = document.getElementById("profile-confirm-password").value;
+    clearMsg(msg);
+
+    if (currentPw === "") return setMsg(msg, "error", "Enter your current password.");
+    if (newPw.length < 6) return setMsg(msg, "error", "New password must be at least 6 characters.");
+    if (newPw !== confirmPw) return setMsg(msg, "error", "Those passwords don't match.");
+
+    try {
+      const currentHash = await sha256Hex(currentPw);
+      if (currentHash !== currentProfile.passwordHash) return setMsg(msg, "error", "Your current password isn't correct.");
+      const newHash = await sha256Hex(newPw);
+      await updateDoc(doc(db, "users", currentUser.uid), { passwordHash: newHash });
+      currentProfile.passwordHash = newHash;
+      document.getElementById("profile-current-password").value = "";
+      document.getElementById("profile-new-password").value = "";
+      document.getElementById("profile-confirm-password").value = "";
+      setMsg(msg, "ok", "Password updated.");
+    } catch (e) {
+      setMsg(msg, "error", "Couldn't update your password. Try again.");
+    }
+  });
 
   // ---------------- Session driver ----------------
   async function onLogin(uid, profile){
     showStatus(null, null);
     current = 0;
     progressCache = {};
+    submissions = {};
+    allSubmissions = [];
+    activeQuizId = null;
     currentUser = { uid: uid };
     currentProfile = profile;
     buildTopbarTabs();
@@ -896,20 +1496,20 @@
       populateStudentSelect();
       await loadAllProblemsForCoach();
       await loadAllAttemptsForCoach();
+      await loadAllQuizzesForCoach();
+      renderQuizBuilder();
       showSection("add");
     } else {
       await loadMyProblems();
       await loadMyAttempts();
-      showSection("quiz");
+      await loadMyQuizzes();
+      showSection("problems");
     }
   }
 
   (async function initSession(){
     const savedUid = localStorage.getItem(SESSION_KEY);
-    if (!savedUid){
-      showSection("auth");
-      return;
-    }
+    if (!savedUid){ showSection("auth"); return; }
     showStatus("loading", "Loading your account…");
     try {
       const snap = await getDoc(doc(db, "users", savedUid));
