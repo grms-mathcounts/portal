@@ -60,16 +60,16 @@
   input:focus, textarea:focus, select:focus{ border-color:var(--green); }
   textarea{ resize:vertical; min-height:80px; }
   .btn{
-    display:inline-flex; align-items:center; justify-content:center; gap:8px; font-weight:600; font-size:0.9rem;
+    display:inline-flex; align-items:center; gap:8px; font-weight:600; font-size:0.9rem;
     padding:12px 18px; border-radius:6px; border:1px solid var(--green); background:var(--green);
-    color:#04150a; cursor:pointer; font-family:var(--font-mono); text-decoration:none;
+    color:#04150a; cursor:pointer; font-family:var(--font-mono);
     transition:transform 0.15s ease, background 0.15s ease, box-shadow 0.2s ease;
   }
   .btn:disabled{ opacity:0.5; cursor:not-allowed; }
   .btn-ghost{
-    display:inline-flex; align-items:center; justify-content:center; gap:8px; font-weight:600; font-size:0.9rem;
+    display:inline-flex; align-items:center; gap:8px; font-weight:600; font-size:0.9rem;
     padding:12px 18px; border-radius:6px; border:1px solid var(--border); background:transparent;
-    color:var(--text); cursor:pointer; font-family:var(--font-mono); text-decoration:none;
+    color:var(--text); cursor:pointer; font-family:var(--font-mono);
     transition:border-color 0.15s ease, color 0.15s ease;
   }
   .btn-ghost:disabled{ opacity:0.35; cursor:not-allowed; }
@@ -93,13 +93,12 @@
   .feedback-title{ display:flex; align-items:center; gap:8px; font-weight:600; }
   .feedback-title.correct{ color:var(--green); }
   .feedback-title.incorrect{ color:var(--danger); }
-  .nav-row{ display:flex; justify-content:space-between; gap:12px; margin-top:20px; }
+  .nav-row{ display:flex; justify-content:space-between; margin-top:20px; }
   .auth-wrap{ padding:40px 20px; max-width:340px; margin:0 auto; }
   .auth-tabs{ display:flex; gap:6px; justify-content:center; margin-bottom:24px; }
   .status-banner{ padding:10px 14px; border-radius:8px; font-size:0.82rem; margin-bottom:16px; }
   .status-banner.error{ background:rgba(255,93,93,0.1); color:var(--danger); border:1px solid var(--danger); }
   .status-banner.loading{ background:rgba(0,255,106,0.05); color:var(--text-dim); border:1px solid var(--border); }
-  .status-banner.success{ background:rgba(0,255,106,0.08); color:var(--green); border:1px solid var(--green-dim); }
   .leader-row{ display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--border); font-size:0.9rem; }
   .leader-row:last-child{ border-bottom:none; }
   .checkbox-row{ display:flex; align-items:center; gap:8px; font-size:0.85rem; color:var(--text-dim); margin-top:10px; }
@@ -109,13 +108,12 @@
     display:inline-block; font-family:var(--font-mono); font-size:0.68rem; padding:3px 9px;
     border-radius:999px; border:1px solid var(--border); color:var(--text-dim);
   }
-  .pill.done{ border-color:var(--green-dim); color:var(--green); }
-  .pill.draft{ border-color:var(--text-mute); color:var(--text-dim); }
+  .pill.done{ border-color:var(--green); color:var(--green); }
+  .pill.draft{ border-color:var(--green-dim); color:var(--green-2); }
   .mode-toggle{ display:flex; gap:6px; margin-bottom:22px; }
-  .divider{ margin-top:28px; padding-top:22px; border-top:1px solid var(--border); }
-  .q-block{ background:var(--bg-raised); border:1px solid var(--border); border-radius:10px; padding:16px 18px; margin-bottom:12px; }
-  .q-block-head{ display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
   .field-gap{ margin-top:14px; }
+  .qblock{ border:1px solid var(--border); border-radius:10px; padding:14px 16px; margin-bottom:12px; background:var(--bg-raised); }
+  .divider{ margin-top:32px; padding-top:24px; border-top:1px solid var(--border); }
   @media (hover:hover) and (pointer:fine){
     .btn:hover:not(:disabled){ background:var(--green-2); box-shadow:0 8px 24px -8px rgba(0,255,106,0.5); }
     .btn-ghost:hover:not(:disabled){ border-color:var(--green); color:var(--green-2); }
@@ -123,11 +121,7 @@
     .icon-btn:hover{ color:var(--danger); }
   }
   @media (max-width:480px){
-    body{ padding:12px; }
     .stat-grid{ grid-template-columns:1fr; }
-    main{ padding:22px 16px 26px; }
-    .topbar{ padding:16px; }
-    .nav-row{ flex-direction:column; }
   }
 </style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
@@ -164,10 +158,10 @@
           </div>
           <div id="login-error" class="error-text hidden"></div>
           <div style="margin-top:18px;">
-            <button class="btn" id="login-btn" style="width:100%;">Log in</button>
+            <button class="btn" id="login-btn" style="width:100%; justify-content:center;">Log in</button>
           </div>
           <div style="margin-top:14px; text-align:center;">
-            <a class="btn-ghost" href="https://matrixmathclub.square.site/" target="_blank" rel="noopener">Visit main website</a>
+            <a class="btn btn-ghost" href="https://matrixmathclub.square.site/" target="_blank" rel="noopener">Visit main website</a>
           </div>
         </div>
 
@@ -186,7 +180,7 @@
           </div>
           <div class="field-gap">
             <label for="signup-password-confirm">Confirm password</label>
-            <input type="password" id="signup-password-confirm" placeholder="Re-type your password" autocomplete="new-password" />
+            <input type="password" id="signup-password-confirm" placeholder="Re-enter your password" autocomplete="new-password" />
           </div>
           <div class="checkbox-row">
             <input type="checkbox" id="signup-is-coach" />
@@ -198,32 +192,29 @@
           </div>
           <div id="signup-error" class="error-text hidden"></div>
           <div style="margin-top:18px;">
-            <button class="btn" id="signup-btn" style="width:100%;">Create account</button>
+            <button class="btn" id="signup-btn" style="width:100%; justify-content:center;">Create account</button>
           </div>
           <div style="margin-top:14px; text-align:center;">
-            <a class="btn-ghost" href="https://matrixmathclub.square.site/" target="_blank" rel="noopener">Visit main website</a>
+            <a class="btn btn-ghost" href="https://matrixmathclub.square.site/" target="_blank" rel="noopener">Visit main website</a>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ASSIGN TAB (coach only): problems OR quizzes -->
+    <!-- ADD TAB (coach only) -->
     <section id="tab-add" class="hidden">
       <span class="eyebrow">Assign work</span>
-      <h2 style="margin-bottom:20px;">Send to a student</h2>
+      <h2>Send to a student</h2>
 
-      <div class="mode-toggle">
+      <div class="mode-toggle" style="margin-top:18px;">
         <button class="tab-btn active" id="assign-mode-problem">Single problem</button>
         <button class="tab-btn" id="assign-mode-quiz">Quiz</button>
       </div>
 
-      <div>
+      <!-- Single problem builder -->
+      <div id="assign-problem-pane">
         <label for="add-student-select">Student</label>
         <select id="add-student-select"></select>
-      </div>
-
-      <!-- Problem builder -->
-      <div id="assign-problem-pane">
         <div class="field-gap">
           <label for="q-text">Question</label>
           <textarea id="q-text" placeholder="e.g. What is the sum of the first 20 positive integers?"></textarea>
@@ -249,20 +240,22 @@
 
       <!-- Quiz builder -->
       <div id="assign-quiz-pane" class="hidden">
+        <label for="quiz-student-select">Student</label>
+        <select id="quiz-student-select"></select>
         <div class="field-gap">
-          <label for="quiz-title">Quiz title</label>
-          <input type="text" id="quiz-title" placeholder="e.g. Week 3 — Number Theory" />
+          <label for="quiz-title-input">Quiz title</label>
+          <input type="text" id="quiz-title-input" placeholder="e.g. Week 3 — Algebra review" />
         </div>
 
-        <div class="divider">
+        <div class="divider" style="margin-top:24px; padding-top:20px;">
           <span class="eyebrow">Questions</span>
           <div id="quiz-builder-list"></div>
-          <button class="btn-ghost btn-small" id="quiz-add-question-btn" style="margin-top:6px;">+ Add another question</button>
+          <button class="btn-ghost btn-small" id="quiz-add-question-btn" style="margin-top:6px;">+ Add question</button>
         </div>
 
         <div id="quiz-form-error" class="error-text hidden"></div>
-        <div style="margin-top:16px;">
-          <button class="btn" id="send-quiz-btn">Send quiz to student</button>
+        <div style="margin-top:18px;">
+          <button class="btn" id="create-quiz-btn">Send quiz to student</button>
         </div>
 
         <div class="divider">
@@ -272,10 +265,10 @@
       </div>
     </section>
 
-    <!-- PROBLEMS TAB (student only) — was "Quiz" -->
+    <!-- PROBLEMS TAB (student only) -->
     <section id="tab-problems" class="hidden">
       <span class="eyebrow">Practice</span>
-      <h2>Your problems</h2>
+      <h2>Problems</h2>
       <div id="problems-empty" class="dim" style="margin-top:16px;">No problems assigned yet — check back once your coach has added some.</div>
       <div id="problems-body" class="hidden" style="margin-top:20px;">
         <div class="row-between" style="margin-bottom:10px;">
@@ -301,26 +294,46 @@
       </div>
     </section>
 
-    <!-- QUIZZES TAB (student only) — new: answer all, submit together -->
+    <!-- QUIZZES TAB (student only) -->
     <section id="tab-quizzes" class="hidden">
       <!-- list view -->
       <div id="quiz-list-view">
-        <span class="eyebrow">Quizzes</span>
-        <h2>Your quizzes</h2>
+        <span class="eyebrow">Assigned</span>
+        <h2>Quizzes</h2>
         <div id="quiz-list" style="margin-top:20px;"></div>
       </div>
 
-      <!-- take / results view -->
+      <!-- take view -->
       <div id="quiz-take-view" class="hidden">
         <button class="btn-ghost btn-small" id="quiz-back-btn">&larr; All quizzes</button>
-        <div style="margin-top:16px;">
-          <span class="eyebrow" id="quiz-take-eyebrow">Quiz</span>
+        <div style="margin-top:18px;">
+          <span class="eyebrow">Quiz</span>
           <h2 id="quiz-take-title"></h2>
+          <p class="mono-small" id="quiz-take-meta" style="margin-top:8px;"></p>
         </div>
-        <div id="quiz-take-meta" class="mono-small" style="margin-top:8px;"></div>
-        <div id="quiz-take-body" style="margin-top:20px;"></div>
+        <div id="quiz-take-questions" style="margin-top:22px;"></div>
         <div id="quiz-take-error" class="error-text hidden"></div>
-        <div id="quiz-take-actions" class="nav-row"></div>
+        <div id="quiz-take-saved" class="ok-text hidden"></div>
+        <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:20px;">
+          <button class="btn-ghost" id="quiz-save-btn">Save answers</button>
+          <button class="btn" id="quiz-submit-btn">Submit quiz</button>
+        </div>
+        <p class="mono-small" style="margin-top:12px;">Saving keeps your answers so you can finish later. Submitting is final and shows your results.</p>
+      </div>
+
+      <!-- results view -->
+      <div id="quiz-result-view" class="hidden">
+        <button class="btn-ghost btn-small" id="quiz-result-back-btn">&larr; All quizzes</button>
+        <div style="margin-top:18px;">
+          <span class="eyebrow">Results</span>
+          <h2 id="quiz-result-title"></h2>
+        </div>
+        <div class="card" style="margin-top:18px; text-align:center;">
+          <div class="mono-small">Score</div>
+          <div class="stat-num" id="quiz-result-score" style="color:var(--green);">0</div>
+          <div class="mono-small" id="quiz-result-pct"></div>
+        </div>
+        <div id="quiz-result-list" style="margin-top:20px;"></div>
       </div>
     </section>
 
@@ -330,26 +343,19 @@
       <h2>My results</h2>
       <div class="stat-grid">
         <div class="card">
-          <div class="mono-small">Problems solved</div>
-          <div class="stat-num" id="stat-solved">0</div>
+          <div class="mono-small">Solved</div>
+          <div class="stat-num" id="stat-attempts">0</div>
         </div>
         <div class="card">
           <div class="mono-small">Total attempts</div>
-          <div class="stat-num" id="stat-attempts" style="color:var(--green);">0</div>
+          <div class="stat-num" id="stat-correct" style="color:var(--green);">0</div>
         </div>
         <div class="card">
-          <div class="mono-small">Quizzes submitted</div>
-          <div class="stat-num" id="stat-quizzes">0</div>
+          <div class="mono-small">Assigned</div>
+          <div class="stat-num" id="stat-accuracy">0</div>
         </div>
       </div>
-      <div class="divider">
-        <span class="eyebrow">Quiz scores</span>
-        <div id="results-quiz-list" style="margin-top:12px;"></div>
-      </div>
-      <div class="divider">
-        <span class="eyebrow">Problem attempt history</span>
-        <div id="history-list" style="margin-top:12px;"></div>
-      </div>
+      <div id="history-list" style="margin-top:28px;"></div>
     </section>
 
     <!-- DASHBOARD TAB (coach only) -->
@@ -362,51 +368,53 @@
         <div id="dash-quiz-subs" style="margin-top:12px;"></div>
       </div>
       <div class="divider">
-        <span class="eyebrow">Recent problem attempts</span>
+        <span class="eyebrow">Recent attempts</span>
         <div id="dash-recent" style="margin-top:12px;"></div>
       </div>
     </section>
 
+    <!-- STUDENTS TAB (coach only) -->
+    <section id="tab-students" class="hidden">
+      <span class="eyebrow">Roster</span>
+      <h2>Students</h2>
+      <p class="mono-small" style="margin-top:10px;">Email shows here only if the student added one to their profile.</p>
+      <div id="students-list" style="margin-top:20px;"></div>
+    </section>
+
     <!-- PROFILE TAB (both roles) -->
     <section id="tab-profile" class="hidden">
-      <span class="eyebrow">Account</span>
+      <span class="eyebrow">Your account</span>
       <h2>Profile</h2>
-      <div class="mono-small" id="profile-meta" style="margin-top:8px;"></div>
+      <p class="mono-small" id="profile-role-line" style="margin-top:10px;"></p>
 
-      <div class="divider">
-        <span class="eyebrow">Details</span>
-        <div class="field-gap">
-          <label for="profile-username">Username</label>
-          <input type="text" id="profile-username" placeholder="Username" autocomplete="username" />
-        </div>
-        <div class="field-gap">
-          <label for="profile-email">Email</label>
-          <input type="email" id="profile-email" placeholder="you@example.com" autocomplete="email" />
-        </div>
-        <div id="profile-details-msg" class="hidden"></div>
-        <div style="margin-top:16px;">
-          <button class="btn" id="profile-save-btn">Save changes</button>
-        </div>
+      <div style="margin-top:24px;">
+        <label for="profile-username">Username</label>
+        <input type="text" id="profile-username" placeholder="Username" autocomplete="username" />
+      </div>
+      <div class="field-gap">
+        <label for="profile-email">Email</label>
+        <input type="email" id="profile-email" placeholder="you@example.com" autocomplete="email" />
       </div>
 
       <div class="divider">
         <span class="eyebrow">Change password</span>
-        <div class="field-gap">
-          <label for="profile-current-password">Current password</label>
-          <input type="password" id="profile-current-password" placeholder="Current password" autocomplete="current-password" />
-        </div>
+        <p class="mono-small" style="margin-bottom:14px;">Leave blank to keep your current password.</p>
+        <label for="profile-current-password">Current password</label>
+        <input type="password" id="profile-current-password" placeholder="Required to change your password" autocomplete="current-password" />
         <div class="field-gap">
           <label for="profile-new-password">New password</label>
           <input type="password" id="profile-new-password" placeholder="New password (6+ characters)" autocomplete="new-password" />
         </div>
         <div class="field-gap">
           <label for="profile-confirm-password">Confirm new password</label>
-          <input type="password" id="profile-confirm-password" placeholder="Re-type new password" autocomplete="new-password" />
+          <input type="password" id="profile-confirm-password" placeholder="Re-enter new password" autocomplete="new-password" />
         </div>
-        <div id="profile-password-msg" class="hidden"></div>
-        <div style="margin-top:16px;">
-          <button class="btn" id="profile-password-btn">Update password</button>
-        </div>
+      </div>
+
+      <div id="profile-error" class="error-text hidden"></div>
+      <div id="profile-success" class="ok-text hidden"></div>
+      <div style="margin-top:20px;">
+        <button class="btn" id="profile-save-btn">Save changes</button>
       </div>
     </section>
   </main>
@@ -418,7 +426,7 @@
   // ---------------------------------------------------------------
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
   import {
-    getFirestore, collection, addDoc, getDocs, getDoc, setDoc, doc, updateDoc,
+    getFirestore, collection, addDoc, getDocs, getDoc, setDoc, doc,
     query, where, orderBy, deleteDoc
   } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
 
@@ -438,15 +446,26 @@
   // this app has no server, so Firestore's security rules can't verify
   // *who* is asking (that normally requires a real auth system) --
   // meaning the database has to stay open to reads/writes from anyone
-  // with your config, same as this project's very first version.
-  // Reasonable for a school practice tool with no sensitive data; not
-  // something to reuse for anything that actually needs to stay private.
+  // with your config. Student emails entered in Profile live in the
+  // same open database, so treat them as non-sensitive contact info.
+  // Reasonable for a school practice tool; not something to reuse for
+  // anything that actually needs to stay private.
 
   // Required (in addition to matching the "I'm a coach" checkbox) to
   // register as a coach. This is a basic deterrent, not real security --
   // change it before publishing. Stored here as a SHA-256 hash rather
   // than plain text so it isn't readable if someone views the page
-  // source. Default hash is for "mathcounts2026" -- change it.
+  // source.
+  //
+  // To generate a hash for a new passcode: open any browser's dev
+  // console on this page and run (replacing "mynewpasscode"):
+  //
+  //   crypto.subtle.digest("SHA-256", new TextEncoder().encode("mynewpasscode"))
+  //     .then(buf => console.log(Array.from(new Uint8Array(buf))
+  //       .map(b => b.toString(16).padStart(2, "0")).join("")));
+  //
+  // Then paste the printed string in below. The default hash here is
+  // for the passcode "mathcounts2026" -- change it.
   const COACH_SIGNUP_PASSCODE_HASH = "a4118f9ffdd07001ae062042837dffea4ac0b2b5f6d5a7e8d1f83172d06835d5";
 
   const MAX_ATTEMPTS = 5;
@@ -470,13 +489,6 @@
     if (!message){ el.innerHTML = ""; return; }
     el.innerHTML = '<div class="status-banner ' + kind + '">' + message + '</div>';
   }
-  function setMsg(el, kind, text){
-    el.className = kind === "error" ? "error-text" : "ok-text";
-    el.textContent = text;
-    el.classList.remove("hidden");
-  }
-  function clearMsg(el){ el.classList.add("hidden"); el.textContent = ""; }
-
   function normalizeAnswer(raw){
     return String(raw == null ? "" : raw).trim().toLowerCase().replace(/\s+/g, " ");
   }
@@ -527,24 +539,27 @@
       });
     }
   }
-  function isValidEmail(v){
-    if (v === "") return true; // optional
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+  function isValidEmail(str){
+    if (str === "") return true; // email is optional everywhere
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(str);
   }
 
   let currentUser = null;    // { uid }
-  let currentProfile = null; // { username, email, role }
+  let currentProfile = null; // { username, role, email }
   let problems = [];
   let attempts = [];
   let students = [];
-  let quizzes = [];          // student: their quizzes / coach: all quizzes
-  let submissions = {};      // quizId -> submission (student) ; coach: array in allSubmissions
-  let allSubmissions = [];
+  let quizzes = [];          // student: mine; coach: all
+  let submissions = [];      // student: mine; coach: all
   let current = 0;
   let progressCache = {};
+
+  // quiz-taking state
+  let activeQuiz = null;
+  let activeAnswers = {};
+
+  // coach quiz builder state
   let builderQuestions = [{ question: "", answer: "", explanation: "" }];
-  let activeQuizId = null;
-  let draftAnswers = {};
 
   // ---------------- Data layer ----------------
   async function loadMyProblems(){
@@ -585,7 +600,7 @@
     try {
       const snap = await getDocs(query(usersCol, where("role", "==", "student")));
       students = snap.docs.map(function(d){ return Object.assign({ uid: d.id }, d.data()); });
-      students.sort(function(a,b){ return String(a.username).localeCompare(String(b.username)); });
+      students.sort(function(a, b){ return String(a.username).localeCompare(String(b.username)); });
     } catch (e) {
       showStatus("error", "Couldn't load student list.");
     }
@@ -595,12 +610,6 @@
       const snap = await getDocs(query(quizzesCol, where("studentUid", "==", currentUser.uid)));
       quizzes = snap.docs.map(function(d){ return Object.assign({ id: d.id }, d.data()); });
       quizzes.sort(function(a, b){ return (b.createdAt || 0) - (a.createdAt || 0); });
-      const subSnap = await getDocs(query(submissionsCol, where("studentUid", "==", currentUser.uid)));
-      submissions = {};
-      subSnap.docs.forEach(function(d){
-        const data = d.data();
-        submissions[data.quizId] = Object.assign({ id: d.id }, data);
-      });
     } catch (e) {
       showStatus("error", "Couldn't load your quizzes from the cloud.");
     }
@@ -609,11 +618,24 @@
     try {
       const snap = await getDocs(query(quizzesCol, orderBy("createdAt", "desc")));
       quizzes = snap.docs.map(function(d){ return Object.assign({ id: d.id }, d.data()); });
-      const subSnap = await getDocs(submissionsCol);
-      allSubmissions = subSnap.docs.map(function(d){ return Object.assign({ id: d.id }, d.data()); });
-      allSubmissions.sort(function(a, b){ return (b.submittedAt || 0) - (a.submittedAt || 0); });
     } catch (e) {
       showStatus("error", "Couldn't load quizzes from the cloud.");
+    }
+  }
+  async function loadMySubmissions(){
+    try {
+      const snap = await getDocs(query(submissionsCol, where("studentUid", "==", currentUser.uid)));
+      submissions = snap.docs.map(function(d){ return Object.assign({ id: d.id }, d.data()); });
+    } catch (e) {
+      submissions = [];
+    }
+  }
+  async function loadAllSubmissionsForCoach(){
+    try {
+      const snap = await getDocs(query(submissionsCol, orderBy("submittedAt", "desc")));
+      submissions = snap.docs.map(function(d){ return Object.assign({ id: d.id }, d.data()); });
+    } catch (e) {
+      submissions = [];
     }
   }
   async function getProgress(problemId){
@@ -645,31 +667,13 @@
     try { await deleteDoc(doc(db, "problems", id)); return true; }
     catch (e) { return false; }
   }
-  async function logAttempt(attempt){
-    try { await addDoc(attemptsCol, attempt); return true; }
-    catch (e) { return false; }
-  }
-  async function addQuiz(quiz){
-    try { await addDoc(quizzesCol, Object.assign({ createdAt: Date.now() }, quiz)); return true; }
-    catch (e) { return false; }
-  }
   async function removeQuiz(id){
     try { await deleteDoc(doc(db, "quizzes", id)); return true; }
     catch (e) { return false; }
   }
-  async function saveSubmission(quizId, data){
-    try {
-      const ref = doc(db, "quizSubmissions", currentUser.uid + "_" + quizId);
-      const payload = Object.assign({
-        studentUid: currentUser.uid,
-        studentUsername: currentProfile.username,
-        quizId: quizId,
-        updatedAt: Date.now()
-      }, data);
-      await setDoc(ref, payload);
-      submissions[quizId] = Object.assign({ id: currentUser.uid + "_" + quizId }, payload);
-      return true;
-    } catch (e) { return false; }
+  async function logAttempt(attempt){
+    try { await addDoc(attemptsCol, attempt); return true; }
+    catch (e) { return false; }
   }
 
   // ---------------- Auth mode toggle ----------------
@@ -712,7 +716,7 @@
     }
   });
 
-  // ---------------- Signup (with confirm password) ----------------
+  // ---------------- Signup ----------------
   document.getElementById("signup-btn").addEventListener("click", async function(){
     const username = document.getElementById("signup-username").value.trim();
     const email = document.getElementById("signup-email").value.trim();
@@ -727,10 +731,9 @@
 
     if (username.length < 2) return fail("Username must be at least 2 characters.");
     if (!/^[a-zA-Z0-9_.-]+$/.test(username)) return fail("Username can only contain letters, numbers, and _ . -");
-    if (!isValidEmail(email)) return fail("That email address doesn't look right.");
+    if (!isValidEmail(email)) return fail("That doesn't look like a valid email address.");
     if (password.length < 6) return fail("Password must be at least 6 characters.");
-    if (confirmPassword === "") return fail("Please confirm your password.");
-    if (password !== confirmPassword) return fail("Those passwords don't match.");
+    if (password !== confirmPassword) return fail("Passwords don't match.");
     if (isCoach){
       const coachPasscodeHash = await sha256Hex(coachPasscode);
       if (coachPasscodeHash !== COACH_SIGNUP_PASSCODE_HASH) return fail("Incorrect coach passcode.");
@@ -777,6 +780,7 @@
     quizzes: document.getElementById("tab-quizzes"),
     results: document.getElementById("tab-results"),
     dashboard: document.getElementById("tab-dashboard"),
+    students: document.getElementById("tab-students"),
     profile: document.getElementById("tab-profile")
   };
 
@@ -792,6 +796,7 @@
     if (key === "results") renderMyResults();
     if (key === "add") { renderProblemList(); renderCoachQuizList(); }
     if (key === "dashboard") renderDashboard();
+    if (key === "students") renderStudents();
     if (key === "profile") renderProfile();
   }
 
@@ -799,14 +804,13 @@
     const wrap = document.getElementById("topbar-tabs");
     wrap.innerHTML = "";
     if (!currentProfile) return;
-
     const nameSpan = document.createElement("span");
     nameSpan.className = "whoami";
     nameSpan.textContent = currentProfile.username + " (" + currentProfile.role + ")";
     wrap.appendChild(nameSpan);
 
     const tabsForRole = currentProfile.role === "coach"
-      ? [["add","Assign"],["dashboard","Dashboard"],["profile","Profile"]]
+      ? [["add","Assign"],["dashboard","Dashboard"],["students","Students"],["profile","Profile"]]
       : [["problems","Problems"],["quizzes","Quizzes"],["results","My results"],["profile","Profile"]];
 
     tabsForRole.forEach(function(pair){
@@ -825,40 +829,40 @@
     wrap.appendChild(logoutBtn);
   }
 
-  // ---------------- Assign tab: mode toggle ----------------
-  const assignModeProblem = document.getElementById("assign-mode-problem");
-  const assignModeQuiz = document.getElementById("assign-mode-quiz");
-  assignModeProblem.addEventListener("click", function(){ setAssignMode("problem"); });
-  assignModeQuiz.addEventListener("click", function(){ setAssignMode("quiz"); });
+  // ---------------- Coach: assign mode toggle ----------------
+  document.getElementById("assign-mode-problem").addEventListener("click", function(){ setAssignMode("problem"); });
+  document.getElementById("assign-mode-quiz").addEventListener("click", function(){ setAssignMode("quiz"); });
   function setAssignMode(mode){
-    assignModeProblem.classList.toggle("active", mode === "problem");
-    assignModeQuiz.classList.toggle("active", mode === "quiz");
+    document.getElementById("assign-mode-problem").classList.toggle("active", mode === "problem");
+    document.getElementById("assign-mode-quiz").classList.toggle("active", mode === "quiz");
     document.getElementById("assign-problem-pane").classList.toggle("hidden", mode !== "problem");
     document.getElementById("assign-quiz-pane").classList.toggle("hidden", mode !== "quiz");
-    if (mode === "quiz") renderQuizBuilder();
   }
 
-  // ---------------- Assign: single problem ----------------
+  // ---------------- Coach: single problem ----------------
   const qText = document.getElementById("q-text");
   const qAnswer = document.getElementById("q-answer");
   const qExplain = document.getElementById("q-explain");
   const formError = document.getElementById("form-error");
   const studentSelect = document.getElementById("add-student-select");
+  const quizStudentSelect = document.getElementById("quiz-student-select");
 
-  function populateStudentSelect(){
-    studentSelect.innerHTML = "";
-    if (students.length === 0){
-      const opt = document.createElement("option");
-      opt.textContent = "No students registered yet";
-      opt.value = "";
-      studentSelect.appendChild(opt);
-      return;
-    }
-    students.forEach(function(s){
-      const opt = document.createElement("option");
-      opt.value = s.uid;
-      opt.textContent = s.username;
-      studentSelect.appendChild(opt);
+  function populateStudentSelects(){
+    [studentSelect, quizStudentSelect].forEach(function(sel){
+      sel.innerHTML = "";
+      if (students.length === 0){
+        const opt = document.createElement("option");
+        opt.textContent = "No students registered yet";
+        opt.value = "";
+        sel.appendChild(opt);
+        return;
+      }
+      students.forEach(function(s){
+        const opt = document.createElement("option");
+        opt.value = s.uid;
+        opt.textContent = s.username;
+        sel.appendChild(opt);
+      });
     });
   }
 
@@ -918,84 +922,81 @@
     });
   }
 
-  // ---------------- Assign: quiz builder ----------------
-  function renderQuizBuilder(){
+  // ---------------- Coach: quiz builder ----------------
+  function renderBuilder(){
     const wrap = document.getElementById("quiz-builder-list");
     wrap.innerHTML = builderQuestions.map(function(q, i){
-      return '<div class="q-block">' +
-        '<div class="q-block-head">' +
+      return '<div class="qblock">' +
+        '<div class="row-between" style="margin-bottom:10px;">' +
           '<span class="mono-small">Question ' + (i+1) + '</span>' +
           (builderQuestions.length > 1 ? '<button class="icon-btn" data-remove-q="' + i + '" aria-label="Remove question">&#10005;</button>' : '') +
         '</div>' +
-        '<label>Question</label>' +
-        '<textarea data-q-field="question" data-q-index="' + i + '" placeholder="Question text">' + escapeHtml(q.question) + '</textarea>' +
-        '<div class="field-gap"><label>Correct answer</label>' +
-        '<input type="text" data-q-field="answer" data-q-index="' + i + '" value="' + escapeHtml(q.answer) + '" placeholder="Correct answer" /></div>' +
-        '<div class="field-gap"><label>Explanation (optional)</label>' +
-        '<textarea data-q-field="explanation" data-q-index="' + i + '" placeholder="Shown with results after they submit">' + escapeHtml(q.explanation) + '</textarea></div>' +
+        '<textarea data-q-text="' + i + '" placeholder="Question">' + escapeHtml(q.question) + '</textarea>' +
+        '<div class="field-gap"><input type="text" data-q-answer="' + i + '" placeholder="Correct answer" value="' + escapeHtml(q.answer) + '" /></div>' +
+        '<div class="field-gap"><input type="text" data-q-explain="' + i + '" placeholder="Explanation (optional)" value="' + escapeHtml(q.explanation) + '" /></div>' +
       '</div>';
     }).join("");
 
-    wrap.querySelectorAll("[data-q-field]").forEach(function(input){
-      input.addEventListener("input", function(){
-        const idx = parseInt(input.dataset.qIndex, 10);
-        builderQuestions[idx][input.dataset.qField] = input.value;
-      });
+    wrap.querySelectorAll("[data-q-text]").forEach(function(el){
+      el.addEventListener("input", function(){ builderQuestions[+el.dataset.qText].question = el.value; });
+    });
+    wrap.querySelectorAll("[data-q-answer]").forEach(function(el){
+      el.addEventListener("input", function(){ builderQuestions[+el.dataset.qAnswer].answer = el.value; });
+    });
+    wrap.querySelectorAll("[data-q-explain]").forEach(function(el){
+      el.addEventListener("input", function(){ builderQuestions[+el.dataset.qExplain].explanation = el.value; });
     });
     wrap.querySelectorAll("[data-remove-q]").forEach(function(btn){
       btn.addEventListener("click", function(){
-        builderQuestions.splice(parseInt(btn.dataset.removeQ, 10), 1);
-        renderQuizBuilder();
+        builderQuestions.splice(+btn.dataset.removeQ, 1);
+        renderBuilder();
       });
     });
   }
 
   document.getElementById("quiz-add-question-btn").addEventListener("click", function(){
     builderQuestions.push({ question: "", answer: "", explanation: "" });
-    renderQuizBuilder();
+    renderBuilder();
   });
 
-  document.getElementById("send-quiz-btn").addEventListener("click", async function(){
+  document.getElementById("create-quiz-btn").addEventListener("click", async function(){
     const err = document.getElementById("quiz-form-error");
     err.classList.add("hidden");
     function fail(msg){ err.textContent = msg; err.classList.remove("hidden"); }
 
-    const studentUid = studentSelect.value;
+    const studentUid = quizStudentSelect.value;
     const student = students.find(function(s){ return s.uid === studentUid; });
+    const title = document.getElementById("quiz-title-input").value.trim();
     if (!student) return fail("Choose a student first.");
-
-    const title = document.getElementById("quiz-title").value.trim();
     if (title === "") return fail("Give the quiz a title.");
 
     const cleaned = builderQuestions
       .map(function(q){
-        return {
-          question: String(q.question || "").trim(),
-          answer: String(q.answer || "").trim(),
-          explanation: String(q.explanation || "").trim()
-        };
+        return { question: String(q.question).trim(), answer: String(q.answer).trim(), explanation: String(q.explanation).trim() };
       })
       .filter(function(q){ return q.question !== "" || q.answer !== ""; });
 
     if (cleaned.length === 0) return fail("Add at least one question.");
-    const incomplete = cleaned.findIndex(function(q){ return q.question === "" || q.answer === ""; });
-    if (incomplete !== -1) return fail("Question " + (incomplete + 1) + " needs both a question and an answer.");
+    const incomplete = cleaned.some(function(q){ return q.question === "" || q.answer === ""; });
+    if (incomplete) return fail("Every question needs both a question and an answer.");
 
-    const ok = await addQuiz({
-      title: title,
-      studentUid: studentUid,
-      studentUsername: student.username,
-      questions: cleaned
-    });
-    if (!ok) return fail("Couldn't send the quiz. Try again.");
+    try {
+      await addDoc(quizzesCol, {
+        studentUid: studentUid,
+        studentUsername: student.username,
+        title: title,
+        questions: cleaned,
+        createdAt: Date.now()
+      });
+    } catch (e) {
+      return fail("Couldn't send the quiz. Try again.");
+    }
 
-    document.getElementById("quiz-title").value = "";
+    document.getElementById("quiz-title-input").value = "";
     builderQuestions = [{ question: "", answer: "", explanation: "" }];
-    renderQuizBuilder();
+    renderBuilder();
     await loadAllQuizzesForCoach();
     renderCoachQuizList();
-    showStatus("success", "Quiz sent to " + escapeHtml(student.username) + ".");
-    setTimeout(function(){ showStatus(null, null); }, 4000);
   });
 
   function renderCoachQuizList(){
@@ -1007,18 +1008,14 @@
       return;
     }
     list.innerHTML = quizzes.map(function(qz){
-      const sub = allSubmissions.find(function(s){ return s.quizId === qz.id; });
-      let statusPill = '<span class="pill">Not started</span>';
-      if (sub && sub.submitted){
-        statusPill = '<span class="pill done">Submitted &middot; ' + sub.score + '/' + sub.total + '</span>';
-      } else if (sub){
-        statusPill = '<span class="pill draft">Draft saved</span>';
-      }
+      const sub = submissions.find(function(s){ return s.quizId === qz.id; });
+      const statusPill = sub
+        ? '<span class="pill done">Submitted ' + sub.score + '/' + sub.total + '</span>'
+        : '<span class="pill">Not submitted</span>';
       return '<div class="card"><div class="row-between">' +
-        '<div><div class="mono-small" style="margin-bottom:6px;">for ' + escapeHtml(qz.studentUsername) + ' &middot; ' +
-        qz.questions.length + (qz.questions.length === 1 ? ' question' : ' questions') + '</div>' +
-        '<div style="font-size:0.95rem; font-weight:600; margin-bottom:8px;">' + escapeHtml(qz.title) + '</div>' +
-        statusPill + '</div>' +
+        '<div><div style="font-weight:600; margin-bottom:4px;">' + escapeHtml(qz.title) + '</div>' +
+        '<div class="mono-small">for ' + escapeHtml(qz.studentUsername) + ' &middot; ' + (qz.questions || []).length + ' questions</div>' +
+        '<div style="margin-top:8px;">' + statusPill + '</div></div>' +
         '<button class="icon-btn" data-delete-quiz="' + qz.id + '" aria-label="Delete quiz">&#10005;</button>' +
         '</div></div>';
     }).join("");
@@ -1031,7 +1028,28 @@
     });
   }
 
-  // ---------------- Problems tab (student) ----------------
+  // ---------------- Coach: students roster (with emails) ----------------
+  function renderStudents(){
+    const list = document.getElementById("students-list");
+    if (students.length === 0){
+      list.innerHTML = '<p class="dim">No students have registered yet.</p>';
+      return;
+    }
+    list.innerHTML = students.map(function(s){
+      const email = (s.email && String(s.email).trim() !== "")
+        ? '<a href="mailto:' + escapeHtml(s.email) + '" style="color:var(--green-2);">' + escapeHtml(s.email) + '</a>'
+        : '<span class="dim">No email on file</span>';
+      const probCount = problems.filter(function(p){ return p.studentUid === s.uid; }).length;
+      const quizCount = quizzes.filter(function(q){ return q.studentUid === s.uid; }).length;
+      return '<div class="card">' +
+        '<div style="font-weight:600; margin-bottom:6px;">' + escapeHtml(s.username) + '</div>' +
+        '<div style="font-size:0.88rem; margin-bottom:8px;">' + email + '</div>' +
+        '<div class="mono-small">' + probCount + ' problems &middot; ' + quizCount + ' quizzes</div>' +
+      '</div>';
+    }).join("");
+  }
+
+  // ---------------- Student: Problems tab ----------------
   const problemsInput = document.getElementById("problems-input");
   const problemsInputError = document.getElementById("problems-input-error");
   const checkBtn = document.getElementById("check-answer-btn");
@@ -1160,201 +1178,244 @@
   prevBtn.addEventListener("click", function(){ if (current > 0){ current -= 1; renderProblems(); } });
   nextBtn.addEventListener("click", function(){ if (current < problems.length - 1){ current += 1; renderProblems(); } });
 
-  // ---------------- Quizzes tab (student) ----------------
-  document.getElementById("quiz-back-btn").addEventListener("click", function(){
-    activeQuizId = null;
-    document.getElementById("quiz-take-view").classList.add("hidden");
-    document.getElementById("quiz-list-view").classList.remove("hidden");
-    renderQuizList();
-  });
+  // ---------------- Student: Quizzes tab ----------------
+  function showQuizView(which){
+    document.getElementById("quiz-list-view").classList.toggle("hidden", which !== "list");
+    document.getElementById("quiz-take-view").classList.toggle("hidden", which !== "take");
+    document.getElementById("quiz-result-view").classList.toggle("hidden", which !== "result");
+  }
+
+  function submissionFor(quizId){
+    return submissions.find(function(s){ return s.quizId === quizId; });
+  }
 
   function renderQuizList(){
-    document.getElementById("quiz-take-view").classList.add("hidden");
-    document.getElementById("quiz-list-view").classList.remove("hidden");
+    showQuizView("list");
     const list = document.getElementById("quiz-list");
     if (quizzes.length === 0){
-      list.innerHTML = '<p class="dim">No quizzes assigned yet — your coach will send them here.</p>';
+      list.innerHTML = '<p class="dim">No quizzes assigned yet — check back once your coach sends one.</p>';
       return;
     }
     list.innerHTML = quizzes.map(function(qz){
-      const sub = submissions[qz.id];
-      let pill = '<span class="pill">Not started</span>';
-      let action = "Start quiz";
-      if (sub && sub.submitted){
+      const sub = submissionFor(qz.id);
+      const draft = loadDraft(qz.id);
+      let pill, action;
+      if (sub){
         pill = '<span class="pill done">Submitted &middot; ' + sub.score + '/' + sub.total + '</span>';
-        action = "View results";
-      } else if (sub){
-        pill = '<span class="pill draft">Draft saved</span>';
-        action = "Continue";
+        action = '<button class="btn-ghost btn-small" data-view-results="' + qz.id + '">View results</button>';
+      } else if (draft && Object.keys(draft).length > 0){
+        pill = '<span class="pill draft">In progress</span>';
+        action = '<button class="btn btn-small" data-open-quiz="' + qz.id + '">Continue</button>';
+      } else {
+        pill = '<span class="pill">Not started</span>';
+        action = '<button class="btn btn-small" data-open-quiz="' + qz.id + '">Start quiz</button>';
       }
-      return '<div class="card">' +
-        '<div class="mono-small" style="margin-bottom:6px;">' + qz.questions.length +
-        (qz.questions.length === 1 ? ' question' : ' questions') +
-        ' &middot; sent ' + new Date(qz.createdAt).toLocaleDateString() + '</div>' +
-        '<div style="font-size:1rem; font-weight:600; margin-bottom:10px;">' + escapeHtml(qz.title) + '</div>' +
-        '<div class="row-between" style="align-items:center;">' + pill +
-        '<button class="btn btn-small" data-open-quiz="' + qz.id + '">' + action + '</button>' +
-        '</div></div>';
+      return '<div class="card"><div class="row-between">' +
+        '<div><div style="font-weight:600; margin-bottom:6px;">' + escapeHtml(qz.title) + '</div>' +
+        '<div class="mono-small" style="margin-bottom:8px;">' + (qz.questions || []).length + ' questions</div>' +
+        pill + '</div>' + action + '</div></div>';
     }).join("");
+
     list.querySelectorAll("[data-open-quiz]").forEach(function(btn){
       btn.addEventListener("click", function(){ openQuiz(btn.dataset.openQuiz); });
     });
+    list.querySelectorAll("[data-view-results]").forEach(function(btn){
+      btn.addEventListener("click", function(){ showQuizResults(btn.dataset.viewResults); });
+    });
+  }
+
+  // Drafts are kept in this browser via localStorage: they're just
+  // work-in-progress answers, so there's no need to round-trip them to
+  // the database on every keystroke. Submitting writes to Firestore.
+  function draftKey(quizId){ return "mm-quiz-draft:" + (currentUser ? currentUser.uid : "anon") + ":" + quizId; }
+  function loadDraft(quizId){
+    try { return JSON.parse(localStorage.getItem(draftKey(quizId)) || "{}"); }
+    catch (e) { return {}; }
+  }
+  function saveDraft(quizId, answers){
+    try { localStorage.setItem(draftKey(quizId), JSON.stringify(answers)); return true; }
+    catch (e) { return false; }
+  }
+  function clearDraft(quizId){
+    try { localStorage.removeItem(draftKey(quizId)); } catch (e) {}
   }
 
   function openQuiz(quizId){
-    activeQuizId = quizId;
     const qz = quizzes.find(function(q){ return q.id === quizId; });
     if (!qz) return;
-    const sub = submissions[quizId];
-    draftAnswers = (sub && sub.answers) ? Object.assign({}, sub.answers) : {};
-    document.getElementById("quiz-list-view").classList.add("hidden");
-    document.getElementById("quiz-take-view").classList.remove("hidden");
-    document.getElementById("quiz-take-title").textContent = qz.title;
-    if (sub && sub.submitted) renderQuizResults(qz, sub);
-    else renderQuizForm(qz);
-  }
+    if (submissionFor(quizId)){ showQuizResults(quizId); return; }
 
-  function renderQuizForm(qz){
-    document.getElementById("quiz-take-eyebrow").textContent = "Answer all questions";
-    document.getElementById("quiz-take-meta").textContent =
-      qz.questions.length + (qz.questions.length === 1 ? " question" : " questions") +
-      " · your answers are saved only when you press Save, and graded when you submit";
-    const body = document.getElementById("quiz-take-body");
-    body.innerHTML = qz.questions.map(function(q, i){
-      const val = draftAnswers[i] != null ? draftAnswers[i] : "";
-      return '<div class="q-block">' +
+    activeQuiz = qz;
+    activeAnswers = loadDraft(quizId);
+    showQuizView("take");
+
+    document.getElementById("quiz-take-title").textContent = qz.title;
+    document.getElementById("quiz-take-meta").textContent = (qz.questions || []).length + " questions · answer them all, then submit once";
+    document.getElementById("quiz-take-error").classList.add("hidden");
+    document.getElementById("quiz-take-saved").classList.add("hidden");
+
+    const wrap = document.getElementById("quiz-take-questions");
+    wrap.innerHTML = (qz.questions || []).map(function(q, i){
+      const val = activeAnswers[i] != null ? escapeHtml(activeAnswers[i]) : "";
+      return '<div class="qblock">' +
         '<div class="mono-small" style="margin-bottom:8px;">Question ' + (i+1) + '</div>' +
-        '<div style="font-size:1rem; line-height:1.6; margin-bottom:12px;">' + textToHtml(q.question) + '</div>' +
-        '<label>Your answer</label>' +
-        '<input type="text" data-answer-index="' + i + '" value="' + escapeHtml(val) + '" placeholder="Type your answer" />' +
+        '<div style="font-size:0.98rem; line-height:1.6; margin-bottom:12px;">' + textToHtml(q.question) + '</div>' +
+        '<input type="text" data-quiz-answer="' + i + '" placeholder="Your answer" value="' + val + '" />' +
       '</div>';
     }).join("");
-    renderMathIn(body);
-    body.querySelectorAll("[data-answer-index]").forEach(function(input){
-      input.addEventListener("input", function(){
-        draftAnswers[input.dataset.answerIndex] = input.value;
+    renderMathIn(wrap);
+
+    wrap.querySelectorAll("[data-quiz-answer]").forEach(function(el){
+      el.addEventListener("input", function(){
+        activeAnswers[+el.dataset.quizAnswer] = el.value;
+        document.getElementById("quiz-take-saved").classList.add("hidden");
       });
-    });
-
-    const actions = document.getElementById("quiz-take-actions");
-    actions.innerHTML =
-      '<button class="btn-ghost" id="quiz-save-btn">Save answers</button>' +
-      '<button class="btn" id="quiz-submit-btn">Submit quiz</button>';
-
-    document.getElementById("quiz-save-btn").addEventListener("click", async function(){
-      const err = document.getElementById("quiz-take-error");
-      err.classList.add("hidden");
-      const ok = await saveSubmission(qz.id, { answers: draftAnswers, submitted: false });
-      if (!ok){ setMsg(err, "error", "Couldn't save your answers. Try again."); return; }
-      showStatus("success", "Answers saved. You can come back and finish later.");
-      setTimeout(function(){ showStatus(null, null); }, 3500);
-    });
-
-    document.getElementById("quiz-submit-btn").addEventListener("click", async function(){
-      const err = document.getElementById("quiz-take-error");
-      err.classList.add("hidden");
-      const unanswered = qz.questions.filter(function(q, i){
-        return !draftAnswers[i] || String(draftAnswers[i]).trim() === "";
-      }).length;
-      const warning = unanswered > 0
-        ? "You have " + unanswered + " unanswered question" + (unanswered === 1 ? "" : "s") + ". Submit anyway? You can't change your answers after this."
-        : "Submit your quiz? You can't change your answers after this.";
-      if (!confirm(warning)) return;
-
-      const results = qz.questions.map(function(q, i){
-        const given = draftAnswers[i] != null ? String(draftAnswers[i]).trim() : "";
-        return { userAnswer: given, correct: checkAnswer(given, q.answer) };
-      });
-      const score = results.filter(function(r){ return r.correct; }).length;
-
-      const ok = await saveSubmission(qz.id, {
-        answers: draftAnswers,
-        results: results,
-        score: score,
-        total: qz.questions.length,
-        submitted: true,
-        submittedAt: Date.now()
-      });
-      if (!ok){ setMsg(err, "error", "Couldn't submit your quiz. Try again."); return; }
-      renderQuizResults(qz, submissions[qz.id]);
     });
   }
 
-  function renderQuizResults(qz, sub){
-    document.getElementById("quiz-take-eyebrow").textContent = "Results";
-    const pct = sub.total ? Math.round((sub.score / sub.total) * 100) : 0;
-    document.getElementById("quiz-take-meta").textContent =
-      "Scored " + sub.score + " of " + sub.total + " (" + pct + "%) · submitted " +
-      new Date(sub.submittedAt).toLocaleString();
+  document.getElementById("quiz-back-btn").addEventListener("click", renderQuizList);
+  document.getElementById("quiz-result-back-btn").addEventListener("click", renderQuizList);
 
-    const body = document.getElementById("quiz-take-body");
-    body.innerHTML = qz.questions.map(function(q, i){
-      const r = (sub.results && sub.results[i]) ? sub.results[i] : { userAnswer: "", correct: false };
+  document.getElementById("quiz-save-btn").addEventListener("click", function(){
+    if (!activeQuiz) return;
+    saveDraft(activeQuiz.id, activeAnswers);
+    const saved = document.getElementById("quiz-take-saved");
+    saved.textContent = "Answers saved — you can come back and finish later.";
+    saved.classList.remove("hidden");
+  });
+
+  document.getElementById("quiz-submit-btn").addEventListener("click", async function(){
+    if (!activeQuiz) return;
+    const err = document.getElementById("quiz-take-error");
+    err.classList.add("hidden");
+
+    const qs = activeQuiz.questions || [];
+    const unanswered = qs.filter(function(q, i){
+      return !activeAnswers[i] || String(activeAnswers[i]).trim() === "";
+    }).length;
+
+    if (unanswered > 0){
+      const ok = confirm(unanswered + " question" + (unanswered === 1 ? " is" : "s are") + " still blank. Submit anyway? This can't be undone.");
+      if (!ok) return;
+    } else {
+      const ok = confirm("Submit your quiz? This can't be undone.");
+      if (!ok) return;
+    }
+
+    const results = qs.map(function(q, i){
+      const given = activeAnswers[i] != null ? String(activeAnswers[i]).trim() : "";
+      return {
+        question: q.question,
+        correctAnswer: q.answer,
+        explanation: q.explanation || "",
+        userAnswer: given,
+        correct: given !== "" && checkAnswer(given, q.answer)
+      };
+    });
+    const score = results.filter(function(r){ return r.correct; }).length;
+
+    const submission = {
+      quizId: activeQuiz.id,
+      quizTitle: activeQuiz.title,
+      studentUid: currentUser.uid,
+      studentUsername: currentProfile.username,
+      results: results,
+      score: score,
+      total: qs.length,
+      submittedAt: Date.now()
+    };
+
+    const btn = document.getElementById("quiz-submit-btn");
+    btn.disabled = true;
+    btn.textContent = "Submitting…";
+    try {
+      await setDoc(doc(db, "quizSubmissions", currentUser.uid + "_" + activeQuiz.id), submission);
+      submissions.push(Object.assign({ id: currentUser.uid + "_" + activeQuiz.id }, submission));
+      clearDraft(activeQuiz.id);
+      showQuizResults(activeQuiz.id);
+    } catch (e) {
+      err.textContent = "Couldn't submit right now. Your answers are still saved — try again.";
+      err.classList.remove("hidden");
+      saveDraft(activeQuiz.id, activeAnswers);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = "Submit quiz";
+    }
+  });
+
+  function showQuizResults(quizId){
+    const sub = submissionFor(quizId);
+    if (!sub){ renderQuizList(); return; }
+    showQuizView("result");
+
+    document.getElementById("quiz-result-title").textContent = sub.quizTitle;
+    document.getElementById("quiz-result-score").textContent = sub.score + "/" + sub.total;
+    const pct = sub.total > 0 ? Math.round((sub.score / sub.total) * 100) : 0;
+    document.getElementById("quiz-result-pct").textContent = pct + "% · submitted " + new Date(sub.submittedAt).toLocaleString();
+
+    const list = document.getElementById("quiz-result-list");
+    list.innerHTML = (sub.results || []).map(function(r, i){
       const cls = r.correct ? "correct" : "incorrect";
       const mark = r.correct ? "&#10003; Correct" : "&#10005; Incorrect";
       let html = '<div class="card feedback-card ' + cls + '">' +
-        '<div class="row-between" style="align-items:center; margin-bottom:10px;">' +
-        '<span class="mono-small">Question ' + (i+1) + '</span>' +
-        '<span class="feedback-title ' + cls + '" style="font-size:0.85rem;">' + mark + '</span></div>' +
-        '<div style="font-size:0.98rem; line-height:1.6; margin-bottom:10px;">' + textToHtml(q.question) + '</div>' +
-        '<div style="font-size:0.85rem; color:var(--text-dim);">Your answer: <span style="color:var(--text);">' +
-        (r.userAnswer === "" ? "<em>blank</em>" : escapeHtml(r.userAnswer)) + '</span></div>';
+        '<div class="mono-small" style="margin-bottom:8px;">Question ' + (i+1) + '</div>' +
+        '<div style="font-size:0.95rem; line-height:1.6; margin-bottom:10px;">' + textToHtml(r.question) + '</div>' +
+        '<div class="feedback-title ' + cls + '" style="font-size:0.9rem;">' + mark + '</div>' +
+        '<div style="margin-top:8px; font-size:0.85rem; color:var(--text-dim);">Your answer: <span style="color:var(--text);">' +
+          (r.userAnswer === "" ? "(blank)" : escapeHtml(r.userAnswer)) + '</span></div>';
       if (!r.correct){
-        html += '<div style="font-size:0.85rem; color:var(--text-dim); margin-top:4px;">Correct answer: <span style="color:var(--green);">' + escapeHtml(q.answer) + '</span></div>';
+        html += '<div style="margin-top:4px; font-size:0.85rem; color:var(--text-dim);">Correct answer: <span style="color:var(--green);">' + escapeHtml(r.correctAnswer) + '</span></div>';
       }
-      if (q.explanation){
-        html += '<div style="margin-top:10px; font-size:0.86rem; color:var(--text-dim);">' + textToHtml(q.explanation) + '</div>';
+      if (r.explanation){
+        html += '<div style="margin-top:8px; font-size:0.85rem; color:var(--text-dim);">' + textToHtml(r.explanation) + '</div>';
       }
       return html + '</div>';
-    }).join("");
-    renderMathIn(body);
-    document.getElementById("quiz-take-actions").innerHTML = "";
-  }
-
-  // ---------------- My results (student) ----------------
-  async function renderMyResults(){
-    const solvedCount = problems.length === 0 ? 0 :
-      (await Promise.all(problems.map(function(p){ return getProgress(p.id); })))
-        .filter(function(pr){ return pr.solved; }).length;
-    document.getElementById("stat-solved").textContent = solvedCount;
-    document.getElementById("stat-attempts").textContent = attempts.length;
-
-    const submitted = Object.keys(submissions)
-      .map(function(k){ return submissions[k]; })
-      .filter(function(s){ return s.submitted; });
-    document.getElementById("stat-quizzes").textContent = submitted.length;
-
-    const quizList = document.getElementById("results-quiz-list");
-    if (submitted.length === 0){
-      quizList.innerHTML = '<p class="dim">No quizzes submitted yet.</p>';
-    } else {
-      quizList.innerHTML = submitted
-        .sort(function(a,b){ return (b.submittedAt||0) - (a.submittedAt||0); })
-        .map(function(s){
-          const qz = quizzes.find(function(q){ return q.id === s.quizId; });
-          const pct = s.total ? Math.round((s.score / s.total) * 100) : 0;
-          return '<div class="leader-row"><span>' + escapeHtml(qz ? qz.title : "(quiz removed)") + '</span>' +
-            '<span class="mono-small">' + s.score + '/' + s.total + ' &middot; ' + pct + '%</span></div>';
-        }).join("");
-    }
-
-    const list = document.getElementById("history-list");
-    if (attempts.length === 0){
-      list.innerHTML = '<p class="dim">No attempts yet — work through your problems to see history here.</p>';
-      return;
-    }
-    list.innerHTML = attempts.map(function(h){
-      const mark = h.correct ? '<span style="color:var(--green);">&#10003;</span>' : '<span style="color:var(--danger);">&#10005;</span>';
-      return '<div class="card"><div class="row-between">' +
-        '<div style="font-size:0.9rem;">' + textToHtml(h.question) + '</div>' + mark +
-        '</div><div style="margin-top:8px; font-size:0.82rem; color:var(--text-dim);">' +
-        'Your answer: <span style="color:var(--text);">' + escapeHtml(h.userAnswer) + '</span> &middot; attempt ' + h.attemptNumber + ' of ' + MAX_ATTEMPTS +
-        '</div><div class="mono-small" style="margin-top:4px;">' + new Date(h.timestamp).toLocaleString() + '</div></div>';
     }).join("");
     renderMathIn(list);
   }
 
-  // ---------------- Dashboard (coach) ----------------
+  // ---------------- Student: My results ----------------
+  async function renderMyResults(){
+    const solvedCount = problems.length === 0 ? 0 : (await Promise.all(problems.map(function(p){ return getProgress(p.id); }))).filter(function(pr){ return pr.solved; }).length;
+    document.getElementById("stat-attempts").textContent = solvedCount;
+    document.getElementById("stat-correct").textContent = attempts.length;
+    document.getElementById("stat-accuracy").textContent = problems.length;
+
+    const list = document.getElementById("history-list");
+    let html = "";
+
+    if (submissions.length > 0){
+      html += '<span class="eyebrow">Quiz scores</span>';
+      html += submissions.slice().sort(function(a,b){ return (b.submittedAt||0)-(a.submittedAt||0); }).map(function(s){
+        const pct = s.total > 0 ? Math.round((s.score / s.total) * 100) : 0;
+        return '<div class="card"><div class="row-between">' +
+          '<div><div style="font-weight:600;">' + escapeHtml(s.quizTitle) + '</div>' +
+          '<div class="mono-small" style="margin-top:4px;">' + new Date(s.submittedAt).toLocaleString() + '</div></div>' +
+          '<span class="pill done">' + s.score + '/' + s.total + ' &middot; ' + pct + '%</span>' +
+        '</div></div>';
+      }).join("");
+      html += '<div class="divider"></div>';
+    }
+
+    html += '<span class="eyebrow">Problem attempts</span>';
+    if (attempts.length === 0){
+      html += '<p class="dim">No attempts yet — work through your problems to see your history here.</p>';
+    } else {
+      html += attempts.map(function(h){
+        const mark = h.correct ? '<span style="color:var(--green);">&#10003;</span>' : '<span style="color:var(--danger);">&#10005;</span>';
+        return '<div class="card"><div class="row-between">' +
+          '<div style="font-size:0.9rem;">' + textToHtml(h.question) + '</div>' + mark +
+          '</div><div style="margin-top:8px; font-size:0.82rem; color:var(--text-dim);">' +
+          'Your answer: <span style="color:var(--text);">' + escapeHtml(h.userAnswer) + '</span> &middot; attempt ' + h.attemptNumber + ' of ' + MAX_ATTEMPTS +
+          '</div><div class="mono-small" style="margin-top:4px;">' + new Date(h.timestamp).toLocaleString() + '</div></div>';
+      }).join("");
+    }
+
+    list.innerHTML = html;
+    renderMathIn(list);
+  }
+
+  // ---------------- Coach: dashboard ----------------
   function renderDashboard(){
     const byStudent = {};
     attempts.forEach(function(a){
@@ -1377,18 +1438,16 @@
     }
 
     const subsEl = document.getElementById("dash-quiz-subs");
-    const submitted = allSubmissions.filter(function(s){ return s.submitted; });
-    if (submitted.length === 0){
+    if (submissions.length === 0){
       subsEl.innerHTML = '<p class="dim">No quizzes submitted yet.</p>';
     } else {
-      subsEl.innerHTML = submitted.map(function(s){
-        const qz = quizzes.find(function(q){ return q.id === s.quizId; });
-        const pct = s.total ? Math.round((s.score / s.total) * 100) : 0;
+      subsEl.innerHTML = submissions.map(function(s){
+        const pct = s.total > 0 ? Math.round((s.score / s.total) * 100) : 0;
         return '<div class="card"><div class="row-between">' +
-          '<div><div style="font-size:0.92rem; font-weight:600;">' + escapeHtml(qz ? qz.title : "(quiz removed)") + '</div>' +
-          '<div class="mono-small" style="margin-top:4px;">' + escapeHtml(s.studentUsername || "(unknown)") + '</div></div>' +
-          '<span class="pill done">' + s.score + '/' + s.total + ' &middot; ' + pct + '%</span></div>' +
-          '<div class="mono-small" style="margin-top:8px;">' + new Date(s.submittedAt).toLocaleString() + '</div></div>';
+          '<div><div style="font-weight:600;">' + escapeHtml(s.studentUsername || "(unknown)") + '</div>' +
+          '<div class="mono-small" style="margin-top:4px;">' + escapeHtml(s.quizTitle) + ' &middot; ' + new Date(s.submittedAt).toLocaleString() + '</div></div>' +
+          '<span class="pill done">' + s.score + '/' + s.total + ' &middot; ' + pct + '%</span>' +
+        '</div></div>';
       }).join("");
     }
 
@@ -1408,75 +1467,81 @@
 
   // ---------------- Profile (both roles) ----------------
   function renderProfile(){
-    document.getElementById("profile-meta").textContent =
-      "Signed in as " + currentProfile.username + " (" + currentProfile.role + ")" +
-      (currentProfile.createdAt ? " · joined " + new Date(currentProfile.createdAt).toLocaleDateString() : "");
+    document.getElementById("profile-role-line").textContent =
+      "Signed in as " + currentProfile.username + " · " + currentProfile.role;
     document.getElementById("profile-username").value = currentProfile.username || "";
     document.getElementById("profile-email").value = currentProfile.email || "";
     document.getElementById("profile-current-password").value = "";
     document.getElementById("profile-new-password").value = "";
     document.getElementById("profile-confirm-password").value = "";
-    clearMsg(document.getElementById("profile-details-msg"));
-    clearMsg(document.getElementById("profile-password-msg"));
+    document.getElementById("profile-error").classList.add("hidden");
+    document.getElementById("profile-success").classList.add("hidden");
   }
 
   document.getElementById("profile-save-btn").addEventListener("click", async function(){
-    const msg = document.getElementById("profile-details-msg");
+    const err = document.getElementById("profile-error");
+    const ok = document.getElementById("profile-success");
+    err.classList.add("hidden");
+    ok.classList.add("hidden");
+    function fail(msg){ err.textContent = msg; err.classList.remove("hidden"); }
+
     const newUsername = document.getElementById("profile-username").value.trim();
     const newEmail = document.getElementById("profile-email").value.trim();
-    clearMsg(msg);
+    const currentPassword = document.getElementById("profile-current-password").value;
+    const newPassword = document.getElementById("profile-new-password").value;
+    const confirmPassword = document.getElementById("profile-confirm-password").value;
 
-    if (newUsername.length < 2) return setMsg(msg, "error", "Username must be at least 2 characters.");
-    if (!/^[a-zA-Z0-9_.-]+$/.test(newUsername)) return setMsg(msg, "error", "Username can only contain letters, numbers, and _ . -");
-    if (!isValidEmail(newEmail)) return setMsg(msg, "error", "That email address doesn't look right.");
+    if (newUsername.length < 2) return fail("Username must be at least 2 characters.");
+    if (!/^[a-zA-Z0-9_.-]+$/.test(newUsername)) return fail("Username can only contain letters, numbers, and _ . -");
+    if (!isValidEmail(newEmail)) return fail("That doesn't look like a valid email address.");
+
+    const wantsPasswordChange = newPassword !== "" || confirmPassword !== "";
+    if (wantsPasswordChange){
+      if (currentPassword === "") return fail("Enter your current password to change it.");
+      const currentHash = await sha256Hex(currentPassword);
+      if (currentHash !== currentProfile.passwordHash) return fail("Your current password isn't correct.");
+      if (newPassword.length < 6) return fail("New password must be at least 6 characters.");
+      if (newPassword !== confirmPassword) return fail("New passwords don't match.");
+    }
 
     const usernameChanged = newUsername.toLowerCase() !== String(currentProfile.username).toLowerCase();
-    try {
-      if (usernameChanged){
+    if (usernameChanged){
+      try {
         const existing = await getDocs(query(usersCol, where("usernameLower", "==", newUsername.toLowerCase())));
         const taken = existing.docs.some(function(d){ return d.id !== currentUser.uid; });
-        if (taken) return setMsg(msg, "error", "That username is already taken.");
+        if (taken) return fail("That username is already taken.");
+      } catch (e) {
+        return fail("Couldn't check that username. Try again.");
       }
-      await updateDoc(doc(db, "users", currentUser.uid), {
-        username: newUsername,
-        usernameLower: newUsername.toLowerCase(),
-        email: newEmail
-      });
-      currentProfile.username = newUsername;
-      currentProfile.email = newEmail;
+    }
+
+    const updated = Object.assign({}, currentProfile, {
+      username: newUsername,
+      usernameLower: newUsername.toLowerCase(),
+      email: newEmail
+    });
+    if (wantsPasswordChange){
+      updated.passwordHash = await sha256Hex(newPassword);
+    }
+
+    const btn = document.getElementById("profile-save-btn");
+    btn.disabled = true;
+    btn.textContent = "Saving…";
+    try {
+      await setDoc(doc(db, "users", currentUser.uid), updated);
+      currentProfile = updated;
       buildTopbarTabs();
       document.querySelectorAll("#topbar-tabs .tab-btn").forEach(function(b){
         b.classList.toggle("active", b.dataset.tab === "profile");
       });
-      setMsg(msg, "ok", "Profile updated." + (usernameChanged ? " Note: work assigned to you before the change still shows your old name." : ""));
+      renderProfile();
+      ok.textContent = "Profile updated.";
+      ok.classList.remove("hidden");
     } catch (e) {
-      setMsg(msg, "error", "Couldn't save your changes. Try again.");
-    }
-  });
-
-  document.getElementById("profile-password-btn").addEventListener("click", async function(){
-    const msg = document.getElementById("profile-password-msg");
-    const currentPw = document.getElementById("profile-current-password").value;
-    const newPw = document.getElementById("profile-new-password").value;
-    const confirmPw = document.getElementById("profile-confirm-password").value;
-    clearMsg(msg);
-
-    if (currentPw === "") return setMsg(msg, "error", "Enter your current password.");
-    if (newPw.length < 6) return setMsg(msg, "error", "New password must be at least 6 characters.");
-    if (newPw !== confirmPw) return setMsg(msg, "error", "Those passwords don't match.");
-
-    try {
-      const currentHash = await sha256Hex(currentPw);
-      if (currentHash !== currentProfile.passwordHash) return setMsg(msg, "error", "Your current password isn't correct.");
-      const newHash = await sha256Hex(newPw);
-      await updateDoc(doc(db, "users", currentUser.uid), { passwordHash: newHash });
-      currentProfile.passwordHash = newHash;
-      document.getElementById("profile-current-password").value = "";
-      document.getElementById("profile-new-password").value = "";
-      document.getElementById("profile-confirm-password").value = "";
-      setMsg(msg, "ok", "Password updated.");
-    } catch (e) {
-      setMsg(msg, "error", "Couldn't update your password. Try again.");
+      fail("Couldn't save your changes. Try again.");
+    } finally {
+      btn.disabled = false;
+      btn.textContent = "Save changes";
     }
   });
 
@@ -1485,24 +1550,28 @@
     showStatus(null, null);
     current = 0;
     progressCache = {};
-    submissions = {};
-    allSubmissions = [];
-    activeQuizId = null;
+    activeQuiz = null;
+    activeAnswers = {};
     currentUser = { uid: uid };
     currentProfile = profile;
     buildTopbarTabs();
+
     if (currentProfile.role === "coach"){
       await loadStudents();
-      populateStudentSelect();
+      populateStudentSelects();
+      builderQuestions = [{ question: "", answer: "", explanation: "" }];
+      renderBuilder();
+      setAssignMode("problem");
       await loadAllProblemsForCoach();
       await loadAllAttemptsForCoach();
       await loadAllQuizzesForCoach();
-      renderQuizBuilder();
+      await loadAllSubmissionsForCoach();
       showSection("add");
     } else {
       await loadMyProblems();
       await loadMyAttempts();
       await loadMyQuizzes();
+      await loadMySubmissions();
       showSection("problems");
     }
   }
