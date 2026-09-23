@@ -213,8 +213,18 @@
 
       <!-- Single problem builder -->
       <div id="assign-problem-pane">
-        <label for="add-student-select">Student</label>
-        <select id="add-student-select"></select>
+        <div class="mode-toggle" style="margin-top:0; margin-bottom:14px;">
+          <button class="tab-btn active btn-small" id="add-target-student-btn">One student</button>
+          <button class="tab-btn btn-small" id="add-target-class-btn">Whole class</button>
+        </div>
+        <div id="add-target-student-wrap">
+          <label for="add-student-select">Student</label>
+          <select id="add-student-select"></select>
+        </div>
+        <div id="add-target-class-wrap" class="hidden">
+          <label for="add-class-select">Class</label>
+          <select id="add-class-select"></select>
+        </div>
         <div class="field-gap">
           <label for="q-text">Question</label>
           <textarea id="q-text" placeholder="e.g. What is the sum of the first 20 positive integers?"></textarea>
@@ -240,8 +250,18 @@
 
       <!-- Quiz builder -->
       <div id="assign-quiz-pane" class="hidden">
-        <label for="quiz-student-select">Student</label>
-        <select id="quiz-student-select"></select>
+        <div class="mode-toggle" style="margin-top:0; margin-bottom:14px;">
+          <button class="tab-btn active btn-small" id="quiz-target-student-btn">One student</button>
+          <button class="tab-btn btn-small" id="quiz-target-class-btn">Whole class</button>
+        </div>
+        <div id="quiz-target-student-wrap">
+          <label for="quiz-student-select">Student</label>
+          <select id="quiz-student-select"></select>
+        </div>
+        <div id="quiz-target-class-wrap" class="hidden">
+          <label for="quiz-class-select">Class</label>
+          <select id="quiz-class-select"></select>
+        </div>
         <div class="field-gap">
           <label for="quiz-title-input">Quiz title</label>
           <input type="text" id="quiz-title-input" placeholder="e.g. Week 3 — Algebra review" />
@@ -255,12 +275,51 @@
 
         <div id="quiz-form-error" class="error-text hidden"></div>
         <div style="margin-top:18px;">
-          <button class="btn" id="create-quiz-btn">Send quiz to student</button>
+          <button class="btn" id="create-quiz-btn">Send quiz</button>
         </div>
 
         <div class="divider">
           <span class="eyebrow" id="quiz-count-label">Sent quizzes</span>
           <div id="coach-quiz-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CLASSES TAB (both roles, different views) -->
+    <section id="tab-classes" class="hidden">
+      <div id="classes-coach-view" class="hidden">
+        <div class="row-between">
+          <div><span class="eyebrow">Your classes</span><h2>Classes</h2></div>
+          <button class="btn-ghost btn-small" id="refresh-classes-btn">Refresh</button>
+        </div>
+        <div style="margin-top:18px; max-width:340px;">
+          <label for="class-name-input">Class name</label>
+          <input type="text" id="class-name-input" placeholder="e.g. Period 3 Algebra" />
+          <div id="class-form-error" class="error-text hidden"></div>
+          <div style="margin-top:14px;">
+            <button class="btn" id="create-class-btn">Create class</button>
+          </div>
+        </div>
+        <div class="divider">
+          <div id="coach-classes-list"></div>
+        </div>
+      </div>
+
+      <div id="classes-student-view" class="hidden">
+        <span class="eyebrow">Join a class</span>
+        <h2>Classes</h2>
+        <div style="margin-top:18px; max-width:340px;">
+          <label for="join-class-code">Class code</label>
+          <input type="text" id="join-class-code" placeholder="e.g. 7K9MZP" style="text-transform:uppercase;" />
+          <div id="join-class-error" class="error-text hidden"></div>
+          <div id="join-class-success" class="ok-text hidden"></div>
+          <div style="margin-top:14px;">
+            <button class="btn" id="join-class-btn">Join class</button>
+          </div>
+        </div>
+        <div class="divider">
+          <span class="eyebrow">Your classes</span>
+          <div id="my-classes-list" style="margin-top:12px;"></div>
         </div>
       </div>
     </section>
@@ -360,23 +419,33 @@
 
     <!-- DASHBOARD TAB (coach only) -->
     <section id="tab-dashboard" class="hidden">
-      <span class="eyebrow">All students</span>
-      <h2>Dashboard</h2>
+      <div class="row-between">
+        <div><span class="eyebrow">All students</span><h2>Dashboard</h2></div>
+        <button class="btn-ghost btn-small" id="refresh-dashboard-btn">Refresh</button>
+      </div>
       <div id="dash-leaderboard" style="margin-top:20px;"></div>
+      <div class="divider">
+        <span class="eyebrow">Class attempt grids</span>
+        <p class="mono-small" style="margin:6px 0 12px;">Problem numbers across the top, students down the side, cell = attempts so far.</p>
+        <div id="dash-class-grids"></div>
+      </div>
       <div class="divider">
         <span class="eyebrow">Quiz submissions</span>
         <div id="dash-quiz-subs" style="margin-top:12px;"></div>
       </div>
       <div class="divider">
-        <span class="eyebrow">Recent attempts</span>
-        <div id="dash-recent" style="margin-top:12px;"></div>
+        <span class="eyebrow">Problem attempts</span>
+        <p class="mono-small" style="margin:6px 0 12px;">Every student's individually-assigned problems, with attempts so far on each.</p>
+        <div id="dash-problem-summary"></div>
       </div>
     </section>
 
     <!-- STUDENTS TAB (coach only) -->
     <section id="tab-students" class="hidden">
-      <span class="eyebrow">Roster</span>
-      <h2>Students</h2>
+      <div class="row-between">
+        <div><span class="eyebrow">Roster</span><h2>Students</h2></div>
+        <button class="btn-ghost btn-small" id="refresh-students-btn">Refresh</button>
+      </div>
       <p class="mono-small" style="margin-top:10px;">Email shows here only if the student added one to their profile.</p>
       <div id="students-list" style="margin-top:20px;"></div>
     </section>
@@ -427,7 +496,7 @@
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
   import {
     getFirestore, collection, addDoc, getDocs, getDoc, setDoc, doc,
-    query, where, orderBy, deleteDoc
+    query, where, orderBy, deleteDoc, documentId
   } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
 
   const firebaseConfig = {
@@ -478,6 +547,8 @@
   const attemptsCol = collection(db, "attempts");
   const quizzesCol = collection(db, "quizzes");
   const submissionsCol = collection(db, "quizSubmissions");
+  const classesCol = collection(db, "classes");
+  const progressCol = collection(db, "progress");
 
   async function sha256Hex(text){
     const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
@@ -554,12 +625,25 @@
   let current = 0;
   let progressCache = {};
 
+  // classes
+  let coachClasses = [];     // coach: classes they created
+  let myClasses = [];        // student: classes they've joined (hydrated)
+
+  // coach dashboard: every progress doc, so per-student/per-problem
+  // attempt counts can be looked up without one read per cell
+  let allProgress = [];
+  let progressMap = {};      // `${studentUid}_${problemId}` -> {attemptsUsed, solved}
+
   // quiz-taking state
   let activeQuiz = null;
   let activeAnswers = {};
 
   // coach quiz builder state
   let builderQuestions = [{ question: "", answer: "", explanation: "" }];
+
+  // coach "send to" state -- which pane sends to one student vs a whole class
+  let addTargetMode = "student";
+  let quizTargetMode = "student";
 
   // ---------------- Data layer ----------------
   async function loadMyProblems(){
@@ -637,6 +721,68 @@
     } catch (e) {
       submissions = [];
     }
+  }
+  async function loadCoachClasses(){
+    try {
+      const snap = await getDocs(query(classesCol, where("coachUid", "==", currentUser.uid)));
+      coachClasses = snap.docs.map(function(d){ return Object.assign({ id: d.id }, d.data()); });
+      coachClasses.sort(function(a, b){ return (a.createdAt || 0) - (b.createdAt || 0); });
+    } catch (e) {
+      showStatus("error", "Couldn't load your classes from the cloud.");
+    }
+  }
+  async function loadMyClasses(){
+    const ids = (currentProfile.classIds || []).slice(0, 30);
+    if (ids.length === 0){ myClasses = []; return; }
+    try {
+      const snap = await getDocs(query(classesCol, where(documentId(), "in", ids)));
+      myClasses = snap.docs.map(function(d){ return Object.assign({ id: d.id }, d.data()); });
+    } catch (e) {
+      myClasses = [];
+    }
+  }
+  async function loadAllProgressForCoach(){
+    try {
+      const snap = await getDocs(progressCol);
+      allProgress = snap.docs.map(function(d){ return Object.assign({ id: d.id }, d.data()); });
+      progressMap = {};
+      allProgress.forEach(function(p){ progressMap[p.studentUid + "_" + p.problemId] = p; });
+    } catch (e) {
+      allProgress = [];
+      progressMap = {};
+    }
+  }
+  // Firestore doc IDs generated client-side are random and unique without
+  // any network round trip -- doc(problemsCol) just builds a reference,
+  // it doesn't write anything. Used to tag every copy of a
+  // class-wide problem/quiz with the same "this was one assignment" id.
+  function newGroupId(){ return doc(problemsCol).id; }
+
+  // Six characters, no ambiguous-looking ones (0/O, 1/I), retried a
+  // few times on the rare chance of a collision.
+  async function generateUniqueClassCode(){
+    const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+    for (let attempt = 0; attempt < 6; attempt++){
+      let code = "";
+      for (let i = 0; i < 6; i++) code += chars[Math.floor(Math.random() * chars.length)];
+      try {
+        const snap = await getDocs(query(classesCol, where("code", "==", code)));
+        if (snap.empty) return code;
+      } catch (e) { return code; }
+    }
+    return Date.now().toString(36).toUpperCase().slice(-6);
+  }
+  // Removes the class and un-enrolls its members, but leaves any
+  // problems/quizzes already sent to those students untouched --
+  // deleting past assignments would be a much more destructive,
+  // surprising side effect of deleting a class.
+  async function deleteClassAndUnenroll(classId){
+    const members = students.filter(function(s){ return (s.classIds || []).includes(classId); });
+    for (const s of members){
+      const updated = Object.assign({}, s, { classIds: (s.classIds || []).filter(function(id){ return id !== classId; }) });
+      try { await setDoc(doc(db, "users", s.uid), updated); } catch (e) {}
+    }
+    try { await deleteDoc(doc(db, "classes", classId)); } catch (e) {}
   }
   async function getProgress(problemId){
     if (progressCache[problemId]) return progressCache[problemId];
@@ -776,6 +922,7 @@
   const sections = {
     auth: document.getElementById("tab-auth"),
     add: document.getElementById("tab-add"),
+    classes: document.getElementById("tab-classes"),
     problems: document.getElementById("tab-problems"),
     quizzes: document.getElementById("tab-quizzes"),
     results: document.getElementById("tab-results"),
@@ -798,6 +945,12 @@
     if (key === "dashboard") renderDashboard();
     if (key === "students") renderStudents();
     if (key === "profile") renderProfile();
+    if (key === "classes"){
+      const isCoach = currentProfile.role === "coach";
+      document.getElementById("classes-coach-view").classList.toggle("hidden", !isCoach);
+      document.getElementById("classes-student-view").classList.toggle("hidden", isCoach);
+      if (isCoach) renderCoachClasses(); else renderMyClasses();
+    }
   }
 
   function buildTopbarTabs(){
@@ -810,8 +963,8 @@
     wrap.appendChild(nameSpan);
 
     const tabsForRole = currentProfile.role === "coach"
-      ? [["add","Assign"],["dashboard","Dashboard"],["students","Students"],["profile","Profile"]]
-      : [["problems","Problems"],["quizzes","Quizzes"],["results","My results"],["profile","Profile"]];
+      ? [["add","Assign"],["classes","Classes"],["dashboard","Dashboard"],["students","Students"],["profile","Profile"]]
+      : [["problems","Problems"],["quizzes","Quizzes"],["classes","Classes"],["results","My results"],["profile","Profile"]];
 
     tabsForRole.forEach(function(pair){
       const btn = document.createElement("button");
@@ -839,6 +992,27 @@
     document.getElementById("assign-quiz-pane").classList.toggle("hidden", mode !== "quiz");
   }
 
+  // ---------------- Coach: send-to-one-student vs send-to-whole-class ----------------
+  document.getElementById("add-target-student-btn").addEventListener("click", function(){ setAddTarget("student"); });
+  document.getElementById("add-target-class-btn").addEventListener("click", function(){ setAddTarget("class"); });
+  function setAddTarget(mode){
+    addTargetMode = mode;
+    document.getElementById("add-target-student-btn").classList.toggle("active", mode === "student");
+    document.getElementById("add-target-class-btn").classList.toggle("active", mode === "class");
+    document.getElementById("add-target-student-wrap").classList.toggle("hidden", mode !== "student");
+    document.getElementById("add-target-class-wrap").classList.toggle("hidden", mode !== "class");
+  }
+
+  document.getElementById("quiz-target-student-btn").addEventListener("click", function(){ setQuizTarget("student"); });
+  document.getElementById("quiz-target-class-btn").addEventListener("click", function(){ setQuizTarget("class"); });
+  function setQuizTarget(mode){
+    quizTargetMode = mode;
+    document.getElementById("quiz-target-student-btn").classList.toggle("active", mode === "student");
+    document.getElementById("quiz-target-class-btn").classList.toggle("active", mode === "class");
+    document.getElementById("quiz-target-student-wrap").classList.toggle("hidden", mode !== "student");
+    document.getElementById("quiz-target-class-wrap").classList.toggle("hidden", mode !== "class");
+  }
+
   // ---------------- Coach: single problem ----------------
   const qText = document.getElementById("q-text");
   const qAnswer = document.getElementById("q-answer");
@@ -846,6 +1020,8 @@
   const formError = document.getElementById("form-error");
   const studentSelect = document.getElementById("add-student-select");
   const quizStudentSelect = document.getElementById("quiz-student-select");
+  const addClassSelect = document.getElementById("add-class-select");
+  const quizClassSelect = document.getElementById("quiz-class-select");
 
   function populateStudentSelects(){
     [studentSelect, quizStudentSelect].forEach(function(sel){
@@ -866,56 +1042,126 @@
     });
   }
 
+  function populateClassSelects(){
+    [addClassSelect, quizClassSelect].forEach(function(sel){
+      sel.innerHTML = "";
+      if (coachClasses.length === 0){
+        const opt = document.createElement("option");
+        opt.textContent = "No classes yet -- create one in the Classes tab";
+        opt.value = "";
+        sel.appendChild(opt);
+        return;
+      }
+      coachClasses.forEach(function(c){
+        const opt = document.createElement("option");
+        opt.value = c.id;
+        opt.textContent = c.name + " (" + c.code + ")";
+        sel.appendChild(opt);
+      });
+    });
+  }
+
   document.getElementById("add-problem-btn").addEventListener("click", async function(){
-    const studentUid = studentSelect.value;
-    const student = students.find(function(s){ return s.uid === studentUid; });
-    if (!student){
-      formError.textContent = "Choose a student first.";
-      formError.classList.remove("hidden");
-      return;
-    }
-    if (qText.value.trim() === "" || qAnswer.value.trim() === ""){
+    formError.classList.add("hidden");
+    const question = qText.value.trim();
+    const answer = qAnswer.value.trim();
+    const explanation = qExplain.value.trim();
+    if (question === "" || answer === ""){
       formError.textContent = "Enter both a question and an answer first.";
       formError.classList.remove("hidden");
       return;
     }
-    formError.classList.add("hidden");
-    const ok = await addProblem({
-      studentUid: studentUid,
-      studentUsername: student.username,
-      question: qText.value.trim(),
-      answer: qAnswer.value.trim(),
-      explanation: qExplain.value.trim()
-    });
-    if (!ok){
-      formError.textContent = "Couldn't save to the cloud. Try again.";
-      formError.classList.remove("hidden");
-      return;
+
+    const btn = this;
+    btn.disabled = true;
+    btn.textContent = "Sending…";
+
+    try {
+      if (addTargetMode === "class"){
+        const classId = addClassSelect.value;
+        const cls = coachClasses.find(function(c){ return c.id === classId; });
+        if (!cls){
+          formError.textContent = "Choose a class first.";
+          formError.classList.remove("hidden");
+          return;
+        }
+        const members = students.filter(function(s){ return (s.classIds || []).includes(classId); });
+        if (members.length === 0){
+          formError.textContent = "This class doesn't have any students yet.";
+          formError.classList.remove("hidden");
+          return;
+        }
+        const groupId = newGroupId();
+        for (const s of members){
+          await addProblem({
+            studentUid: s.uid,
+            studentUsername: s.username,
+            question: question, answer: answer, explanation: explanation,
+            classId: classId, className: cls.name, assignmentGroupId: groupId
+          });
+        }
+      } else {
+        const studentUid = studentSelect.value;
+        const student = students.find(function(s){ return s.uid === studentUid; });
+        if (!student){
+          formError.textContent = "Choose a student first.";
+          formError.classList.remove("hidden");
+          return;
+        }
+        const ok = await addProblem({ studentUid: studentUid, studentUsername: student.username, question: question, answer: answer, explanation: explanation });
+        if (!ok){
+          formError.textContent = "Couldn't save to the cloud. Try again.";
+          formError.classList.remove("hidden");
+          return;
+        }
+      }
+      qText.value = ""; qAnswer.value = ""; qExplain.value = "";
+      await loadAllProblemsForCoach();
+      renderProblemList();
+    } finally {
+      btn.disabled = false;
+      btn.textContent = "+ Add problem";
     }
-    qText.value = ""; qAnswer.value = ""; qExplain.value = "";
-    await loadAllProblemsForCoach();
-    renderProblemList();
   });
 
   function renderProblemList(){
     const label = document.getElementById("problem-count-label");
     label.textContent = problems.length + (problems.length === 1 ? " problem assigned" : " problems assigned");
+
+    // group fanned-out copies of the same class assignment into one card
+    const groups = {};
+    problems.forEach(function(p){
+      const key = p.assignmentGroupId || p.id;
+      if (!groups[key]) groups[key] = [];
+      groups[key].push(p);
+    });
+    const groupKeys = Object.keys(groups).sort(function(a, b){
+      return (groups[a][0].createdAt || 0) - (groups[b][0].createdAt || 0);
+    });
+
     const list = document.getElementById("problem-list");
-    if (problems.length === 0){
+    if (groupKeys.length === 0){
       list.innerHTML = '<p class="dim">Nothing assigned yet.</p>';
       return;
     }
-    list.innerHTML = problems.map(function(p, i){
+    list.innerHTML = groupKeys.map(function(key, i){
+      const group = groups[key];
+      const first = group[0];
+      const isClassGroup = group.length > 1 && first.classId;
+      const meta = isClassGroup
+        ? 'sent to whole class: ' + escapeHtml(first.className || "class") + ' (' + group.length + ' students) &middot; answer: ' + escapeHtml(first.answer)
+        : 'for ' + escapeHtml(first.studentUsername) + ' &middot; answer: ' + escapeHtml(first.answer);
       return '<div class="card"><div class="row-between">' +
-        '<div><div class="mono-small" style="margin-bottom:6px;">#' + (i+1) + ' &middot; for ' + escapeHtml(p.studentUsername) + ' &middot; answer: ' + escapeHtml(p.answer) + '</div>' +
-        '<div style="font-size:0.92rem;">' + textToHtml(p.question) + '</div></div>' +
-        '<button class="icon-btn" data-delete-id="' + p.id + '" aria-label="Delete problem">&#10005;</button>' +
+        '<div><div class="mono-small" style="margin-bottom:6px;">#' + (i+1) + ' &middot; ' + meta + '</div>' +
+        '<div style="font-size:0.92rem;">' + textToHtml(first.question) + '</div></div>' +
+        '<button class="icon-btn" data-delete-group="' + key + '" aria-label="Delete problem">&#10005;</button>' +
         '</div></div>';
     }).join("");
     renderMathIn(list);
-    list.querySelectorAll("[data-delete-id]").forEach(function(btn){
+    list.querySelectorAll("[data-delete-group]").forEach(function(btn){
       btn.addEventListener("click", async function(){
-        await removeProblem(btn.dataset.deleteId);
+        const group = groups[btn.dataset.deleteGroup] || [];
+        for (const p of group){ await removeProblem(p.id); }
         await loadAllProblemsForCoach();
         renderProblemList();
       });
@@ -964,10 +1210,7 @@
     err.classList.add("hidden");
     function fail(msg){ err.textContent = msg; err.classList.remove("hidden"); }
 
-    const studentUid = quizStudentSelect.value;
-    const student = students.find(function(s){ return s.uid === studentUid; });
     const title = document.getElementById("quiz-title-input").value.trim();
-    if (!student) return fail("Choose a student first.");
     if (title === "") return fail("Give the quiz a title.");
 
     const cleaned = builderQuestions
@@ -980,16 +1223,44 @@
     const incomplete = cleaned.some(function(q){ return q.question === "" || q.answer === ""; });
     if (incomplete) return fail("Every question needs both a question and an answer.");
 
+    let targets = [];
+    let classMeta = null;
+    if (quizTargetMode === "class"){
+      const classId = quizClassSelect.value;
+      const cls = coachClasses.find(function(c){ return c.id === classId; });
+      if (!cls) return fail("Choose a class first.");
+      targets = students.filter(function(s){ return (s.classIds || []).includes(classId); });
+      if (targets.length === 0) return fail("This class doesn't have any students yet.");
+      classMeta = { classId: classId, className: cls.name };
+    } else {
+      const student = students.find(function(s){ return s.uid === quizStudentSelect.value; });
+      if (!student) return fail("Choose a student first.");
+      targets = [student];
+    }
+
+    const btn = this;
+    btn.disabled = true;
+    btn.textContent = "Sending…";
+
     try {
-      await addDoc(quizzesCol, {
-        studentUid: studentUid,
-        studentUsername: student.username,
-        title: title,
-        questions: cleaned,
-        createdAt: Date.now()
-      });
+      const groupId = newGroupId();
+      for (const s of targets){
+        const payload = {
+          studentUid: s.uid,
+          studentUsername: s.username,
+          title: title,
+          questions: cleaned,
+          createdAt: Date.now(),
+          assignmentGroupId: groupId
+        };
+        if (classMeta){ payload.classId = classMeta.classId; payload.className = classMeta.className; }
+        await addDoc(quizzesCol, payload);
+      }
     } catch (e) {
-      return fail("Couldn't send the quiz. Try again.");
+      fail("Couldn't send the quiz. Try again.");
+      btn.disabled = false;
+      btn.textContent = "Send quiz";
+      return;
     }
 
     document.getElementById("quiz-title-input").value = "";
@@ -997,31 +1268,57 @@
     renderBuilder();
     await loadAllQuizzesForCoach();
     renderCoachQuizList();
+    btn.disabled = false;
+    btn.textContent = "Send quiz";
   });
 
   function renderCoachQuizList(){
+    // group fanned-out copies of a class-wide quiz into one card
+    const groups = {};
+    quizzes.forEach(function(q){
+      const key = q.assignmentGroupId || q.id;
+      if (!groups[key]) groups[key] = [];
+      groups[key].push(q);
+    });
+    const groupKeys = Object.keys(groups).sort(function(a, b){
+      return (groups[a][0].createdAt || 0) - (groups[b][0].createdAt || 0);
+    });
+
     const label = document.getElementById("quiz-count-label");
-    label.textContent = quizzes.length + (quizzes.length === 1 ? " quiz sent" : " quizzes sent");
+    label.textContent = groupKeys.length + (groupKeys.length === 1 ? " quiz sent" : " quizzes sent");
+
     const list = document.getElementById("coach-quiz-list");
-    if (quizzes.length === 0){
+    if (groupKeys.length === 0){
       list.innerHTML = '<p class="dim">No quizzes sent yet.</p>';
       return;
     }
-    list.innerHTML = quizzes.map(function(qz){
-      const sub = submissions.find(function(s){ return s.quizId === qz.id; });
-      const statusPill = sub
-        ? '<span class="pill done">Submitted ' + sub.score + '/' + sub.total + '</span>'
-        : '<span class="pill">Not submitted</span>';
+    list.innerHTML = groupKeys.map(function(key){
+      const group = groups[key];
+      const first = group[0];
+      const isClassGroup = group.length > 1 && first.classId;
+      let target, statusPill;
+      if (isClassGroup){
+        const submittedCount = group.filter(function(q){ return submissionFor(q.id); }).length;
+        target = 'whole class: ' + escapeHtml(first.className || "class") + ' (' + group.length + ' students)';
+        statusPill = '<span class="pill' + (submittedCount === group.length ? ' done' : '') + '">' + submittedCount + '/' + group.length + ' submitted</span>';
+      } else {
+        const sub = submissionFor(first.id);
+        target = 'for ' + escapeHtml(first.studentUsername);
+        statusPill = sub
+          ? '<span class="pill done">Submitted ' + sub.score + '/' + sub.total + '</span>'
+          : '<span class="pill">Not submitted</span>';
+      }
       return '<div class="card"><div class="row-between">' +
-        '<div><div style="font-weight:600; margin-bottom:4px;">' + escapeHtml(qz.title) + '</div>' +
-        '<div class="mono-small">for ' + escapeHtml(qz.studentUsername) + ' &middot; ' + (qz.questions || []).length + ' questions</div>' +
+        '<div><div style="font-weight:600; margin-bottom:4px;">' + escapeHtml(first.title) + '</div>' +
+        '<div class="mono-small">' + target + ' &middot; ' + (first.questions || []).length + ' questions</div>' +
         '<div style="margin-top:8px;">' + statusPill + '</div></div>' +
-        '<button class="icon-btn" data-delete-quiz="' + qz.id + '" aria-label="Delete quiz">&#10005;</button>' +
+        '<button class="icon-btn" data-delete-quizgroup="' + key + '" aria-label="Delete quiz">&#10005;</button>' +
         '</div></div>';
     }).join("");
-    list.querySelectorAll("[data-delete-quiz]").forEach(function(btn){
+    list.querySelectorAll("[data-delete-quizgroup]").forEach(function(btn){
       btn.addEventListener("click", async function(){
-        await removeQuiz(btn.dataset.deleteQuiz);
+        const group = groups[btn.dataset.deleteQuizgroup] || [];
+        for (const q of group){ await removeQuiz(q.id); }
         await loadAllQuizzesForCoach();
         renderCoachQuizList();
       });
@@ -1040,13 +1337,194 @@
         ? '<a href="mailto:' + escapeHtml(s.email) + '" style="color:var(--green-2);">' + escapeHtml(s.email) + '</a>'
         : '<span class="dim">No email on file</span>';
       const probCount = problems.filter(function(p){ return p.studentUid === s.uid; }).length;
-      const quizCount = quizzes.filter(function(q){ return q.studentUid === s.uid; }).length;
+      const quizGroupCount = new Set(
+        quizzes.filter(function(q){ return q.studentUid === s.uid; })
+               .map(function(q){ return q.assignmentGroupId || q.id; })
+      ).size;
+      const classPills = (s.classIds || [])
+        .map(function(id){ return coachClasses.find(function(c){ return c.id === id; }); })
+        .filter(Boolean)
+        .map(function(c){ return '<span class="pill">' + escapeHtml(c.name) + '</span>'; })
+        .join(" ");
       return '<div class="card">' +
         '<div style="font-weight:600; margin-bottom:6px;">' + escapeHtml(s.username) + '</div>' +
         '<div style="font-size:0.88rem; margin-bottom:8px;">' + email + '</div>' +
-        '<div class="mono-small">' + probCount + ' problems &middot; ' + quizCount + ' quizzes</div>' +
+        '<div class="mono-small" style="margin-bottom:8px;">' + probCount + ' problems &middot; ' + quizGroupCount + ' quizzes</div>' +
+        (classPills ? '<div style="display:flex; gap:6px; flex-wrap:wrap;">' + classPills + '</div>' : '') +
       '</div>';
     }).join("");
+  }
+
+  document.getElementById("refresh-students-btn").addEventListener("click", async function(){
+    await loadStudents();
+    await loadCoachClasses();
+    renderStudents();
+  });
+
+  // ---------------- Coach: classes ----------------
+  document.getElementById("create-class-btn").addEventListener("click", async function(){
+    const err = document.getElementById("class-form-error");
+    err.classList.add("hidden");
+    const nameInput = document.getElementById("class-name-input");
+    const name = nameInput.value.trim();
+    if (name === ""){
+      err.textContent = "Give the class a name.";
+      err.classList.remove("hidden");
+      return;
+    }
+    const btn = this;
+    btn.disabled = true;
+    btn.textContent = "Creating…";
+    try {
+      const code = await generateUniqueClassCode();
+      await addDoc(classesCol, {
+        name: name, code: code,
+        coachUid: currentUser.uid, coachUsername: currentProfile.username,
+        createdAt: Date.now()
+      });
+      nameInput.value = "";
+      await loadCoachClasses();
+      populateClassSelects();
+      renderCoachClasses();
+    } catch (e) {
+      err.textContent = "Couldn't create the class. Try again.";
+      err.classList.remove("hidden");
+    } finally {
+      btn.disabled = false;
+      btn.textContent = "Create class";
+    }
+  });
+
+  function renderCoachClasses(){
+    const list = document.getElementById("coach-classes-list");
+    if (coachClasses.length === 0){
+      list.innerHTML = '<p class="dim">No classes yet — create one above and share the code with your students.</p>';
+      return;
+    }
+    list.innerHTML = coachClasses.map(function(c){
+      const members = students.filter(function(s){ return (s.classIds || []).includes(c.id); });
+      const names = members.length
+        ? members.map(function(s){ return escapeHtml(s.username); }).join(", ")
+        : '<span class="dim">No students yet</span>';
+      return '<div class="card">' +
+        '<div class="row-between">' +
+          '<div>' +
+            '<div style="font-weight:600; margin-bottom:4px;">' + escapeHtml(c.name) + '</div>' +
+            '<div class="mono-small">' + members.length + ' student' + (members.length === 1 ? '' : 's') + '</div>' +
+          '</div>' +
+          '<button class="icon-btn" data-delete-class="' + c.id + '" aria-label="Delete class">&#10005;</button>' +
+        '</div>' +
+        '<div style="display:flex; align-items:center; gap:10px; margin-top:12px; flex-wrap:wrap;">' +
+          '<span class="mono-small" style="font-size:0.95rem; letter-spacing:0.08em; color:var(--green-2);">' + escapeHtml(c.code) + '</span>' +
+          '<button class="btn-ghost btn-small" data-copy-code="' + escapeHtml(c.code) + '">Copy code</button>' +
+        '</div>' +
+        '<div style="margin-top:10px; font-size:0.85rem; color:var(--text-dim);">' + names + '</div>' +
+      '</div>';
+    }).join("");
+
+    list.querySelectorAll("[data-copy-code]").forEach(function(btn){
+      btn.addEventListener("click", async function(){
+        try {
+          await navigator.clipboard.writeText(btn.dataset.copyCode);
+          const original = btn.textContent;
+          btn.textContent = "Copied!";
+          setTimeout(function(){ btn.textContent = original; }, 1500);
+        } catch (e) { /* clipboard unavailable; nothing to do */ }
+      });
+    });
+    list.querySelectorAll("[data-delete-class]").forEach(function(btn){
+      btn.addEventListener("click", async function(){
+        const ok = confirm("Delete this class? Students keep any work already assigned to them, but will be removed from the class.");
+        if (!ok) return;
+        await deleteClassAndUnenroll(btn.dataset.deleteClass);
+        await loadCoachClasses();
+        await loadStudents();
+        populateStudentSelects();
+        populateClassSelects();
+        renderCoachClasses();
+      });
+    });
+  }
+
+  document.getElementById("refresh-classes-btn").addEventListener("click", async function(){
+    await loadStudents();
+    await loadCoachClasses();
+    populateStudentSelects();
+    populateClassSelects();
+    renderCoachClasses();
+  });
+
+  // ---------------- Student: classes ----------------
+  document.getElementById("join-class-btn").addEventListener("click", async function(){
+    const err = document.getElementById("join-class-error");
+    const ok = document.getElementById("join-class-success");
+    err.classList.add("hidden");
+    ok.classList.add("hidden");
+    const input = document.getElementById("join-class-code");
+    const code = input.value.trim().toUpperCase();
+    if (code === ""){
+      err.textContent = "Enter a class code.";
+      err.classList.remove("hidden");
+      return;
+    }
+    const btn = this;
+    btn.disabled = true;
+    btn.textContent = "Joining…";
+    try {
+      const snap = await getDocs(query(classesCol, where("code", "==", code)));
+      if (snap.empty){
+        err.textContent = "No class found with that code.";
+        err.classList.remove("hidden");
+        return;
+      }
+      const classDoc = snap.docs[0];
+      const existing = currentProfile.classIds || [];
+      if (existing.includes(classDoc.id)){
+        err.textContent = "You're already in this class.";
+        err.classList.remove("hidden");
+        return;
+      }
+      const updated = Object.assign({}, currentProfile, { classIds: existing.concat([classDoc.id]) });
+      await setDoc(doc(db, "users", currentUser.uid), updated);
+      currentProfile = updated;
+      input.value = "";
+      ok.textContent = "Joined " + classDoc.data().name + ".";
+      ok.classList.remove("hidden");
+      await loadMyClasses();
+      renderMyClasses();
+    } catch (e) {
+      err.textContent = "Couldn't join that class. Try again.";
+      err.classList.remove("hidden");
+    } finally {
+      btn.disabled = false;
+      btn.textContent = "Join class";
+    }
+  });
+
+  function renderMyClasses(){
+    const list = document.getElementById("my-classes-list");
+    if (myClasses.length === 0){
+      list.innerHTML = '<p class="dim">You haven\'t joined a class yet.</p>';
+      return;
+    }
+    list.innerHTML = myClasses.map(function(c){
+      return '<div class="card"><div class="row-between">' +
+        '<div><div style="font-weight:600;">' + escapeHtml(c.name) + '</div>' +
+        '<div class="mono-small" style="margin-top:4px;">Coach: ' + escapeHtml(c.coachUsername || "") + '</div></div>' +
+        '<button class="btn-ghost btn-small" data-leave-class="' + c.id + '">Leave</button>' +
+      '</div></div>';
+    }).join("");
+    list.querySelectorAll("[data-leave-class]").forEach(function(btn){
+      btn.addEventListener("click", async function(){
+        const ok = confirm("Leave this class? You'll keep any work already assigned to you.");
+        if (!ok) return;
+        const updated = Object.assign({}, currentProfile, { classIds: (currentProfile.classIds || []).filter(function(id){ return id !== btn.dataset.leaveClass; }) });
+        await setDoc(doc(db, "users", currentUser.uid), updated);
+        currentProfile = updated;
+        await loadMyClasses();
+        renderMyClasses();
+      });
+    });
   }
 
   // ---------------- Student: Problems tab ----------------
@@ -1417,6 +1895,13 @@
 
   // ---------------- Coach: dashboard ----------------
   function renderDashboard(){
+    renderLeaderboard();
+    renderClassGrids();
+    renderQuizSubsSummary();
+    renderProblemAttemptsSummary();
+  }
+
+  function renderLeaderboard(){
     const byStudent = {};
     attempts.forEach(function(a){
       const key = a.studentUsername || "(unknown)";
@@ -1436,34 +1921,139 @@
           '<span class="mono-small">' + s.correct + '/' + s.total + ' &middot; ' + acc + '%</span></div>';
       }).join("");
     }
+  }
 
+  // A table per class: problem numbers across the top, students down the
+  // side, each cell showing how many attempts that student has used on
+  // that problem (green + bold once solved). Columns are built by
+  // grouping the class's fanned-out problem copies by assignmentGroupId,
+  // since every student got their own copy of "the same" problem.
+  function renderClassGrids(){
+    const wrap = document.getElementById("dash-class-grids");
+    if (coachClasses.length === 0){
+      wrap.innerHTML = '<p class="dim">Create a class in the Classes tab to see a per-problem attempt grid here.</p>';
+      return;
+    }
+
+    wrap.innerHTML = coachClasses.map(function(cls){
+      const classProblems = problems.filter(function(p){ return p.classId === cls.id; });
+      if (classProblems.length === 0){
+        return '<div class="card"><div style="font-weight:600; margin-bottom:6px;">' + escapeHtml(cls.name) + '</div>' +
+          '<p class="dim" style="margin:0;">No problems sent to this class yet.</p></div>';
+      }
+
+      const groups = {};
+      classProblems.forEach(function(p){
+        const gid = p.assignmentGroupId || p.id;
+        if (!groups[gid]) groups[gid] = { question: p.question, createdAt: p.createdAt, byStudent: {} };
+        groups[gid].byStudent[p.studentUid] = p.id;
+      });
+      const groupIds = Object.keys(groups).sort(function(a, b){ return (groups[a].createdAt || 0) - (groups[b].createdAt || 0); });
+
+      const members = students
+        .filter(function(s){ return (s.classIds || []).includes(cls.id); })
+        .sort(function(a, b){ return String(a.username).localeCompare(String(b.username)); });
+
+      if (members.length === 0){
+        return '<div class="card"><div style="font-weight:600; margin-bottom:6px;">' + escapeHtml(cls.name) + '</div>' +
+          '<p class="dim" style="margin:0;">No students have joined this class yet.</p></div>';
+      }
+
+      let table = '<div class="card"><div style="font-weight:600; margin-bottom:12px;">' + escapeHtml(cls.name) + '</div>';
+      table += '<div style="overflow-x:auto;"><table style="width:100%; border-collapse:collapse; font-size:0.85rem;">';
+      table += '<thead><tr>' +
+        '<th style="text-align:left; padding:6px 10px; border-bottom:1px solid var(--border); color:var(--text-dim); font-family:var(--font-mono); font-weight:600;">Student</th>' +
+        groupIds.map(function(gid, i){
+          return '<th title="' + escapeHtml(groups[gid].question) + '" style="text-align:center; padding:6px 10px; border-bottom:1px solid var(--border); color:var(--text-dim); font-family:var(--font-mono); font-weight:600; white-space:nowrap;">P' + (i + 1) + '</th>';
+        }).join("") +
+        '</tr></thead><tbody>';
+
+      members.forEach(function(s){
+        table += '<tr><td style="padding:6px 10px; border-bottom:1px solid var(--border); white-space:nowrap;">' + escapeHtml(s.username) + '</td>';
+        groupIds.forEach(function(gid){
+          const pid = groups[gid].byStudent[s.uid];
+          let cell = '<span class="dim">&mdash;</span>';
+          if (pid){
+            const prog = progressMap[s.uid + "_" + pid];
+            if (!prog){
+              cell = '<span class="dim">0</span>';
+            } else if (prog.solved){
+              cell = '<span style="color:var(--green); font-weight:600;">' + prog.attemptsUsed + '</span>';
+            } else {
+              cell = '<span>' + prog.attemptsUsed + '</span>';
+            }
+          }
+          table += '<td style="padding:6px 10px; border-bottom:1px solid var(--border); text-align:center;">' + cell + '</td>';
+        });
+        table += '</tr>';
+      });
+
+      table += '</tbody></table></div>';
+      table += '<p class="mono-small" style="margin-top:10px; margin-bottom:0;">Green = solved. Hover a column header for the question. &mdash; means that problem wasn\'t assigned to that student.</p>';
+      table += '</div>';
+      return table;
+    }).join("");
+  }
+
+  function renderQuizSubsSummary(){
     const subsEl = document.getElementById("dash-quiz-subs");
     if (submissions.length === 0){
       subsEl.innerHTML = '<p class="dim">No quizzes submitted yet.</p>';
-    } else {
-      subsEl.innerHTML = submissions.map(function(s){
-        const pct = s.total > 0 ? Math.round((s.score / s.total) * 100) : 0;
-        return '<div class="card"><div class="row-between">' +
-          '<div><div style="font-weight:600;">' + escapeHtml(s.studentUsername || "(unknown)") + '</div>' +
-          '<div class="mono-small" style="margin-top:4px;">' + escapeHtml(s.quizTitle) + ' &middot; ' + new Date(s.submittedAt).toLocaleString() + '</div></div>' +
-          '<span class="pill done">' + s.score + '/' + s.total + ' &middot; ' + pct + '%</span>' +
-        '</div></div>';
-      }).join("");
+      return;
+    }
+    subsEl.innerHTML = submissions.map(function(s){
+      const pct = s.total > 0 ? Math.round((s.score / s.total) * 100) : 0;
+      return '<div class="card"><div class="row-between">' +
+        '<div><div style="font-weight:600;">' + escapeHtml(s.studentUsername || "(unknown)") + '</div>' +
+        '<div class="mono-small" style="margin-top:4px;">' + escapeHtml(s.quizTitle) + ' &middot; ' + new Date(s.submittedAt).toLocaleString() + '</div></div>' +
+        '<span class="pill done">' + s.score + '/' + s.total + ' &middot; ' + pct + '%</span>' +
+      '</div></div>';
+    }).join("");
+  }
+
+  // Per student, one line per problem with attempts-so-far -- instead of
+  // one row per individual attempt event -- pulled from the progress
+  // collection (attemptsUsed/solved) rather than recomputing from the
+  // raw attempts log.
+  function renderProblemAttemptsSummary(){
+    const wrap = document.getElementById("dash-problem-summary");
+    const rows = students
+      .map(function(s){ return { student: s, problems: problems.filter(function(p){ return p.studentUid === s.uid; }) }; })
+      .filter(function(r){ return r.problems.length > 0; });
+
+    if (rows.length === 0){
+      wrap.innerHTML = '<p class="dim">No problems assigned yet.</p>';
+      return;
     }
 
-    const recent = document.getElementById("dash-recent");
-    if (attempts.length === 0){
-      recent.innerHTML = '<p class="dim">Nothing to show yet.</p>';
-    } else {
-      recent.innerHTML = attempts.slice(0, 30).map(function(h){
-        const mark = h.correct ? '<span style="color:var(--green);">&#10003;</span>' : '<span style="color:var(--danger);">&#10005;</span>';
-        return '<div class="card"><div class="row-between">' +
-          '<div style="font-size:0.88rem;"><strong>' + escapeHtml(h.studentUsername || "(unknown)") + '</strong> &middot; ' + textToHtml(h.question) + ' &middot; attempt ' + h.attemptNumber + '</div>' + mark +
-          '</div><div class="mono-small" style="margin-top:4px;">' + new Date(h.timestamp).toLocaleString() + '</div></div>';
+    wrap.innerHTML = rows.map(function(r){
+      const items = r.problems.map(function(p, i){
+        const prog = progressMap[r.student.uid + "_" + p.id];
+        const attemptsUsed = prog ? prog.attemptsUsed : 0;
+        const solved = prog ? prog.solved : false;
+        const mark = solved
+          ? '<span style="color:var(--green);">&#10003;</span>'
+          : (attemptsUsed >= MAX_ATTEMPTS ? '<span style="color:var(--danger);">&#10005;</span>' : '<span class="dim">&hellip;</span>');
+        return '<div style="display:flex; justify-content:space-between; gap:10px; padding:6px 0;' + (i > 0 ? ' border-top:1px solid var(--border);' : '') + '">' +
+          '<span style="font-size:0.85rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">' + textToHtml(p.question) + '</span>' +
+          '<span class="mono-small" style="flex-shrink:0;">' + attemptsUsed + ' attempt' + (attemptsUsed === 1 ? '' : 's') + ' ' + mark + '</span>' +
+        '</div>';
       }).join("");
-      renderMathIn(recent);
-    }
+      return '<div class="card"><div style="font-weight:600; margin-bottom:6px;">' + escapeHtml(r.student.username) + '</div>' + items + '</div>';
+    }).join("");
+    renderMathIn(wrap);
   }
+
+  document.getElementById("refresh-dashboard-btn").addEventListener("click", async function(){
+    await loadStudents();
+    await loadCoachClasses();
+    await loadAllProblemsForCoach();
+    await loadAllAttemptsForCoach();
+    await loadAllQuizzesForCoach();
+    await loadAllSubmissionsForCoach();
+    await loadAllProgressForCoach();
+    renderDashboard();
+  });
 
   // ---------------- Profile (both roles) ----------------
   function renderProfile(){
@@ -1558,20 +2148,26 @@
 
     if (currentProfile.role === "coach"){
       await loadStudents();
+      await loadCoachClasses();
       populateStudentSelects();
+      populateClassSelects();
       builderQuestions = [{ question: "", answer: "", explanation: "" }];
       renderBuilder();
       setAssignMode("problem");
+      setAddTarget("student");
+      setQuizTarget("student");
       await loadAllProblemsForCoach();
       await loadAllAttemptsForCoach();
       await loadAllQuizzesForCoach();
       await loadAllSubmissionsForCoach();
+      await loadAllProgressForCoach();
       showSection("add");
     } else {
       await loadMyProblems();
       await loadMyAttempts();
       await loadMyQuizzes();
       await loadMySubmissions();
+      await loadMyClasses();
       showSection("problems");
     }
   }
